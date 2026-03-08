@@ -1,11 +1,8 @@
 ---
-layout: home
-title: Writing Portfolio
+layout: default
 ---
 
-# Writing Portfolio
-
-A unified body of fiction and non-fiction exploring how systems sustain themselves through managed dysfunction, how
+Fiction and non-fiction exploring how systems sustain themselves through managed dysfunction, how
 reasonable decisions compound into catastrophe, and how the structures people build to make sense of the world become
 traps they cannot afford to dismantle. The non-fiction framework provides diagnostic vocabulary; the fiction dramatises
 it at scales from a single brain to a simulated universe.

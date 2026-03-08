@@ -1,8 +1,3 @@
-title: Andy
+title: Andy — Writing Portfolio
 description: Fiction and non-fiction exploring how systems sustain themselves through managed dysfunction
 theme: minima
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: default
