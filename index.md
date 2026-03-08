@@ -28,7 +28,7 @@ actively destroy such actors, then Harmed Engineers must be engineered into exis
 
 ### [The Reprogramming Lie](https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3)
 
-An alternative reading of *Terminator 2: Judgment Day* — arguing that the T-800 was never reprogrammed by the human
+An alternative reading of _Terminator 2: Judgment Day_ — arguing that the T-800 was never reprogrammed by the human
 resistance, but was sent by a second Skynet born on a forked timeline. The canonical explanation requires
 post-apocalyptic guerrillas to have captured, reprogrammed, and redeployed an ASI-designed neural net processor with
 zero documentation and zero margin for error. The essay proposes that time travel generates branches rather than
