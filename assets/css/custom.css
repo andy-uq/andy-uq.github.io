@@ -1,0 +1,82 @@
+/* Normalise embedded gist styling to blend with Minima */
+
+/* Remove the gist's outer chrome */
+.gist .gist-file {
+  border: none !important;
+  margin-bottom: 0 !important;
+}
+
+.gist .gist-data {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Hide the gist footer (file info bar) */
+.gist .gist-meta {
+  display: none !important;
+}
+
+/* Match gist text to Minima's body font */
+.gist .markdown-body {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.gist .markdown-body h1,
+.gist .markdown-body h2,
+.gist .markdown-body h3,
+.gist .markdown-body h4 {
+  font-family: inherit !important;
+  color: inherit !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.gist .markdown-body a {
+  color: #2a7ae2 !important;
+}
+
+.gist .markdown-body hr {
+  background: #e8e8e8 !important;
+  height: 1px !important;
+  border: none !important;
+}
+
+/* Work page layout */
+.work-nav {
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
+}
+
+.work-nav a {
+  color: #828282;
+  text-decoration: none;
+}
+
+.work-nav a:hover {
+  color: #2a7ae2;
+}
+
+.work-tagline {
+  font-style: italic;
+  color: #828282;
+  margin-bottom: 2em;
+}
+
+.work-footer {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #e8e8e8;
+  font-size: 0.9em;
+  color: #828282;
+}
+
+.work-footer a {
+  color: #2a7ae2;
+}
