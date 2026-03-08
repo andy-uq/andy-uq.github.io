@@ -48,6 +48,44 @@
   border: none !important;
 }
 
+/* Increase vertical spacing in embedded gist content */
+.gist .markdown-body p,
+.gist .markdown-body blockquote,
+.gist .markdown-body table,
+.gist .markdown-body ul,
+.gist .markdown-body ol {
+  margin-bottom: 1.25em !important;
+}
+
+.gist .markdown-body h1,
+.gist .markdown-body h2,
+.gist .markdown-body h3,
+.gist .markdown-body h4 {
+  margin-top: 2em !important;
+  margin-bottom: 0.75em !important;
+}
+
+.gist .markdown-body h1:first-child,
+.gist .markdown-body h2:first-child {
+  margin-top: 0 !important;
+}
+
+.gist .markdown-body hr {
+  margin-top: 2em !important;
+  margin-bottom: 2em !important;
+}
+
+.gist .markdown-body table {
+  margin-top: 1em !important;
+  margin-bottom: 1.5em !important;
+}
+
+.gist .markdown-body blockquote {
+  margin-top: 1.25em !important;
+  margin-bottom: 1.5em !important;
+  padding: 0.75em 1em !important;
+}
+
 /* Work page layout */
 .work-nav {
   margin-bottom: 1.5em;
