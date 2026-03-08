@@ -2,15 +2,6 @@
 layout: default
 ---
 
-Fiction and non-fiction exploring how systems sustain themselves through managed dysfunction, how
-reasonable decisions compound into catastrophe, and how the structures people build to make sense of the world become
-traps they cannot afford to dismantle. The non-fiction framework provides diagnostic vocabulary; the fiction dramatises
-it at scales from a single brain to a simulated universe.
-
-Andy — Auckland, NZ
-
----
-
 ## The Framework
 
 ### [An Insolvent Class Problem](works/icp)
@@ -94,3 +85,12 @@ A sealed arcology built in a blast crater, inherited by the people who maintaine
 didn't survive. A genuinely closed thermodynamic system where every joule, litre, and calorie is budgeted and
 politically allocated. The founding doctrine — a Reddit comment with 847 upvotes about a border dispute — says "glass
 them and start over," but glassing preserves rather than erases.
+
+---
+
+*Fiction and non-fiction exploring how systems sustain themselves through managed dysfunction, how
+reasonable decisions compound into catastrophe, and how the structures people build to make sense of the world become
+traps they cannot afford to dismantle. The non-fiction framework provides diagnostic vocabulary; the fiction dramatises
+it at scales from a single brain to a simulated universe.*
+
+Andy — Auckland, NZ
