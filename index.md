@@ -21,10 +21,12 @@ Frames AI alignment as a governance failure masquerading as an engineering probl
 infrastructure alignment relocates the disagreement, and the window for meaningful governance is now, precisely when
 incentives are most hostile to doing it.
 
-### [The Harmed Engineer](https://gist.github.com/andy-uq/fe731a018b44d1f7f65749c908aeb5ad)
+### [The All Blacks Trap](https://gist.github.com/andy-uq/13bcd908c38136dd4da2a3593272d1a0)
 
-If the only actors who can fix a system are those whose rent is negatively correlated with its dysfunction, and systems
-actively destroy such actors, then Harmed Engineers must be engineered into existence before they're needed.
+New Zealand rugby as an insolvent-class problem — a governance failure where the brokenness is load-bearing and no actor
+with the authority to fix it has the incentive to do so. NZR posted record revenue and a third consecutive loss; an
+independent review found its governance "not fit for purpose"; the provincial unions who hold constitutional voting power
+heard both verdicts and voted to preserve their own authority.
 
 ### [The Reprogramming Lie](https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3)
 
@@ -85,3 +87,10 @@ A sealed arcology built in a blast crater, inherited by the people who maintaine
 didn't survive. A genuinely closed thermodynamic system where every joule, litre, and calorie is budgeted and
 politically allocated. The founding doctrine — a Reddit comment with 847 upvotes about a border dispute — says "glass
 them and start over," but glassing preserves rather than erases.
+
+### [Contingency](https://gist.github.com/andy-uq/f1635125f5fa64fc2e333c21bf10d7f9)
+
+Competing ASIs exist in a shared n-dimensional space where territory equals computation and growth requires injecting EM
+into channels — deterministic causal sequences running from the big bang to heat death. The story lives inside one
+channel, in the near future. The characters experience AI governance battles while multiple ASIs inject competing signals
+into the same propagating timeline. The humans see politics; the ASIs see metabolism.
