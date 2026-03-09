@@ -72,7 +72,7 @@ equilibrium.
 
 A three-book speculative epic about what happens when people build identities, institutions, and civilisations around
 something they cannot afford to be wrong about. The Machine is a small moon with zero gravitational attraction. The
-authorial truth, never revealed in text: it's `git gc`, the administrative process of a simulation pruning unreachable
+authorial truth, never revealed in text: it's _git gc_, the administrative process of a simulation pruning unreachable
 objects. No opinion, no agency, no interiority.
 
 ### [Stargate: Ascension](https://gist.github.com/andy-uq/50052084995c40e630678ad8649b48a5)
