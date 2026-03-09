@@ -4,7 +4,7 @@ layout: home
 
 ## The Framework
 
-### [An Insolvent Class Problem](https://gist.github.com/andy-uq/6fe3105052e0cebba5b6f28c499074f7)
+### [An Insolvent Class Problem](https://gist.github.com/andy-uq/f6b402683d3f26cc49790dc2bb4f1b32)
 
 A diagnostic framework for governance failures where the brokenness is load-bearing. The foundational insight: systems
 will only allow a problem to be fixed once it's no longer fixable, because by then too many actors depend on the
