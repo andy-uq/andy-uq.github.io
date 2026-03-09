@@ -1,7 +1,47 @@
+/* Dark theme overrides for minima 2.5 (GitHub Pages) */
 body {
   position: relative;
+  background-color: #1e1e1e;
+  color: #ddd;
 }
 
+a {
+  color: #79b8ff;
+}
+
+a:visited {
+  color: #b392f0;
+}
+
+a:hover {
+  color: #c8e1ff;
+}
+
+.site-header {
+  background-color: #161616;
+  border-top-color: #444;
+  border-bottom-color: #333;
+}
+
+.site-title,
+.site-title:visited {
+  color: #ddd;
+}
+
+.site-footer {
+  border-top-color: #333;
+  color: #999;
+}
+
+hr {
+  border-color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #eee;
+}
+
+/* Background image — fixed, top-right */
 body::before {
   content: "";
   position: fixed;
