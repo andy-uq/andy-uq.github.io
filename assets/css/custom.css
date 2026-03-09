@@ -51,8 +51,19 @@ body::before {
   height: 100%;
   background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
   opacity: 0.15;
-  -webkit-mask-image: linear-gradient(to left, black 30%, transparent 70%);
-  mask-image: linear-gradient(to left, black 30%, transparent 70%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Fade the left edge of the image into the background */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
   z-index: -1;
   pointer-events: none;
 }
