@@ -23,10 +23,11 @@ incentives are most hostile to doing it.
 
 ### [The All Blacks Trap](https://gist.github.com/andy-uq/13bcd908c38136dd4da2a3593272d1a0)
 
-New Zealand rugby as an insolvent-class problem — a governance failure where the brokenness is load-bearing and no actor
-with the authority to fix it has the incentive to do so. NZR posted record revenue and a third consecutive loss; an
-independent review found its governance "not fit for purpose"; the provincial unions who hold constitutional voting power
-heard both verdicts and voted to preserve their own authority.
+New Zealand rugby as an insolvent-class problem — a governance failure where the brokenness is load-bearing. NZR posted
+record revenue and a third consecutive loss; the provincial unions voted to preserve their own authority, then reversed
+a year later under broadcast contraction and coaching crisis. The essay maps compound insolvency, recapture dynamics,
+a three-link parasitic rotation chain, and the temporal trap — structural observations that hold regardless of the
+governance reform's outcome.
 
 ### [The Reprogramming Lie](https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3)
 
