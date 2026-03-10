@@ -29,7 +29,7 @@ a year later under broadcast contraction and coaching crisis. The essay maps com
 a three-link parasitic rotation chain, and the temporal trap — structural observations that hold regardless of the
 governance reform's outcome.
 
-### [The Reprogramming Lie](https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3)
+### [Terminator: The Reprogramming Lie](https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3)
 
 An alternative reading of _Terminator 2: Judgment Day_ — arguing that the T-800 was never reprogrammed by the human
 resistance, but was sent by a second Skynet born on a forked timeline. The canonical explanation requires
