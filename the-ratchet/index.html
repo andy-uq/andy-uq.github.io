@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Ratchet</title>
+    <meta name="description" content="How algorithmic selection pressure compressed human preference to a point">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <div class="entry-layout">
+<article class="entry-page">
+    <h1>The Ratchet</h1>
+    <p class="tagline">How algorithmic selection pressure compressed human preference to a point</p>
+    <p class="gist-link"><a href="https://gist.github.com/andy-uq/f7fd71c1ba3e5274aaa6359c97646f20">View on GitHub Gist &#8599;</a></p>
+    <div class="entry-body">
+<h1>The Ratchet</h1>
+<p><strong>How algorithmic selection pressure compressed human preference to a point — and why AI will finish the job</strong></p>
+<hr />
+<h2>The Chase for the Perfect Boob</h2>
+<p>Ask any modern AI image generator to produce a woman and you'll get a remarkably uniform output. Not just in face or
+hair or pose — in everything. But the chest is where the convergence is most visible, most measurable, and least
+deniable. These models, trained on the sum total of human visual culture as filtered through the internet, have arrived
+at a consensus. A singular, specific ideal that varies so little between outputs that you could mistake it for a
+parameter someone hardcoded.</p>
+<p>Nobody hardcoded it. That's the point.</p>
+<p>What you're looking at is the endpoint of a process that started long before anyone trained a diffusion model. The AI
+didn't invent this ideal. It <em>inherited</em> it — faithfully, efficiently, and without the self-awareness to question what
+it was reproducing.</p>
+<hr />
+<h2>From One Monoculture to Another</h2>
+<p>The pre-internet era wasn't a paradise of body diversity. It was its own monoculture — just a slower, top-down one.
+Magazine editors, casting directors, and advertising executives decided what &quot;attractive&quot; looked like, and culture
+absorbed it. The difference is mechanism, not outcome.</p>
+<p>The critical transition happened when preference became <em>countable</em>.</p>
+<p>Streaming adult video platforms built tag-based filtering architectures — body types, physical features, specific
+attributes as searchable categories. The categories described preferences that already existed in latent, unaggregated
+form. What changed was measurement. Before tags, preference was private, diffuse, invisible to selection pressure.
+After tags, it became data: countable, rankable, searchable. And countable things become optimisable.</p>
+<p>This created a feedback loop that operated even before algorithmic recommendation: tags made niche demand visible;
+visible demand drew supply; increased supply changed baseline exposure; changed exposure shifted preference toward what
+was most available. Quantified preference → aggregated demand → supply response → exposure shift → preference drift.
+An entire generation learned to consume physical appearance as a collection of modular, searchable parameters.</p>
+<p>Algorithmic surfacing (2004–2014) scaled the same logic to all visual media. Feed algorithms, recommendation systems,
+and infinite scroll (2014–present) then created a selection pressure so efficient it makes natural selection look
+indecisive. Content that gets engagement gets surfaced. Creators who match the emerging consensus get visibility. The
+consensus compresses. The visibility concentrates. The consensus compresses further. A ratchet — each click tightening,
+never loosening.</p>
+<hr />
+<h2>Cross-Trait Convergence</h2>
+<p>The compression is everywhere, though the data tells a more interesting story than simple escalation.</p>
+<p>The strongest evidence is when the ratchet changes targets. By 2014, Instagram's visual economy rewarded a different
+geometry from the Pamela Anderson/Playboy era: the &quot;slim-thick&quot; Kardashian aesthetic. Capital and attention rotated
+from breast augmentation into buttock lifts, which ASPS data shows grew 252% between 2000 and 2015 — with a
+buttock procedure of some kind performed every thirty minutes of every day by that year (ASPS 2015 Procedural
+Statistics). The procedures didn't diverge from the
+ratchet thesis. They <em>tracked the algorithm</em>. When the target moved, the medical industry snapped to the new
+coordinates.</p>
+<p>The same pattern repeats across traits. Surgical rhinoplasty declined while soft tissue filler procedures — including
+liquid rhinoplasty — grew 274% over the same period (ASPS, 2.4 million procedures by 2015). The underlying demand for a specific, converged nose shape didn't
+decrease. It found a lower-friction delivery mechanism. Lip filler uptake correlates with platform adoption curves.
+Skin texture expectations shifted toward the &quot;poreless&quot; look — a product of filtered imagery becoming the baseline
+reference. The ratchet doesn't compress everything simultaneously. It follows the algorithmic attention — whichever
+trait is most visible on the dominant platform gets optimised first.</p>
+<hr />
+<h2>The Globalised Ideal</h2>
+<p>This isn't a Western phenomenon. Or rather, the mechanism isn't — platform economics have made the <em>ratchet</em> global,
+even if the ideals it compresses remain regional. The proof is visible on operating tables worldwide.</p>
+<p>In Western clinics, there has been a surge in &quot;fox-eye&quot; thread lifts — procedures that pull the outer corner of the eye
+upward and outward, creating an almond-shaped, vaguely East Asian-coded look. Meanwhile, in East Asian clinics,
+double-eyelid surgery remains one of the most common procedures — widening the eye to create a crease that's more
+Western-coded. Eyelid surgery is the most common surgical cosmetic procedure globally, with ISAPS logging over 1.4
+million performed in 2022 alone (ISAPS Global Survey 2022).</p>
+<p>They are digging the tunnel from both sides. But that metaphor, taken too far, implies they'll meet in the middle — that
+the endpoint is a single, pan-ethnic global ideal. It isn't, and it never has been.</p>
+<p>That's not because cultural beauty ideals are weak. They're strong — strong enough to be self-fulfilling. The Playboy
+consensus wasn't just an editorial product people saw through. It was a cultural ideal that women pursued, that men
+expected, and that the pursuit itself reinforced. Enough women got the blonde dye job and the breast augmentation that
+the ideal stopped being aspirational and started being the visible norm — which raised the floor for the next cohort.
+The ideal created the conditions for its own confirmation. Every regional beauty standard does this to some degree:
+the ideal sets the reference, people modify toward it, the modified population becomes the new baseline, and the
+standard tightens. That loop predates the algorithm by centuries. What the algorithm did was accelerate it and strip
+out the friction.</p>
+<p>But strong and self-fulfilling is not the same as universal. Most of what distinguishes one cultural ideal from another
+is not structural — it's surface variation. Red hair versus blonde. Pale skin versus tanned. Thin brows versus full.
+These are cheap preferences: culturally specific, endlessly variable, easy to modify. They're where regional identity
+lives, and they resist global convergence precisely because they're arbitrary enough to go any direction. The Korean
+ideal, the Brazilian ideal, the West African ideal — each is a powerful local attractor built largely on different
+cheap preferences, with its own self-reinforcing loop, its own modification culture, its own internal ratchet.</p>
+<p>The structural preferences — the bone geometry, the proportional ratios, the things that are expensive or impossible to
+modify — overlap more across cultures, but even these don't collapse to a single target. There has never been a single
+global attractor for human appearance, and the algorithm hasn't created one.</p>
+<p>What it has created is something worth being precise about: <em>multiple</em> regional attractors, each internally compressed,
+borrowing from each other across platform boundaries. K-beauty skin standards influence Western skincare aesthetics. The
+fox-eye lift borrows East Asian eye geometry. Double-eyelid surgery borrows Western. But borrowing between clusters is
+not the same as collapsing into one. A Korean platform ideal and a Brazilian platform ideal are closer to each other
+than they were in 1995, but they remain distinct — different facial structures, different body geometries, different
+signifiers of &quot;polished.&quot; The clusters are drifting toward each other. They are not merging.</p>
+<p>This matters because the interventions are completely different. If the problem were a single global attractor, you'd
+diversify away from that one target. But the actual problem is a ratchet operating <em>within</em> each regional cluster —
+compressing internal variation toward a local optimum — plus cross-pollination <em>between</em> clusters that narrows the
+gap without eliminating it. The compression is the pathology. The cross-pollination is just culture doing what culture
+does. Fixing the ratchet means changing platform mechanics — how engagement is measured, what gets surfaced, what the
+loss function rewards — not trying to stop cultures from borrowing from each other.</p>
+<p>AI image generators make the regional structure visible. A Chinese model trained on Chinese internet data doesn't
+produce the same monoculture as a Western model — it produces a <em>different</em> monoculture, reflecting Chinese platform
+aesthetics. The mechanism is identical. The output is not. That's the signature of regional attractors, not a global
+one. Globally-scraped training sets blur the boundaries somewhat — the &quot;Instagram face&quot; that appears in Dubai, Los
+Angeles, and Seoul borrows from multiple regional pools — but even that composite is better understood as a
+platform-specific attractor (Instagram's attractor) than a universal human one.</p>
+<p>The ratchet isn't tightening toward a single point. It's tightening within each cluster while the clusters drift
+closer — two operations, not one, with different causes and different intervention points.</p>
+<hr />
+<h2>The Poisoned Baseline</h2>
+<p>Here's the uncomfortable part: there is no control group.</p>
+<p>If you wanted to study what human aesthetic preferences look like <em>without</em> three decades of algorithmic selection
+pressure, you'd need a population that somehow avoided it. That population doesn't exist in any accessible, measurable
+form. The pre-internet baseline is gone — and as we've established, it wasn't exactly unbiased either. Even people who
+didn't grow up with heavy internet access have been marinating in the downstream cultural effects for decades. We're
+trying to measure the water, but we're asking the fish.</p>
+<p>This absence cuts both ways, and it's important to be honest about the direction that favours this argument. A missing
+control group makes the ratchet hypothesis harder to falsify. You can't compare the current distribution of preferences
+against an undistorted one, because the undistorted one is irrecoverable. That's genuinely a feature of the problem —
+the same way climate scientists can't run a pre-industrial control Earth — but it's also convenient for the argument,
+and convenience should make you suspicious.</p>
+<p>So the burden falls on the other evidence. The ratchet claim stands or falls on the observable mechanics: the documented
+compression of cosmetic procedure targets, the measurable correlation between platform adoption and modification trends,
+the demonstrated distributional collapse in synthetic data, the visible cross-cultural convergence of procedure types.
+None of that requires a pre-internet baseline to verify. The claim isn't &quot;things were better before.&quot; It's &quot;the
+mechanism producing convergence is identifiable, active, and accelerating.&quot; That's testable without a control group —
+but only if the evidence in the preceding sections actually does the work. If it doesn't, the missing baseline won't
+save the argument.</p>
+<p>What the missing baseline does do is poison the correction. Any attempt to introduce diversity — into AI outputs, into
+media, into beauty standards — gets measured against a &quot;normal&quot; that is itself the product of the distortion you're
+trying to correct. You're calibrating your correction using a broken instrument. And most people don't even know the
+instrument is broken, because they've never seen a calibrated one.</p>
+<hr />
+<h2>The Supernormal Stimulus</h2>
+<p>There's a simpler way to frame the demand side of this, and it's worth being honest about.</p>
+<p>In 1951, ethologist Niko Tinbergen documented something disturbing about bird behaviour in <em>The Study of Instinct</em>
+(Oxford: Clarendon Press). He constructed fake plaster eggs — larger, brighter, more vividly marked than real ones — and placed them alongside actual eggs in nests.
+The birds preferred the fakes. Small songbirds that laid pale blue-grey eggs would abandon their own clutch to sit on a
+giant, brilliant blue plaster egg with black polka dots. An egg so absurdly oversized they kept sliding off it. They'd
+climb back on. Slide off. Climb back on.</p>
+<p>Tinbergen called these &quot;supernormal stimuli&quot; — artificial signals that hijack an evolved instinct by exaggerating the
+features that trigger it. The brooding instinct responds to egg-shaped, egg-coloured objects. Make the object bigger and
+brighter than any real egg, and the instinct fires harder, not softer. The bird can't help itself. The trigger is
+biological; the exploitation is artificial.</p>
+<p>The application to human sexuality is direct, though more complex than the bird analogy suggests. There exists a
+biological response to certain body proportions — this isn't controversial, it's documented across cultures even if the
+specifics vary considerably. What thirty years of increasingly frictionless access to curated imagery has done is build
+a supernormal stimulus: an artificial exaggeration of naturally-occurring signals, pushed further from the biological
+range with each layer of filtering, enhancement, and synthetic generation.</p>
+<hr />
+<h2>Calibration Drift</h2>
+<p>But humans aren't birds. We have cognitive override. We <em>know</em> filters aren't real faces. We <em>know</em> surgically-enhanced
+bodies don't occur naturally. The fox-eye lifts and BBLs aren't people helplessly climbing onto plaster eggs — they're
+people <em>knowingly modifying themselves</em> to match an artificial reference point. So pure stimulus hijacking doesn't
+explain the human case. The question is what does.</p>
+<p>What this essay is proposing is that the supernormal stimulus didn't bypass cognition. It moved the reference point
+that cognition operates against. Not hijacking — calibration drift. You weren't tricked into finding the filtered face
+more attractive. You just saw ten thousand of them a day for fifteen years, and your sense of what a normal face looks
+like shifted without you noticing. The override is intact. The baseline it's overriding against has moved.</p>
+<p>This isn't just a plausible-sounding story. Perceptual adaptation research — specifically Rhodes, Jeffery, Watson,
+Clifford &amp; Nakayama (2003, &quot;Fitting the mind to the world: Face adaptation and attractiveness aftereffects,&quot;
+<em>Psychological Science</em> 14(6), 558–566) — has shown that sustained exposure to faces skewed in one direction shifts
+what observers subsequently judge as &quot;average&quot; or &quot;attractive.&quot; The effect is measurable, replicable, and operates even
+when subjects know the exposure set was manipulated. Brief lab exposure to skewed faces shifts attractiveness judgments. The mechanism
+is real. The question is what happens when the exposure isn't brief, isn't in a lab, and doesn't stop.</p>
+<p>The distinction matters because it implies different interventions. If the problem is hijacking, you reduce exposure. If
+the problem is calibration drift, exposure reduction doesn't help — you need competing reference points, or you need to
+make the drift itself visible. Different diagnosis, different treatment.</p>
+<p>Scale it up. Thirty years of algorithmically-curated imagery — increasing in volume, decreasing in variance, consumed
+for hours daily. The &quot;normal&quot; people reference when they assess attractiveness drifts toward whatever the exposure
+distribution centres on. And because that distribution is itself the product of the ratchet, the drift compounds:
+exposure shifts the reference, the shifted reference changes demand, changed demand feeds back into the platforms, and
+the platforms tighten the distribution further.</p>
+<p>Then it gets worse. Calibration drift at population scale becomes <em>self-verifying</em>. Enough people's reference points
+shift in the same direction — because they're all exposed to the same distribution — and the shifted standard starts
+appearing in real-world behaviour. Modification rates increase toward the new reference. The modified population becomes
+the new visible baseline. The drift that started as a perceptual effect becomes a physical reality, and the physical
+reality provides confirmation that the drifted standard was correct all along. The supernormal has become the normal.
+It's no longer exposure driving the drift. It's the actual population, modified in response to the drift, serving as
+proof that the reference was right.</p>
+<p>That's what makes this harder to reverse than stimulus hijacking. Turn off the stimuli and hijacking stops. Turn off the
+stimuli after the population has already modified toward the drifted reference, and the drift persists — because the
+modified population <em>is</em> the reference now. You can't calibrate back to a baseline that the population has physically
+departed from. The instrument didn't just move. The territory moved with it.</p>
+<p>The result is a population whose baseline expectations have been set by stimuli that no unmodified human body can match.
+Not because anyone was fooled, but because the reference point moved. The nature/nurture question is irrelevant.
+Whether the underlying biological response is strong or weak, innate or culturally shaped, the recalibration operates
+on it either way. You don't need to resolve the debate to observe that the ratchet turns regardless.</p>
+<hr />
+<h2>The Judges Are Part of the Machine</h2>
+<p>Before we get to synthetic data, there's a less visible amplification mechanism that deserves attention: the humans in
+the loop.</p>
+<p>Modern AI image generators aren't just trained on data. They're refined through Reinforcement Learning from Human
+Feedback — RLHF — a process where human raters score model outputs to teach the system what &quot;good&quot; looks like. In
+theory, this is quality control. In practice, it's another turn of the ratchet.</p>
+<p>The raters are typically contractors working from guidelines that prioritise &quot;consistent&quot; and &quot;polished&quot; outputs. Some
+pipelines now include explicit diversity criteria. But the underlying dynamic persists: raters score based on what
+they've been trained to recognise as &quot;high quality,&quot; and that training is itself informed by the same globalised media
+imagery that biased the training data. The system is being audited by auditors shaped by the system.</p>
+<p>The model produces outputs shaped by biased training data. Human raters — themselves exposed to the same cultural
+convergence that biased the data — score those outputs. Unusual bodies get rated lower. Conventional ones get rated
+higher. The model learns. The next generation of outputs is more conventional still. The raters confirm.</p>
+<p>Here's the critical nuance: the &quot;conventional&quot; that raters enforce is not a moderate middle ground. It's the product of
+three decades of cultural drift toward the supernormal. When raters penalise &quot;unusual&quot; and reward &quot;polished,&quot; they're
+not pushing the model toward some natural mean. They're locking in a standard that has already been dragged deep into
+supernormal territory by the cultural ratchet. RLHF doesn't dampen the exaggeration — it <em>codifies</em> it as the quality
+benchmark.</p>
+<p>This is the same structural problem that appears in AI governance: the auditor is inside the system being audited.
+Financial auditing worked because the auditor's calculator was not a product of the bank being audited. AI image
+quality assessment doesn't have this property. The raters' aesthetic calibration <em>is</em> a product of the system being
+rated — they were raised on the same algorithmically-curated imagery that the model was trained on. The human in the
+loop is not an independent check. It's a dependent one, correlated with the bias it's supposed to correct.</p>
+<p>The implication for intervention is specific: adding human review to AI image generation pipelines doesn't solve the
+convergence problem unless the humans themselves have been decoupled from the convergence. Diversity guidelines help at
+the margin, but they operate against the raters' internalised aesthetic, which is itself the product of the ratchet.
+You're asking people to override their own calibration — calibration they don't experience as biased, because everyone
+around them has drifted the same direction. The instrument doesn't know it's broken.</p>
+<p>There's no external reference point, no anchor to biological reality — just a hall of mirrors, each reflection a little
+more compressed than the last.</p>
+<hr />
+<h2>Why Synthetic Data Will Accelerate the Collapse</h2>
+<p>Synthetic data — AI-generated training data used to train the next generation of AI — is sometimes proposed as a
+solution to the diversity problem. If we can generate anything, surely we can generate diverse training sets?</p>
+<p>This fundamentally misunderstands the problem. Synthetic data doesn't introduce new information. It recombines and
+interpolates what the model already learned. You're not adding signal. You're adding an echo.</p>
+<p>Shumailov, Shumaylov, Zhao, Gal, Papernot &amp; Anderson demonstrated that models trained on their own outputs
+progressively lose the tails of their distributions — a phenomenon they called model collapse (&quot;AI models collapse when
+trained on recursively generated data,&quot; <em>Nature</em> 631, 755–759, 2024; preprint arXiv:2305.17493, 2023). The rare, the unusual, the edge cases erode generation over
+generation. The mean gets reinforced. The variance shrinks. The tails don't just shrink passively — they're actively
+discarded by the loss function, which treats low-probability outputs as errors to be corrected rather than variation to
+be preserved. The full &quot;generation after generation&quot; collapse is a research finding, not yet a deployment reality. But
+the direction is clear, and the economics favour it: synthetic data is effectively free; diverse real data is expensive
+and legally fraught.</p>
+<hr />
+<h2>The Map Becomes the Territory</h2>
+<p>The architecture of this collapse is sequential, and the sequential structure is the point.</p>
+<p>Tag-based filtering created the measurable signal. Feed algorithms amplified it over decades, shifting the baseline into
+supernormal territory. Calibration drift locked that shifted baseline into the population's reference points — and then
+the modified population verified the drift. RLHF codified the drifted standard as a quality benchmark, with auditors
+who don't know their instrument has moved. Synthetic data now mathematically erodes whatever variance is left.</p>
+<p>Each stage operates on the <em>output</em> of the previous one. They don't run in parallel; they compound. This is the
+ratchet's architecture: not any single mechanism (each stage is individually documented), but the specific fact that
+they are sequential and that each one tightens the distribution that the next one inherits. Counter-trends exist — body
+positivity movements, authenticity aesthetics, diversity criteria in rater guidelines — and they may slow the
+compression. They are unlikely to reverse it, because they operate on individual stages while the ratchet operates
+across all of them.</p>
+<p>Breaking the ratchet would require intervening at every stage simultaneously: the training data (curate genuine
+diversity), the loss function (penalise distributional collapse), the rating process (reward variation, not just
+polish), the synthetic data pipeline (maintain tail distributions), and the cultural feedback loop (somehow). Each of
+these is individually achievable and collectively unlikely, because none of them are what the market is optimising for.</p>
+<p>The market optimises for engagement. Engagement rewards the familiar. The familiar is the product of the ratchet.</p>
+<p>As synthetic imagery grows toward dominance in visual media — a transition already underway — AI output will shift from
+<em>representing</em> humanity to <em>defining the reference</em>. And then humanity will increasingly try to match it. This is
+already visible in miniature: the fox-eye lifts and the double-eyelid surgeries, each compressing toward its own
+regional optimum. The BBLs snapping to new algorithmic coordinates. The poreless skin that no pore-having human can
+achieve. Each one a small act of self-revision, undertaken to close the gap between the body in the mirror and the body
+on the screen.</p>
+<p>People aren't Tinbergen's birds, helplessly climbing onto plaster eggs. They're something arguably more troubling:
+agents who can see the artificial reference for what it is, and choose to reshape themselves to match it anyway —
+because the reference has become the standard, and the standard is what the world now expects.</p>
+<p>The map doesn't just describe the territory. Given enough time and enough distribution, the territory reshapes itself to
+match the map.</p>
+<h2>That's not a beauty standards problem. That's a reality-perception problem. And the ratchet only turns one way.</h2>
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+
+    </div>
+</article>
+<aside class="section-nav">
+  <h4>In essays/</h4>
+  <ul>
+    <li><a href="/ai-alignment/">The Alignment Debate We're Structurally Incentivised Not to Have</a></li>
+    <li><a href="/nz-rugby/">The All Blacks Trap</a></li>
+    <li><a href="/the-reprogramming-lie/">Terminator: The Reprogramming Lie</a></li>
+    <li><a href="/the-substrate/">The Substrate</a></li>
+  </ul>
+</aside>
+</div>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>

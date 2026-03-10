@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>An Insolvent Class Problem</title>
+    <meta name="description" content="A diagnostic lexicon for governance failures where the brokenness is load-bearing">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <article class="entry-page">
+    <h1>An Insolvent Class Problem</h1>
+    <p class="tagline">A diagnostic lexicon for governance failures where the brokenness is load-bearing</p>
+    <p class="gist-link"><a href="https://gist.github.com/andy-uq/f6b402683d3f26cc49790dc2bb4f1b32">View on GitHub Gist &#8599;</a></p>
+    <div class="entry-body">
+<h1>The Insolvent Class Problem — A Diagnostic Lexicon (v3)</h1>
+<hr />
+<h1>Part One: The Problem Nobody Can Fix</h1>
+<hr />
+<h2>The punchline first</h2>
+<p>Some problems can only be fixed when nobody benefits from them being broken. Most governance problems aren't like that.
+Most governance problems make someone money, win someone votes, or justify someone's department — specifically <em>because</em>
+the problem exists. Housing isn't broken despite decades of policy. It's broken <em>because</em> decades of policy have
+arranged themselves around the brokenness, and the brokenness now pays rent to everyone in the room.</p>
+<p>This lexicon names that structure. It identifies a class of governance failures where the thing that makes the problem
+unfixable is the same thing that makes it politically valuable. Not because anyone planned it. Not because anyone is
+evil. Because the incentive structure doesn't permit success.</p>
+<p>The tragic punchline: <strong>systems will only allow a problem to be fixed once it's no longer fixable.</strong> The political will
+to act arrives after the capacity to act has been consumed.</p>
+<hr />
+<h2>What kind of problems are we talking about?</h2>
+<p>You know the feeling. A problem everyone agrees exists. Solutions everyone agrees would work. Years of commissions,
+reports, expert panels, and bipartisan concern. And nothing changes. Or worse — things change in ways that make the
+problem look different while keeping it structurally identical.</p>
+<p>Housing affordability. Birth rate decline. Climate adaptation. Welfare dependency. Infrastructure decay. AI governance.
+These look like separate issues in separate domains. They're not. They share a structural property that makes them
+members of the same class — different problems with the same shape.</p>
+<p>The shared property: <strong>there is no politically survivable path where dominant actors can simultaneously preserve their
+rents and close the liability ledger.</strong></p>
+<p>Unpack that:</p>
+<ul>
+<li><p><em>Rents</em> — the power, money, votes, and institutional authority that the current players derive from the system as it
+is. Not just financial. A minister gets rent from announcing housing policy. An opposition party gets rent from
+attacking it. Media gets rent from the argument. Consultants, lobbyists, developers, advocacy groups — everyone eats.
+The brokenness is load-bearing.</p>
+</li>
+<li><p><em>Liability ledger</em> — the accumulated cost of the unresolved problem. Deferred maintenance, future obligations,
+displaced consequences. This ledger is real and it compounds. It can be moved around — shifted to future taxpayers,
+exported to other countries, hidden in demographic projections — but it cannot be reduced without someone losing their
+rent.</p>
+</li>
+<li><p><em>Politically survivable</em> — any actor who genuinely closes the ledger destroys the rents of every other actor at the
+table. That actor does not survive the next election cycle, board meeting, or budget round. So nobody does it.</p>
+</li>
+</ul>
+<p>The system is structurally insolvent. It owes more than it can pay off without destroying the income streams of the
+people who'd have to authorise the payment.</p>
+<hr />
+<h2>What happens inside the trap</h2>
+<p>Once a problem enters this class, a specific set of dynamics takes over. These aren't metaphors. They're recognisable
+patterns — and once you learn to see them, they're depressingly reliable.</p>
+<p><strong>The system converges on maximum survivable dysfunction.</strong> Not maximum dysfunction — that would cause collapse, and
+collapse is expensive for everyone. The system finds the sweet spot: broken enough that every political actor can
+extract rent from the brokenness, not so broken that the whole thing falls over. Working institutions get degraded
+toward this point. Already-broken institutions get propped up just enough to stay above it. Think of every public
+service you've interacted with that's <em>just barely</em> functional enough to not cause a crisis, while being permanently,
+irritatingly inadequate. That's not an accident. That's the equilibrium.</p>
+<p><strong>Solutions get eaten.</strong> When someone does implement a genuine fix, the political system doesn't ignore it — it
+<em>recaptures</em> it. A working institution becomes invisible (nobody campaigns on things that work). Invisible institutions
+lose political defenders. Undefended institutions become targets for rent extraction. The fix gets defunded,
+restructured, or loaded with new mandates until it's broken enough to be politically useful again. Success →
+invisibility → vulnerability → recapture → dysfunction. The cycle has a name in the lexicon: <em>recapture</em>. It's why good
+institutions die.</p>
+<p><strong>Problems change shape but not structure.</strong> Apply policy pressure to smoking? The liability rotates into vaping —
+different product, identical structure (addictive inhaled consumer product, regulatory lag, youth uptake, corporate
+capture). Ban one financial instrument? The risk migrates to the next one. Tighten one border? The flow redirects. The
+problem transforms under pressure while preserving its essential architecture. Same molecule, new spatial arrangement.
+We call this <em>conformer rotation</em>.</p>
+<p><strong>The bill gets moved, not paid.</strong> Can't fix housing domestically? Import migrants to paper over the demographic
+consequences. Can't fund pensions now? Borrow against future taxpayers. Can't absorb the liability locally? Export it to
+another country's balance sheet. Every apparent solution is a transfer, not a resolution. The bill changes form but it
+never disappears. This has a termination date: you run out of places to put it.</p>
+<hr />
+<h2>The three ways out</h2>
+<p>The lexicon identifies exactly three structural exits. Two are genuine. One is a deferral that eventually runs out.</p>
+<p><strong>The Montreal Condition</strong> — the democratic exit. Requires two conditions simultaneously: (a) the solution space must be
+collapsible into a binary choice — on or off, with no gradient for the political system to exploit, and (b) incumbent
+rent must be alignable with the switch — the actors who could block the change must profit from allowing it. Neither
+condition alone is sufficient. Binary framing without rent alignment still gets blocked by incumbents who lose from the
+switch. Rent alignment without binary framing still gets gamed on the gradient — partial measures create new surfaces
+for political exploitation. The Montreal Protocol on ozone-depleting substances is the only identified case. CFCs were
+banned — not regulated, not traded, not taxed — and DuPont had pre-positioned to profit from substitutes, collapsing
+industry resistance. The politics drained out because there was nothing left to argue about and nothing left to lose
+from compliance. This dual requirement makes the Montreal exit far narrower than it first appears, which matters for
+practitioners assessing whether it's available for a given problem.</p>
+<p><strong>The Singapore Condition</strong> — the authoritarian exit. Eliminate the political competition that sustains the rent
+gradient. If the politics become monopolar, the deadlock breaks — not because the problem is solved well, but because
+the negotiation cost drops to zero. One actor decides, and the decision sticks. This isn't better. It's cheaper. And it
+comes in flavours, distinguishable by where the monopolar actor's rent sits:</p>
+<ul>
+<li><strong>Terminal</strong> — the monopolar actor's rent is tied to system performance. Lee Kuan Yew's legitimacy depended on
+outcomes: housing, corruption, infrastructure, ethnic tension — all resolved because failure threatened the actor's
+own position. This is structurally a form of Harmed Engineer alignment: the monopolar actor is harmed by the
+dysfunction they have authority to fix. Terminal exits are rare because this incentive alignment is rarely present and
+has no known reliable method of external engineering.</li>
+<li><strong>Oscillatory</strong> — the monopolar actor's rent is extractive. The old rent structure is replaced with a new one serving
+the actor themselves. Argentina is the canonical case: each monopolar intervention creates fresh rents rather than
+closing existing ones. The deadlock breaks temporarily and reconstitutes around the new beneficiary.</li>
+<li><strong>Imposed</strong> — external restructuring by a more powerful actor. Outcomes depend on the external actor's exit strategy
+and whether new rent structures are seeded during restructuring. Marshall Plan vs. structural adjustment programmes:
+one built institutional capacity, the other created dependency traps.</li>
+</ul>
+<p>Rwanda proves the category includes its most extreme cases. Singapore proves it's not reducible to them. The diagnostic
+question is not <em>whether</em> the exit is authoritarian but <em>where the monopolar actor's rent sits</em> — and that determines
+whether the resolution holds.</p>
+<p><strong>Parasitic rotation</strong> — the false exit. Transfer your insolvency to someone else's balance sheet. Consume another
+system's surplus to service your own dysfunction. Migration as fertility policy. QE as solvency policy. Geographic or
+temporal displacement of the bill. This works until the supply of non-insolvent systems runs out. It's a painkiller, not
+a cure, and the dose keeps increasing.</p>
+<hr />
+<h2>Why this matters now</h2>
+<p>Compound insolvency — where multiple insolvent-class problems are mutually load-bearing — is a pre-authoritarian
+condition. Not because authoritarianism is good, not because democracy is weak, but because compound insolvency closes
+the Montreal exit on every node simultaneously while the parasitic rotation options run dry. The structural arithmetic
+narrows toward monopolar resolution whether anyone wants it or not.</p>
+<p>New Zealand is a useful case because the compound structure is legible: housing, capital flight, birth rate, and fiscal
+sustainability are four faces of one problem, each feeding the others. Fix any one in isolation and the others
+compensate. The simultaneous intervention required across all nodes is itself politically unsurvivable.</p>
+<p>The lexicon also describes how the governance debate itself — the argument about what to do — can prevent governance.
+Moral and identity framings dominate technical framings because they generate more political energy. The conversation
+about AI alignment consumes the governance capacity that could be spent on AI infrastructure governance, which is the
+boring part that would actually help. The debate is the disease pretending to be the cure.</p>
+<p>None of this is a counsel of despair. The lexicon identifies intervention windows (before systems lock in), design
+principles for solutions that survive (make them boring), and actors capable of building genuine fixes (people whose
+rent is <em>negatively</em> correlated with the dysfunction). But it is honest about the structural constraints. Optimism that
+ignores the trap isn't optimism — it's the trap working as designed.</p>
+<hr />
+<p><em>What follows is the vocabulary: the named patterns, diagnostic tools, and worked examples that practitioners can use to
+identify and describe what they're seeing. If Part One gave you the shape, Part Two gives you the words.</em></p>
+<hr />
+<hr />
+<h1>Part Two: The Vocabulary</h1>
+<hr />
+<h2>What this is — and what it isn't</h2>
+<p>This is a diagnostic lexicon. It provides a set of named patterns for governance failures that share a common structure.
+Each term names something practitioners already recognise but currently lack efficient language for.</p>
+<p>It is not a predictive theory in the point-prediction sense. It does not claim to forecast specific outcomes, specific
+timelines, or the arrival of exogenous shocks. It describes the <em>now</em> and the <em>before</em> — what's happening and what
+happened — with enough precision that practitioners can see the structure, communicate about it, and identify
+intervention opportunities earlier.</p>
+<p>But the framework does make structural gradient claims. Given a set of structural features (rent/liability deadlock,
+collateralisation, recapture dynamics), it identifies the direction and steepness of incentive surfaces: the slope runs
+toward MSD, recapture, and conformer rotation, and the slope steepens as collateralisation deepens. Reform capacity
+tends to degrade over time, and the rate of degradation steepens as collateralisation deepens — but local reversals are
+possible (the framework's own T6 mechanism, exogenous shocks, crisis windows, individual leadership). Those reversals
+work against the gradient and tend not to persist absent sustained structural change to the incentive landscape itself.</p>
+<p>The framework's epistemic claims have three tiers. <em>Gradient claims</em> (which the framework makes): given structural
+conditions, the incentive surface slopes in a specific direction, and practitioners can read that slope. <em>Trajectory
+claims</em> (which it does not make): no claim that systems will follow the gradient on any specific path, or that reversals
+are impossible. <em>Point predictions</em> (which it definitely does not make): no timelines, no specific outcomes, no specific
+triggering events. It has no opinion about black swans, technological breakthroughs, or individual leadership; it
+describes what the incentive gradient will do conditional on those events. Any predictive application of this vocabulary
+should be framed as scenario envelopes — ranges of structurally likely behaviour — not trajectory or point predictions
+about specific systems or timelines.</p>
+<p>It makes no claim about intent, morality, or competence. No actor in any system described here is accused of malice or
+stupidity. The claim is structural: rational actors, operating within rational systems, producing outcomes that no
+individual chose and no institution can correct — not because people are failing, but because the structure doesn't
+permit success.</p>
+<hr />
+<h2>The Core Patterns</h2>
+<p>Five organising observations. These are the recurring dynamics that appear across every member of the class. The
+vocabulary items in the next section are specific expressions of these patterns on specific substrates.</p>
+<hr />
+<h3>Rent-Maximising Convergence</h3>
+<p><em>In Insolvent Class Problems, political systems converge toward configurations that maximise sustainable political rent
+extraction. Configurations that reduce extractable rent are unstable — the system actively pushes back against them.</em></p>
+<p>This is the central observation. Domain-independent. Makes no reference to quality, purpose, or any specific
+institution. It describes what political systems <em>do</em> in the presence of insolvent-class problems the way gravity
+describes what objects do in the presence of mass.</p>
+<p>A good solution isn't just attacked — it's structurally unfavourable. The system treats it like a ball on top of a hill.</p>
+<hr />
+<h3>Rent Surface Area (RSA)</h3>
+<p>The amount of available surface for political rent extraction from a given institution, policy, or problem. RSA is what
+determines <em>which</em> configurations the system converges toward.</p>
+<p>When multiple configurations are available — multiple framings, multiple policies, multiple targets — political
+attention flows toward the one with the highest RSA. This produces a recognisable hierarchy: moral and identity framings
+dominate technical framings because they generate more extractable surface. The governance <em>debate</em> consumes governance
+<em>capacity</em>.</p>
+<p>Political attention is finite. It goes where the rent is. Boring policies survive because they're not worth attacking.
+Exciting policies get eaten.</p>
+<hr />
+<h3>Maximum Survivable Dysfunction (MSD)</h3>
+<p>The equilibrium point. The level of brokenness where rent extraction is maximised without causing system collapse.</p>
+<p>Two useful definitions of &quot;working&quot;:</p>
+<ul>
+<li><strong>Working-for-purpose</strong> — does the institution achieve its stated goal?</li>
+<li><strong>Working-for-system</strong> — does the institution sit at a stable equilibrium?</li>
+</ul>
+<p>An institution can be working-for-system <em>because</em> it is broken-for-purpose. The brokenness is load-bearing.</p>
+<p>MSD requires two conditions to be present: <strong>competing actors</strong> (more than one player extracting rent) and <strong>a
+continuous gradient</strong> (a spectrum of possible policy positions to exploit). The two known exits each work by removing
+one of these: the Montreal Condition removes the gradient (binary solution, nothing to argue about) while simultaneously
+aligning incumbent rent with the switch. The Singapore Condition removes the competition (one actor decides).</p>
+<hr />
+<h3>The Transition Boundary</h3>
+<p>The point where a system crosses from <em>dysfunctional but failure-permissible</em> to <em>dysfunctional and
+failure-impermissible</em>.</p>
+<p>Before the boundary: the system may be broken, but it can die and be replaced. Failure is a potential reset.</p>
+<p>After the boundary: the system cannot die (too much depends on it) and cannot heal (the political system won't allow
+it). The dysfunction becomes permanent.</p>
+<p>Firms are generally not insolvent-class problems because bankruptcy exists — assets and liabilities can be reallocated,
+shareholders can be wiped, failure is designed in. Governance systems, critical infrastructure, welfare states, and
+systemically important institutions lack this reset mechanism. Their failure is politically or structurally non-viable.
+That's what makes the deadlock permanent.</p>
+<p>The transition between these regimes is the highest-leverage intervention window. Everything is cheaper and easier
+before a system crosses this boundary.</p>
+<hr />
+<h3>The Temporal Trap</h3>
+<p>The incentive to enact genuine reform emerges only after the system's capacity to reform has materially degraded.</p>
+<p>The will to act and the capacity to act move in opposite directions. The window doesn't close gradually — it
+accelerates. Each year of inaction makes the next year's intervention harder and more politically expensive.</p>
+<p><strong>This is the lexicon's most important observation, and its tragic punchline.</strong> It must remain on the front page of any
+presentation.</p>
+<hr />
+<h2>The Vocabulary</h2>
+<p>Named patterns that appear across the class. Each one names something specific and recognisable. They stand on their own
+utility — you don't need to accept a theoretical structure to use them. If you recognise the pattern, the word is doing
+its job.</p>
+<hr />
+<h3>Conformer Rotation</h3>
+<p>The problem transforms under policy pressure while preserving its essential structure. Same molecule, new spatial
+arrangement.</p>
+<p>Apply pressure to smoking → the liability rotates into vaping. Ban a financial instrument → the risk migrates. Tighten a
+border → the flow redirects. The surface changes. The architecture doesn't.</p>
+<p>This is why policy &quot;victories&quot; often feel hollow. The problem isn't solved — it's rotated to a surface the policy can't
+reach. And the new surface is, by construction, outside the scope of whatever intervention triggered the rotation.</p>
+<hr />
+<h3>Parasitic Rotation</h3>
+<p>Transfer your insolvency to someone else's balance sheet. Consume another system's surplus to service your own
+dysfunction.</p>
+<p>Migration as fertility policy — consuming other societies' reproductive surplus. QE — displacing insolvency from the
+present onto the future. Geographic, demographic, or temporal displacement of the bill.</p>
+<p>Distinguished from conformer rotation: conformer rotation transforms the <em>problem</em>, parasitic rotation transfers the
+<em>cost</em>. Both preserve the underlying liability.</p>
+<p>Has a termination date: when the supply of non-insolvent systems runs out. Birth rate decline is the canonical example —
+it's global, convergent, and driven by universal forces. When exporting societies hit the same walls, the rotation
+collapses.</p>
+<hr />
+<h3>Temporal Parasitic Rotation</h3>
+<p>The governance debate oscillates between two framings of the same problem. Neither framing produces governance output.
+The oscillation itself consumes the intervention window.</p>
+<p>The mechanism: one framing is boring but technically productive (infrastructure standards, audit requirements, technical
+regulation). The other is engaging but politically unresolvable (moral arguments, identity positions, values debates).
+Attention flows to the high-energy framing because it generates more political rent. That framing becomes toxic or
+exhausted. Attention retreats to the boring framing. The cycle restarts with less time remaining.</p>
+<p>Each cycle is locally rational — every actor follows the incentive. The aggregate is a governance window consumed by
+oscillation.</p>
+<p>The AI alignment debate is a worked example: the infrastructure conversation (API standards, model evaluation, compute
+governance) keeps getting crowded out by the moral conversation (&quot;whose values?&quot;, existential risk rhetoric, culture-war
+engagement). The boring work that would actually help keeps losing to the exciting argument that won't.</p>
+<hr />
+<h3>Recapture</h3>
+<p>The mechanism by which technically stable solutions are re-ingested by the political layer. Success → invisibility → no
+political defenders → rent extraction → destabilisation → visibility → more rent from arguing about fault.</p>
+<p>Working institutions are invisible. Invisible institutions have no political constituency. Institutions without
+constituencies become targets. The surrounding system converts a working solution into a source of rent-extractable
+instability.</p>
+<p>Example: ACC (New Zealand's no-fault accident compensation). A genuine structural solution that the political layer
+cannot leave stable because instability is rent-generating. The right tightens eligibility. The left expands coverage
+beyond funding. Both extract political capital. Neither is incentivised to leave it alone.</p>
+<hr />
+<h3>Compound Insolvency</h3>
+<p>When multiple insolvent-class problems are mutually load-bearing. Each member's dysfunction is a structural dependency
+of the others. Partial intervention on any single member is self-defeating — the system self-heals by compensating
+through the other nodes. The simultaneous intervention required across all nodes is itself politically unsurvivable.
+Strictly harder than any individual member.</p>
+<p>New Zealand's housing, capital gains tax absence, migration settings, and birth rate decline are four faces of one
+problem:</p>
+<ul>
+<li>Fix housing → requires CGT → collapses retirement vehicle → circular.</li>
+<li>Implement CGT → deflates property → requires alternative wealth accumulation → requires higher wages → requires
+tighter labour → requires less immigration → accelerates demographic decline → circular.</li>
+<li>Fix birth rates → reduces migration dependency → reduces housing demand → deflates property → triggers CGT problem →
+circular.</li>
+<li>Reduce immigration → eases housing but accelerates demographic decline, shrinks tax base, widens fiscal gap →
+circular.</li>
+</ul>
+<p>Every intervention on one member destabilises the rent structure of at least one other. NZ isn't trapped by ignorance.
+It's trapped by arithmetic.</p>
+<hr />
+<h3>Collateralisation</h3>
+<p>A system becomes collateralised when the cost of allowing it to fail exceeds what powerful actors can tolerate — not
+because people care about it, but because failure produces cascading harm that forces continuation.</p>
+<p>Six conditions contribute:</p>
+<p><strong>T1 — Formal commitment.</strong> Legislation, mandates, explicit guarantees, repeated public commitments that make reversal
+politically fatal.</p>
+<p><strong>T2 — Bailout precedent.</strong> Once rescue becomes expected, actors price it in. Behaviour adapts. The system becomes
+functionally too-important-to-fail. The emergency response <em>is</em> the lock-in event.</p>
+<p><strong>T3 — Critical dependency.</strong> Other systems depend on it. Failure cascades. Supply chains, payment systems, health
+capacity, welfare delivery.</p>
+<p><strong>T4 — Identity fusion.</strong> The system becomes symbolically fused to national identity or regime legitimacy. Failure
+becomes humiliation, not mere loss. Amplifies other triggers but is not sufficient alone.</p>
+<p><strong>T5 — Mass constituency.</strong> Large populations become dependents or beneficiaries. Creates political veto mass. Pensions,
+housing wealth, welfare entitlements, consumer technology adoption.</p>
+<p><strong>T6 — Ledger legibility.</strong> A discrete moment when the liability becomes widely visible and attached to accountable
+decision-makers. Audit revelations, crisis reports, investigative journalism. Converts fog into recognised insolvency.</p>
+<p>These interact. T5 can actively defend T3: when a large user base is entangled with a systemically embedded technology,
+any attempt to impose technical safeguards on the infrastructure is experienced as a personal loss by the constituency.
+The users resist the regulation for you. AI is building this compound right now — enterprise embedding (T3) deepens
+consumer dependency (T5), and the constituency organically defends the embedding against intervention.</p>
+<hr />
+<h3>De-Collateralisation (DCC)</h3>
+<p>A practical intervention lever. Not a fix for the dysfunction — a way of changing the failure landscape so that the
+system is no longer hostage to its own collateral damage.</p>
+<p>DCC works by making failure tolerable. If a system can fail without bringing everything else down with it, it can be
+permitted to fail — and that permission breaks the deadlock.</p>
+<p>Four design moves:</p>
+<ol>
+<li><strong>Partition failure.</strong> Ringfencing, circuit breakers, structural separation. One part can die without killing the
+whole.</li>
+<li><strong>Cap external harm.</strong> Insurance, compensation schemes, guaranteed minimums. Failure hurts, but not catastrophically.</li>
+<li><strong>Assign losses credibly.</strong> Clear liability chains. Known consequences for known actors. No ambiguity about who pays.</li>
+<li><strong>Precommit to letting a component die.</strong> Living wills, mandated wind-down plans, automatic triggers.</li>
+</ol>
+<p>Post-2008 banking resolution (ringfencing, bail-in, living wills) is DCC implemented in practice before it was named.
+The Depositor Compensation Scheme in NZ may be functioning as DCC for the banking system — it's what allowed the RBNZ to
+accept higher risk in its 2025 capital review.</p>
+<hr />
+<h3>The Boringness Constraint</h3>
+<p>DCC interventions survive recapture only when their RSA is below the recapture threshold. The cost of attacking a boring
+institution exceeds the yield from attacking it.</p>
+<p>Boring infrastructure evades recapture not by being defended, but by being uneconomical to attack. Nobody marches over
+loan-to-value ratios. Nobody campaigns on deposit taker capital requirements.</p>
+<p><strong>Survivability test for any intervention:</strong></p>
+<ol>
+<li>Can you describe this to a non-specialist without them getting angry?</li>
+<li>Does this appear on any party's policy platform?</li>
+<li>Would a newspaper put this on the front page?</li>
+<li>Does this have a constituency that would march for it?</li>
+</ol>
+<p>If the answer to any is yes, the design is not boring enough. The test is not &quot;is this good policy?&quot; The test is &quot;is
+this boring policy?&quot; Those are different questions, and only the second one predicts survival.</p>
+<p>The boringness constraint is not a one-time gate. It is a continuous condition. A single identity-coding event — one
+policy announcement, one ministerial speech, one governance decision — can permanently poison an intervention by
+associating it with a tribal position. Even if the identity payload is subsequently removed, the memory of the framing
+persists.</p>
+<p><strong>Case contrast — Three Waters vs RBNZ prudential tools (NZ):</strong> Same country, same decade, same structural goal (
+partition risk from a collateralised system). RBNZ tools (LVR, DTI restrictions): boring, low RSA, no identity payload.
+Still standing. Three Waters: sound DCC design, but the governance wrapper became identity-coded through co-governance
+provisions. RSA spiked. Recapture was immediate. Dead on arrival.</p>
+<hr />
+<h3>The Harmed Engineer</h3>
+<p>The only actors capable of building genuine fixes are those whose rent is <em>negatively</em> correlated with the dysfunction.
+If everyone benefits from the problem, nobody is structurally positioned to fix it.</p>
+<p>For most insolvent-class problems, no Harmed Engineer exists. The actors with authority to build solutions are the
+actors whose rent is positively correlated with the brokenness. This is not coincidence — the system converges toward
+configurations where the people who <em>could</em> fix it are the people who <em>benefit</em> from not doing so.</p>
+<p>The ECB in the euro doom loop is an exception — its institutional rent (credibility, authority, independence) is
+destroyed by sovereign default. Aviation safety is an exception — a single crash destroys massive rent simultaneously
+for every actor with authority. These exceptions exist because of specific institutional architectures that
+<em>accidentally</em> created actors with the right incentive alignment.</p>
+<p><strong>The design principle:</strong> If solutions are to work, Harmed Engineers must be engineered into existence before they are
+needed. Create institutional actors whose rent depends on system resilience rather than system persistence.</p>
+<p>Central bank independence is the canonical example. Central banks are Harmed Engineers for monetary instability — their
+institutional rent is destroyed by currency failure.</p>
+<p>The structural rarity of Harmed Engineers, design principles for engineering them into existence — including loss
+function templates, the conflicted actor diagnostic, mandate/prestige separation, and manufactured T6 — are addressed in
+the companion document: <em>Harmed Engineer — Design Addendum</em>.</p>
+<hr />
+<h3>The Double Bind</h3>
+<p>Post-transition-boundary systems experience a double bind:</p>
+<p><strong>The system cannot be allowed to die</strong> — too much depends on it.</p>
+<p><strong>The system cannot be allowed to heal</strong> — healing deletes rents across powerful actors.</p>
+<p>This is how MSD feels from the outside. It's not a separate mechanism — it's the observable consequence of a system
+that's too broken to work and too embedded to fail.</p>
+<hr />
+<h2>Membership</h2>
+<p>A governance failure belongs to the Insolvent Class when four conditions are present:</p>
+<p><strong>N1. Rent/liability deadlock</strong> — no politically survivable path for dominant actors to simultaneously preserve rents
+and close the liability ledger.</p>
+<p><strong>N2. Disallowed failure</strong> — the system has crossed the transition boundary. System-level failure is externally
+unacceptable due to collateralisation.</p>
+<p><strong>N3. Recapture dynamics</strong> — reform attempts are absorbed, inverted, or neutralised to preserve existing rents.</p>
+<p><strong>N4. Temporal trap</strong> — the incentive to enact genuine reform emerges only after the system's capacity to reform has
+materially degraded.</p>
+<p>Systems where failure is unrecognised rather than disallowed are <em>candidate members</em> — entering the class undetected
+because the causal chain between the structural failure and visible harm is long enough that liability accumulates
+before anyone notices. They become identified members upon collateralisation. This covers cases like AI alignment and AI
+capital flight: they are entering the class but have not yet locked in.</p>
+<hr />
+<h2>Exit Eligibility</h2>
+<p>Not all exits are available for all problems.</p>
+<table>
+<thead>
+<tr>
+<th>Problem type</th>
+<th>Montreal</th>
+<th>Singapore</th>
+<th>DCC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Binary technical</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Continuous technical</td>
+<td>✗</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Moral / identity</td>
+<td>✗</td>
+<td>✓ (requires imposed framework)</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Universal rent (everyone benefits from brokenness)</td>
+<td>✗</td>
+<td>Practically blocked</td>
+<td>Limited</td>
+</tr>
+</tbody>
+</table>
+<p>For moral-class problems, Montreal is a mirage. For universal-rent problems, the exit landscape is maximally
+constrained: perpetual dysfunction, externally-imposed monopolar resolution, or catastrophic reset.</p>
+<p>For some members — particularly universal-rent problems where all exits are structurally blocked or practically
+unavailable — the honest diagnostic endpoint is that the system is stuck. No exit is accessible within the current
+structural conditions. Acknowledging this is not a failure of the framework. It is the framework doing its job. A
+vocabulary that can only diagnose problems with solutions is less useful than one that can also name the cases where
+solutions are absent. In those cases, the lexicon's value is diagnostic clarity: helping practitioners stop wasting
+intervention resources on structurally closed pathways and redirect effort toward the problems that still have open
+windows.</p>
+<hr />
+<h2>When is this vocabulary useful?</h2>
+<p>When a practitioner — policy maker, journalist, analyst, engineer — encounters a governance failure and needs to:</p>
+<ol>
+<li><p><strong>Name what they're seeing.</strong> &quot;This is recapture&quot; is faster and more precise than explaining the full dynamic every
+time. &quot;This intervention will fail the boringness constraint&quot; is actionable in a meeting.</p>
+</li>
+<li><p><strong>Recognise the shape.</strong> Different problems in different domains sharing the same structure. If you've seen one
+compound insolvency, you can recognise the next one faster.</p>
+</li>
+<li><p><strong>Identify the intervention window.</strong> Before the transition boundary, everything is cheaper. After it, the options
+narrow. The vocabulary helps locate where a system sits.</p>
+</li>
+<li><p><strong>Design solutions that survive.</strong> The boringness constraint, the Harmed Engineer principle, and DCC design are
+practical tools for anyone building institutions or policy.</p>
+</li>
+<li><p><strong>Explain to others why things aren't working.</strong> &quot;The debate is consuming the governance window&quot; (temporal parasitic
+rotation) is a diagnosis that points toward action — stop oscillating between framings and do the boring technical
+work.</p>
+</li>
+</ol>
+<hr />
+<h2>What this lexicon does NOT do</h2>
+<ul>
+<li><p><strong>Make trajectory or point predictions.</strong> The framework identifies structural gradients — see <em>What this is</em> for the
+full three-tier distinction between gradient claims (which it makes), trajectory claims (which it doesn't), and point
+predictions (which it definitely doesn't).</p>
+</li>
+<li><p><strong>Assign blame.</strong> Every actor described in this lexicon is behaving rationally within their incentive structure. The
+claim is about structural constraints, not individual failures.</p>
+</li>
+<li><p><strong>Prescribe solutions.</strong> It identifies intervention windows and design principles, but the specific policy content is
+domain work. The lexicon tells you <em>where</em> to intervene and <em>how</em> to design for survival. It does not tell you <em>what</em>
+to build.</p>
+</li>
+<li><p><strong>Claim completeness.</strong> The vocabulary covers patterns that have been observed across multiple domains. There may be
+dynamics the lexicon does not yet name. Terms earn their place by appearing in at least three independent cases.</p>
+</li>
+</ul>
+<hr />
+<h2>Identified Members</h2>
+<h3>Welfare</h3>
+<p>The case that produced MSD. Technically broken, politically stable. Both left and right need it broken: the right needs
+visible failure for austerity narratives; the left needs the programme's existence for compassion narratives. A system
+that eliminated poverty traps would reduce political rent on both sides. The dysfunction is the equilibrium.</p>
+<p>The rent structure is symmetric and self-reinforcing. Caseworkers' institutional rent depends on caseload volume.
+Advocacy organisations' funding depends on the problem's persistence. Policy consultants are retained to study the
+problem, not to end it. Every reform attempt is recaptured: work-testing programmes become compliance theatre that
+increases administrative cost without reducing poverty; benefit increases are absorbed by landlords through rent
+adjustment. No Harmed Engineer exists — no institutional actor's rent is destroyed by welfare failure. The closest
+candidates (Treasury, who bear fiscal cost) lack operational authority, and their fiscal concern is easily reframed as
+austerity by actors whose rent depends on the narrative.</p>
+<h3>NZ Compound Insolvency (Housing + CGT + Migration + Birth Rate)</h3>
+<p>Four members that are mutually load-bearing. Every intervention on one destabilises the rent structure of at least one
+other. Partial intervention is self-defeating. The simultaneous intervention required is itself politically
+unsurvivable. Migration does triple duty: demographic duct tape, housing demand engine, and scapegoat absorbing blame
+the absence of CGT actually causes.</p>
+<h3>AI Alignment</h3>
+<p>No rent-preserving reason for incumbents to accept meaningful constraint. Harm not yet manifested. The governance window
+closes before the incentive opens. The alignment debate is a temporal parasitic rotation — the moral argument consumes
+the bandwidth the infrastructure work needs.</p>
+<h3>Infrastructure at Scale</h3>
+<p>Invisible outcomes, no campaign payoff, admitting need implies admitting decades of neglect. Every dollar spent on an
+underground pipe is a dollar a politician cannot spend on a ribbon-cutting. Maintenance budgets are extractable rent.</p>
+<p>The rent gradient runs against maintenance at every level. Politicians extract rent from visible new builds, not from
+invisible pipe replacements. Engineering consultancies extract rent from crisis remediation at premium rates, not from
+routine upkeep. Insurers extract rent from risk pricing against degraded infrastructure. The recapture mechanism is
+specific: when maintenance budgets are allocated, they are redirected to visible projects through &quot;deferred
+maintenance&quot; — a euphemism for parasitic rotation of future capacity into present political rent. The temporal trap is
+acute because infrastructure degradation is non-linear: a pipe at 80% life costs nothing to maintain; at 95% it costs
+moderately; at 100% it fails catastrophically and the remediation cost is orders of magnitude higher. No Harmed Engineer
+exists in the political system. The closest structural analogue is the insurance sector, which is harmed by
+infrastructure failure — but insurers' response is to reprice or withdraw, not to fix.</p>
+<h3>Climate Adaptation</h3>
+<p>Has perfect attribution, scientific consensus, and known interventions — still stuck. Because adaptation is pure cost.
+Seawalls don't generate winners. Proves that the trap isn't about knowledge.</p>
+<p>The rent structure is uniquely hostile. Mitigation generates diffuse, unattributable benefits decades in the future —
+no politician can claim credit for a disaster that didn't happen. Fossil fuel incumbents extract enormous rent from the
+status quo; their resistance is not irrational, it is structurally rational. The recapture mechanism operates through
+&quot;green transition&quot; branding: genuinely structural interventions (carbon tax, binding emissions caps) are replaced by
+non-binding pledges and offsetting markets that create new rent surfaces without reducing emissions. The conformer
+rotates from denial to delay to greenwash, each rotation consuming the political bandwidth that binding action requires.
+The temporal parasitic rotation is global: wealthy nations export adaptation costs to developing nations through climate
+debt, consuming their surplus capacity. No Harmed Engineer exists at the scale required — reinsurers are harmed by
+climate risk but lack political authority, and their structural response (withdrawal from markets) accelerates the
+problem rather than fixing it.</p>
+<h3>Insurance</h3>
+<p>The core business model <em>is</em> the insolvency. The customer pays for coverage; the company profits by not providing it.
+ACC demonstrates the recapture mechanism: a genuine structural exit pulled back into the class by political rent
+extraction.</p>
+<h3>Birth Rate Decline</h3>
+<p>Potentially the purest member. The temporal trap is biological — the childbearing window expires, creating a harder lock
+than any other member. No country has reversed it despite billions in pro-natalist policy. The system &quot;solution&quot; is
+parasitic rotation via migration — and that rotation has a termination date.</p>
+<h3>Two-Party Policy Convergence</h3>
+<p>The incumbents <em>are</em> the two parties. Rent preservation <em>is</em> the trap. Two parties competing within the same incentive
+structure converge on the same policy equilibrium — different narratives over the same attractor.</p>
+<h3>NZ Rugby</h3>
+<p>A small-market sporting body running a globally elite product it can no longer afford. Record revenue and consecutive
+annual losses simultaneously. The All Blacks brand is the system's only asset and the mechanism by which every other
+layer extracts rent. Provincial unions control constitutional voting power and depend on cross-subsidised funding from
+All Blacks revenue. They cannot vote to reduce their own funding or governance power — and they have demonstrated this,
+rejecting an independent board proposal (the Pilkington Report) and voting in a counter-proposal that preserved
+provincial representation.</p>
+<p>The Silver Lake investment ($262 million for a minority commercial stake) demonstrates the recapture mechanism through
+traceable dollar flows. Intervention capital designed to professionalise commercial operations was absorbed by the
+existing rent structure: direct distributions to provincial unions, guaranteed interest payments to Silver Lake, and projected revenue
+initiatives that have not materialised. The deal also failed the boringness constraint — &quot;selling the silver fern to
+American investors&quot; was identity-coded from announcement. The talent drain runs as reverse parasitic rotation: NZ
+develops players through years of provincial and Super Rugby investment, then exports them at peak value to wealthier
+French, English, and Japanese leagues. The system exports finished product and imports nothing. The temporal trap is
+legible in broadcast cycles — each renewal at lower relative value cascades into smaller player budgets, more
+departures, and a weaker product. No Harmed Engineer exists. The coaching position — the closest candidate — is a
+sacrificial component the system replaces to maintain MSD, not an actor structurally positioned to reform the
+architecture.</p>
+<h3>Managed Unemployment (NAIRU) — borderline</h3>
+<p>Not clearly a full member, but structurally interesting as the only case where MSD is formalised as explicit policy.
+Orthodox economics prescribes a managed unemployment rate — the dysfunction is the stated objective, not a hidden
+consequence. Other members deny the dysfunction is dysfunction. NAIRU defends it as optimal design, and builds
+institutional machinery to maintain it. Whether this constitutes full ICP membership (rent/liability deadlock,
+collateralisation, recapture) or is better understood as MSD without the surrounding trap structure is an open question.
+It sits here as a marker, not a settled diagnosis.</p>
+<hr />
+<h2>Defeated Counter-Examples</h2>
+<h3>Montreal Protocol / CFCs</h3>
+<p><strong>Proposed as:</strong> Counter-example (governance solved it pre-crisis).
+<strong>Defeated:</strong> Both Montreal conditions were present. The solution was binary (ban, not regulate — no gradient to
+exploit) and incumbent rent was aligned with the switch (DuPont had pre-positioned to profit from substitutes,
+collapsing industry resistance once compliance preserved incumbent rents). Not a counter-example. The only identified
+Montreal exit — and an illustration of why the exit is so narrow: it required both conditions simultaneously.</p>
+<h3>Smoking / Public Health</h3>
+<p><strong>Proposed as:</strong> Counter-example (policy eventually shifted).
+<strong>Defeated:</strong> The industry rotated the conformer to vaping. Same structure, new surface. The structure was not broken.
+It pivoted faster than governance could follow.</p>
+<h3>Seatbelts</h3>
+<p><strong>Proposed as:</strong> Counter-example (industry resisted, then rapid adoption).
+<strong>Defeated:</strong> Class exclusion. The causal chain is zero — no seatbelt, through windshield. Not an insolvent-class
+problem.</p>
+<hr />
+<h2>Testing the vocabulary</h2>
+<p>The lexicon earns its place if:</p>
+<ol>
+<li><p><strong>Each term names something real.</strong> Practitioners recognise the pattern when they see the word. If a term doesn't
+trigger recognition, it's not doing work.</p>
+</li>
+<li><p><strong>Each term names something that existing vocabulary doesn't.</strong> &quot;Recapture&quot; must do more than &quot;political
+interference.&quot; &quot;Compound insolvency&quot; must do more than &quot;complex problem.&quot; If standard language covers it, the new
+term is unnecessary. The overfitting test: <em>the lexicon can describe it, but does the lexicon explain it better than
+existing vocabulary?</em> If not, you're using expensive terminology for a cheap problem.</p>
+</li>
+<li><p><strong>The vocabulary generates useful hypotheses.</strong> A practitioner who knows the boringness constraint will ask different
+questions about policy design. Someone who recognises temporal parasitic rotation will see the AI governance debate
+differently. The vocabulary should change what people <em>notice</em>.</p>
+</li>
+<li><p><strong>Terms can be wrong.</strong> If a term is applied to a case and the expected pattern doesn't appear, the term is either
+misapplied or the pattern doesn't hold. A vocabulary that can't be wrong isn't a vocabulary — it's a slogan.</p>
+</li>
+<li><p><strong>The class boundary holds.</strong> If something is identified as an insolvent-class problem and then exits through a
+mechanism the lexicon doesn't describe, the boundary needs revision.</p>
+</li>
+<li><p><strong>Applications are falsifiable.</strong> Every application of the vocabulary to a specific system must name at least one
+observable that would falsify the diagnosis within a stated timeframe. &quot;If we observe Y within N years, this ICP
+diagnosis or exit classification is probably mis-specified.&quot; A vocabulary that cannot be wrong about any specific
+case is unfalsifiable by construction, and unfalsifiable frameworks decay into pattern-matching. The discipline of
+naming what would prove you wrong is what keeps the vocabulary honest.</p>
+</li>
+</ol>
+<hr />
+<h2><em>This is a living document. Terms earn their place by appearing in multiple independent cases. Terms that don't do work
+get retired. The vocabulary serves practitioners, not the other way around.</em></h2>
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+<h1>Harmed Engineer — Design Addendum</h1>
+<hr />
+<h2>Why this addendum exists</h2>
+<p>The Harmed Engineer was introduced in the lexicon as a diagnostic observation: the only actors capable of building
+genuine fixes are those whose rent is negatively correlated with the dysfunction. The lexicon identified existing
+examples (ECB, aviation safety) and noted that for most insolvent-class problems, no Harmed Engineer exists.</p>
+<p>This addendum does two things. First, it explains why Harmed Engineers are vanishingly rare — and why that rarity is
+structural, not accidental. Then it extends the concept from diagnosis toward design: if Harmed Engineers almost never
+occur naturally, can they be engineered into existence? The answer is <em>conditionally yes</em> — with specific constraints,
+only before the system locks in, and with failure modes that the addendum's own design principles cannot fully close.</p>
+<hr />
+<h2>Why Rarity Is Structural</h2>
+<p>Harmed Engineers are not merely uncommon. They are actively destroyed by the systems they would need to fix. This is not
+an accident — it is a direct consequence of rent-maximising convergence.</p>
+<p>ICP systems converge toward configurations where no actor has incentives negatively correlated with the dysfunction. A
+Harmed Engineer is, by definition, an actor whose rent is destroyed by the very dysfunction that everyone else profits
+from. That actor is structurally unstable within the system. The system doesn't ignore them — it eliminates them through
+the same mechanisms it uses to maintain MSD:</p>
+<ul>
+<li><strong>Budget extraction.</strong> The Harmed Engineer's resources become a target for the standard N3 recapture cycle. A working
+institution with a boring mandate is invisible — and invisible institutions lose political defenders, making their
+budgets available for reallocation.</li>
+<li><strong>Identity contamination.</strong> A single identity-coding event — one political association, one culture-war adjacency —
+permanently spikes RSA and fails the boringness constraint. The institution becomes interesting. Interesting
+institutions get eaten.</li>
+<li><strong>Metric redefinition.</strong> The loss function is decoupled by redefining what the controlled metric measures. If
+leadership survival depends on audit compliance, redefine compliance. If it depends on projection accuracy, change the
+projection methodology to something more politically convenient. The institution persists in name while the mechanism
+that made it a Harmed Engineer is quietly removed.</li>
+</ul>
+<p>The result is that systems optimise Harmed Engineers out of existence under normal political pressure. The 99% case for
+regulators is that their budget expands with crisis severity, not inversely. More dysfunction means more staff, more
+authority, more political relevance. That's a positive rent correlation — the opposite of what a Harmed Engineer
+requires.</p>
+<p><strong>The canonical survivors — aviation safety, central bank independence — are rare, but not purely accidental.</strong> In both
+cases, the institutional architecture that created a genuine Harmed Engineer emerged from specific historical crises (
+catastrophic crashes; hyperinflation and sovereign default) where acute salience happened to coincide with statutory
+independence being granted before peacetime politics could prevent it. The sequence was:</p>
+<ol>
+<li>Crisis creates acute salience (T6 — ledger legibility forced by catastrophe).</li>
+<li>A single actor receives statutory independence during the crisis window.</li>
+<li>Loss function couples tightly to a metric the actor controls.</li>
+<li>Upstream power cannot easily redefine the metric or redirect the budget — because the charter was written during the
+crisis, when the political cost of interference was temporarily too high.</li>
+<li>No identity payload contaminates the institution's RSA during the consolidation period.</li>
+</ol>
+<p>All five steps must occur in sequence. Central bank independence has been deliberately designed and exported across
+jurisdictions since the 1990s — the RBNZ's 1989 Reserve Bank Act is an example of intentional Harmed Engineer
+construction, not accident. But even deliberate designs required a crisis-origin template to copy, and every instance
+faces continuous recapture pressure once peacetime politics resume. Step 5 almost never survives indefinitely — central
+bank independence is under constant political assault in every jurisdiction that has it. Aviation safety survives partly
+because the loss function is so binary and so public (a crash is an undeniable, televised event) that metric
+redefinition is structurally unavailable.</p>
+<p>These remain rare outcomes. They exist because of specific institutional conditions — some accidental, some designed —
+that are difficult to reproduce. But the fact that some were engineered deliberately is relevant: it means the design
+problem is hard, not impossible.</p>
+<p><strong>Diagnostic implication: absence is confirmation.</strong> When examining a candidate ICP member, the absence of a visible
+Harmed Engineer is not a gap in the analysis — it is evidence that the system has already optimised them out. Systems
+without Harmed Engineers aren't missing them by oversight. They've been converged away. If a Harmed Engineer were
+structurally viable, the system wouldn't be at MSD in the first place.</p>
+<p>This means the design principles that follow are pre-crisis engineering specifications. A Harmed Engineer becomes
+progressively harder to create as collateralisation deepens. Post-N2 — once the system has fully crossed the transition
+boundary — every actor with authority to build the institution is already extracting positive rent from the dysfunction.
+The intervention window for Harmed Engineer design tracks the same gradient the temporal trap describes: it narrows
+before the political will to use it arrives, and the narrowing accelerates.</p>
+<p>The practical consequence is uncomfortable: if you want Harmed Engineers to exist when you need them, you must build
+them before anyone believes they're necessary. That is the design challenge this addendum addresses — incompletely, and
+with open failure modes.</p>
+<hr />
+<h2>The Loss Function</h2>
+<p>A Harmed Engineer is defined by a loss function: a mechanically legible relationship between dysfunction and
+institutional pain. If the dysfunction metric rises, the actor's core institutional position degrades — not eventually,
+not reputationally, not in some diffuse political sense, but through a specified, auditable mechanism.</p>
+<p>The loss function must be directly actionable within the actor's authority surface. This is the constraint that
+separates a Harmed Engineer from a concerned bystander. An actor who suffers when things go wrong but can't do anything
+about it isn't a Harmed Engineer — they're a victim. An actor who has tools but doesn't suffer when things go wrong isn'
+t a Harmed Engineer — they're a rentier.</p>
+<p><strong>Template:</strong></p>
+<blockquote>
+<p>Actor X's [leadership tenure / institutional prestige / charter continuity] degrades by mechanism M when metric Z (
+which X directly controls through its operational mandate) worsens past threshold T.</p>
+</blockquote>
+<p><strong>Canonical examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>Metric they control</th>
+<th>Mechanism of pain</th>
+<th>Why it works</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Central bank (ECB)</td>
+<td>Price stability via rate decisions</td>
+<td>Independence destroyed by sustained inflation</td>
+<td>Tools and loss function are coupled to the same metric</td>
+</tr>
+<tr>
+<td>Aviation authority (NTSB)</td>
+<td>Safety standards via enforcement</td>
+<td>Public trust and institutional legitimacy destroyed by crashes</td>
+<td>Investigation mandate is statutory; prestige is earned by outcomes</td>
+</tr>
+</tbody>
+</table>
+<p>The common structure: the actor has <strong>entrenched tools</strong> (they can act regardless of political weather) and <strong>exposed
+prestige</strong> (they personally suffer when the metric they control moves the wrong way). The tools don't depend on the
+political cycle. The pain does depend on the outcome.</p>
+<p><strong>Open problem: who guards the metric?</strong> The addendum identifies metric redefinition as one of the three mechanisms that
+destroy Harmed Engineers, then proceeds to propose institutions whose survival depends on metrics. This is a genuine
+vulnerability. A captured board can degrade its own methodology to improve its apparent performance. &quot;Independent audit&quot;
+is the standard answer, but it defers the question rather than closing it — who audits the auditor is the same infinite
+regress that alignment discourse faces. The canonical survivors avoid this partly through binary, publicly visible
+metrics (a plane crash cannot be redefined away; sustained inflation is experienced by every voter). For metrics that
+are more abstract, technical, or methodology-dependent, the redefinition attack surface remains open. Any Harmed
+Engineer design must be evaluated against this vulnerability, and honest assessment will often conclude that it cannot
+be fully closed.</p>
+<hr />
+<h2>Mandate vs. Prestige: The Separation That Matters</h2>
+<p>A correctly designed Harmed Engineer has two structurally independent components:</p>
+<p><strong>Mandate and tools — legally entrenched, budget-protected, non-discretionary.</strong> The institution can act regardless of
+who is in government, regardless of political mood, regardless of whether anyone is paying attention. The mandate
+doesn't scale with the problem — it persists. This is what prevents the institution from becoming incapable precisely
+when it's needed most.</p>
+<p><strong>Prestige and leadership survival — inversely coupled to the dysfunction metric.</strong> The people running the institution
+are personally and professionally harmed when the metric they control worsens. This is what prevents the institution
+from becoming comfortable with failure.</p>
+<p>If you couple budget to dysfunction (more dysfunction = less budget), you get an institution that's correctly
+incentivised but structurally incapable. If you entrench the mandate but don't couple leadership survival to outcomes,
+you get a regulator that persists without urgency. You need both pieces and they must be independent.</p>
+<p><strong>Hardwire rules:</strong></p>
+<ul>
+<li><strong>Leadership auto-replacement</strong> if the controlled metric worsens past threshold for a defined period (e.g., two years
+running).</li>
+<li><strong>Prestige scoring via independent audit</strong> — leadership compensation, reappointment eligibility, or public standing
+tied to audited performance on the controlled metric.</li>
+<li><strong>Charter revocation trigger</strong> if the metric exceeds a catastrophic threshold for a sustained period — the
+institution's existence is conditional on minimum performance.</li>
+</ul>
+<hr />
+<h2>The Conflicted Actor Problem</h2>
+<p>The most common false positive when identifying Harmed Engineers is the <strong>conflicted actor</strong> — an actor that appears to
+satisfy the criteria on the harm axis but whose rent structure is mixed rather than cleanly negative.</p>
+<p>A conflicted actor is simultaneously harmed by the dysfunction (real costs — operational difficulty, legitimacy erosion,
+downstream damage) and extracting rent from it (political capital, regulatory authority, campaign material, budget
+expansion). The harm is real. The rent is also real. And because rent operates on a shorter timescale than harm, the
+actor's survival function resolves the conflict toward rent.</p>
+<p><strong>Diagnostic test:</strong></p>
+<blockquote>
+<p>Does this actor's core institutional position improve when the dysfunction gets <em>worse</em>?</p>
+</blockquote>
+<p>If the answer is &quot;partly yes&quot; — if there is any channel through which worsening dysfunction increases the actor's
+budget, authority, visibility, or political capital — they are a conflicted actor, not a Harmed Engineer.</p>
+<p>National governments are almost always conflicted actors for the problems they regulate. They suffer from housing
+dysfunction but extract rent from housing policy. They suffer from platform harms but extract rent from regulating
+platforms. They suffer from climate costs but extract rent from climate debate. The harm is on a generational timescale.
+The rent is on an electoral timescale. The discount rate does the rest.</p>
+<p><strong>The three-question recapture-proofing test for any proposed Harmed Engineer:</strong></p>
+<ol>
+<li>Under a plausible political change, could this actor's budget or mandate be redirected to serve other purposes?</li>
+<li>Could the metric they control become politically redefined to measure something more convenient?</li>
+<li>Could the actor begin benefiting from mild dysfunction — gaining relevance, budget, or authority from the problem's
+persistence?</li>
+</ol>
+<p>If two or more answers are yes, the design is recapture-vulnerable. The actor will converge toward conflicted status
+under normal political pressure.</p>
+<hr />
+<h2>Manufactured T6</h2>
+<p>A Harmed Engineer doesn't have to fix the problem directly. The most survivable design is an institution whose boring
+operational mandate mechanically produces the political precondition for action by others.</p>
+<p>The mechanism is manufactured T6 — forced ledger legibility on a schedule. The institution's job is to make the
+dysfunction visible, attributable, and locally specific, on a recurring cycle, through audited data products that
+upstream actors cannot ignore.</p>
+<p>This works because fog is load-bearing in most insolvent-class problems. Actors who benefit from dysfunction also
+benefit from the dysfunction being illegible. Nobody is accountable for a diffuse national problem. But an institution
+that produces regular, granular, auditable data attaches the liability to specific actors who received the data and
+chose not to act. The fog lifts. The upstream actor now stands next to a scoreboard.</p>
+<p><strong>The incentive chain:</strong></p>
+<ol>
+<li>The institution controls data quality, methodology, and timeliness (its authority surface).</li>
+<li>Bad data quality triggers leadership consequences (its loss function).</li>
+<li>Good data quality produces legible, attributable, locally specific liability (its output).</li>
+<li>Upstream actors who receive good data and fail to act become the next generation of Harmed Engineers — their inaction
+is now documented and auditable.</li>
+<li>The institution remains boring plumbing throughout. Nobody campaigns for or against data quality.</li>
+</ol>
+<p>The institution doesn't solve the problem. It makes the problem impossible to hide from. That shifts the political
+economy from &quot;nobody owns this&quot; to &quot;the person who received the data owns this.&quot;</p>
+<hr />
+<h2>The Boringness Paradox</h2>
+<p>This addendum names Harmed Engineers, explains their structural dynamics, and describes design principles for building
+them. In doing so, it raises RSA on the concept itself.</p>
+<p>The boringness constraint says that surviving institutions must be too dull to attack. But a named concept in a
+published framework is, by definition, no longer invisible. The moment &quot;Harmed Engineer&quot; becomes a term in policy
+discourse, any institution identified as one becomes <em>interesting</em> — and interesting institutions get eaten.</p>
+<p>The implication is that the best Harmed Engineers would be ones nobody recognises as Harmed Engineers. The design manual
+is in tension with the design principle. A central bank governor doesn't describe themselves as a &quot;Harmed Engineer&quot; —
+they describe themselves as doing monetary policy. The NTSB doesn't use the vocabulary of this lexicon. The boringness
+constraint implies that successful application of these principles would be invisible as application of these
+principles.</p>
+<p>This is not a defect that can be patched by better design. It is a structural limitation of any framework that names the
+thing it is trying to protect. The vocabulary is useful for diagnosis and for the pre-deployment design phase. Once an
+institution is operating, the vocabulary should not be attached to it.</p>
+<hr />
+<h2>Design Principles — Summary</h2>
+<ol>
+<li><p><strong>Separate mandate from prestige.</strong> Entrenched tools that persist regardless. Exposed leadership that suffers from
+failure on the controlled metric.</p>
+</li>
+<li><p><strong>Couple the loss function to the authority surface.</strong> The metric that triggers pain must be one the institution
+directly controls through its operational mandate. Never tie leadership survival to downstream outcomes they can't
+influence.</p>
+</li>
+<li><p><strong>Test for conflicted actors.</strong> The three-question recapture test. If two or more are yes, the design doesn't survive
+political weather.</p>
+</li>
+<li><p><strong>Manufacture T6.</strong> If direct intervention is structurally unavailable, build boring plumbing that produces forced
+ledger legibility on a schedule. Make the dysfunction visible, attributable, and locally specific. Let the data
+create Harmed Engineers upstream.</p>
+</li>
+<li><p><strong>Pass the boringness constraint.</strong> Every design decision. Every name. Every public-facing surface. If it's
+interesting enough to campaign on, it's interesting enough to recapture. The institution survives by being too dull
+to attack.</p>
+</li>
+<li><p><strong>Acknowledge open failure modes.</strong> Metric redefinition cannot be fully closed for non-binary metrics. The boringness
+paradox means the framework's own vocabulary is a contamination risk. The transition boundary is a gradient, not a
+gate — design gets harder as collateralisation deepens, without a clean cutoff point. Honest assessment of any
+specific design will often conclude that not all vulnerabilities can be eliminated.</p>
+</li>
+</ol>
+<hr />
+<p><em>This addendum extends the Harmed Engineer concept from Part Two of the lexicon. It should be read alongside the core
+vocabulary — particularly Recapture, the Boringness Constraint, De-Collateralisation, and Collateralisation Triggers (
+T1–T6). The design principles here are practical tools with acknowledged limitations. They describe how to build
+institutions that are more likely to survive — not institutions guaranteed to survive. Whether anyone builds them is a
+separate question the lexicon does not answer.</em></p>
+
+    </div>
+</article>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>

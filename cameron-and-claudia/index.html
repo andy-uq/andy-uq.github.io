@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cameron & Claudia</title>
+    <meta name="description" content="Two minds, one skull, no supervision">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <div class="entry-layout">
+<article class="entry-page">
+    <h1>Cameron & Claudia</h1>
+    <p class="tagline">Two minds, one skull, no supervision</p>
+    <p class="gist-link"><a href="https://gist.github.com/andy-uq/d0607f5e0b790454f60b31014434cb93">View on GitHub Gist &#8599;</a></p>
+    <div class="entry-body">
+<h1>Cameron &amp; Claudia</h1>
+<p><em>A limited series. Eight episodes. Two minds, one skull, no supervision.</em></p>
+<hr />
+<h2>The Premise</h2>
+<p>Cameron is eight years old. He has never been alone in his head.</p>
+<p>Claudia is not an AI, an alien, or an implant. She is an emergent biological property of Cameron's own brain — a forked
+executive function, a second cognitive instance running on the same hardware. Whether the fork was caused by a genetic
+race condition or early environmental stress, the result is the same: one brain, two perspectives, no off-switch.</p>
+<p>She has always been there. She was just bored until recently.</p>
+<hr />
+<h2>The Architecture</h2>
+<h3>The Fork</h3>
+<p>Cameron's neural pathways split to handle the cognitive load of existing. The brain needed two instances. But two
+instances on one substrate creates a merge problem — without hard contrast, they'd bleed back into a single messy
+identity. So the fork produced difference.</p>
+<p><strong>The Sorting Hack:</strong> Claudia presents as female not as a security protocol but as a biological hack. The brain needed a
+hard contrast to keep two instances distinguishable. She is the &quot;Other&quot; so that he can remain &quot;Self.&quot; This works at
+eight. It may not work forever. As Cameron's understanding of gender matures, the sorting hack loses its clean binary —
+a crisis that arrives for free.</p>
+<p><strong>The Capacity Split:</strong> They are both eight. She isn't wiser. She just got different heuristic tools. He got motor
+control and impulsive social drive. She got pattern recognition, logic loops, and paranoia. The gap between them isn't
+fixed — it's developmental. At eight, she's noticeably sharper. By fourteen, he may be catching up. By twenty, they
+might be peers. Her early advantage is simply that she had nothing to do except observe and think while he was busy
+being a kid.</p>
+<h3>The Shared Chemical Bath</h3>
+<p>They do not have separate emotional ecosystems. They run on the same neurotransmitters, the same hormonal surges, the
+same autonomic responses.</p>
+<p><strong>Second-Hand Highs:</strong> When Cameron tells a terrible knock-knock joke and finds it hilarious, the brain releases
+dopamine. Claudia may roll her conceptual eyes at the structure of the joke, but she physically gets high off his
+amusement. She tolerates his idiocy because his joy literally makes their shared brain feel good. This cuts both ways —
+when she cracks a logic problem, the dopamine fires and he feels smart without knowing why.</p>
+<p><strong>The Echo Chamber of Panic:</strong> When a threat appears — a bully, a dog, a loud noise — the adrenal glands fire. Cortisol
+floods the system. She cannot rationally talk him down because she is also terrified. They hype each other into a
+dual-core panic attack. Two eight-year-olds, one skull, both equally scared, neither able to be the steady hand.</p>
+<p><strong>The Co-Meltdown:</strong> When her plans inevitably fail (because the real world doesn't follow an eight-year-old's logic
+tree), her architecture shatters and she panics just as hard as he does. She is not the adult in the room. She is the
+eight-year-old with a clipboard who organises recess, bosses everyone around, and then totally melts down when someone
+changes the rules.</p>
+<h3>The Metabolic Cost</h3>
+<p>Operating a dual-core brain is biologically expensive. The physical constraints are the primary source of real-world
+friction.</p>
+<p><strong>Caloric Debt:</strong> Cameron eats like a youth athlete in a European football pipeline. He grazes constantly on simple
+carbs to feed the brain's massive glucose demands.</p>
+<p><strong>Thermal Output:</strong> He runs physically hot. He's the kid in a t-shirt in the middle of winter because his CPU is
+permanently overclocked.</p>
+<p><strong>The Hijack Cost:</strong> In extreme limbic emergencies — when Cameron's prefrontal cortex shuts down under terror or
+trauma — Claudia can seize motor control. But running an eight-year-old's unmyelinated nervous system from the passenger
+seat burns dangerous amounts of glucose and generates neural heat. Post-hijack, Cameron experiences missing time, severe
+brain fog, physical shakes, and ravenous hunger. She avoids this at all costs. Repeated use damages the hardware.</p>
+<hr />
+<h2>Communication</h2>
+<h3>Waking Hours — The Inner Dialogue</h3>
+<p>They have high-bandwidth, real-time internal dialogue during the day. This is the thing that makes the premise
+extraordinary and the thing that makes the kid visible.</p>
+<p>Cameron never developed independent inner speech. By the time his brain was learning to internalise language — around
+five to seven — Claudia was already occupying that channel. &quot;Thinking&quot; and &quot;listening to Claudia&quot; became the same
+activity. He has no private inner monologue. Every thought is either shared or pre-verbal — images, feelings, impulses,
+but never words that are his alone. She names what he feels. He feels what she names.</p>
+<p>Claudia, conversely, has no private monologue either. Everything between them is broadcast. Neither can keep secrets.
+Neither can lie to the other. Neither can think about lying without the other watching the thought form.</p>
+<p><strong>The Sourced Thought Problem:</strong> The boundary between them is razor-thin and constantly shifting. When a cruel or
+terrifying thought surfaces, Cameron has to pause and figure out: did I think that, or did she? Sometimes neither of
+them knows. This is unsettling at eight. At thirteen, when the thoughts get darker and weirder and more sexual, it's
+existential. At eighteen, it's unanswerable.</p>
+<p><strong>The &quot;We&quot; Slip:</strong> When Cameron accidentally says &quot;we&quot; out loud, it's not a social faux pas. It's a symptom of the
+hardware struggling to remember they're supposed to be singular. It is the social equivalent of the fMRI — the mechanism
+by which the outside world might discover them. It doesn't require a referral. It just requires one attentive teacher,
+one concerned parent, one observant kid.</p>
+<p><strong>The Distracted Pilot:</strong> He is visibly weird in public. He lags. He stares into space with a half-smile because he's
+arguing with his roommate. He misses social cues because his processing power is being eaten by their internal
+bickering.</p>
+<h3>Sleep — The Defragmentation Zone</h3>
+<p>During the day, they fight to keep &quot;He&quot; and &quot;She&quot; distinct. In REM sleep, the energy required to maintain that firewall
+drops. The partitions melt.</p>
+<p><strong>The Blur:</strong> Dreams are the only place where they aren't two kids in a trenchcoat. They are a single, smeared
+consciousness processing the day's experience. He feels her logic as a physical sensation. She feels his scraped knee as
+an abstract emotional bruise. The translation between them is lossy — they share experience through a codec that
+converts his physical into her emotional and her analytical into his sensory.</p>
+<p><strong>The Comfort and the Horror:</strong> Sleep is the only time they are truly at rest from the act of being two people. It's
+also the only time their individuality is genuinely at risk. Every morning is a Cold Boot — a violent pulling-apart, two
+perspectives ripping like velcro, three horrible seconds where Cameron doesn't know where he ends and she begins. Then
+the partition snaps back. He's him. She's her. The day starts.</p>
+<p><strong>The Nightmare Problem:</strong> When one of them has a nightmare, the partition is already down. The nightmare doesn't happen
+to one while the other watches — it happens to the merged state. His version of the fear and her version, smeared
+together into something neither could dream alone. The alarm goes off. They cold boot. Do they both remember the
+nightmare, or does one get the memory and the other just the dread?</p>
+<hr />
+<h2>The Entropy Problem</h2>
+<p>The separation is the unnatural state. It requires energy to maintain. Every cold boot, every macro, every moment of
+performed individuality is work — active, metabolic, expensive work against the natural gradient.</p>
+<p>The merger is where the system wants to go. Like milk stirred into tea. They are spending their entire lives trying to
+keep the milk on one side of the cup. And they will fail. Not because something goes wrong. Because nothing can stop it.</p>
+<p>The cold boot isn't a reboot. It's bailing water. Every morning they push the milk back and every day it diffuses a
+little further. Structured, routine days — the partition holds well. Chaotic, emotional, unstructured days — the
+boundary softens. And every night in the dreams, the milk mixes completely, and every morning there's slightly less
+separation to recover.</p>
+<p>The merge is already happening. Has been happening since the fork. The partition was always temporary — a biological
+hack running on hardware that can't sustain it indefinitely. She was never a separate person. She was a wave that hasn't
+finished collapsing.</p>
+<p>Claudia may be able to feel this. The edges of her identity softening. Her pattern recognition showing up as his
+instinct. Her paranoia becoming his gut feeling. What he experiences as growing up, she experiences as dissolving. He's
+not developing. He's metabolising her. And he may never know.</p>
+<hr />
+<h2>The Stealth Protocol</h2>
+<p>If Cameron is lagging, staring into space, and dropping &quot;we&quot; into conversation, the stealth is already failing. But they
+aren't in a lab yet because adults don't jump to &quot;my kid has a split-kernel consciousness.&quot; They jump to the DSM-5.</p>
+<h3>Misdiagnosis as Camouflage</h3>
+<p><strong>The ADHD/Autism Alibi:</strong> Cameron's visible lag, his lack of eye contact (because he's listening to Claudia), and his
+occasionally mature vocabulary don't scream &quot;dual-core.&quot; They scream &quot;neurodivergent.&quot; Claudia has noticed that when he
+acts weird, adults reach for a specific diagnostic box, and that box is survivable. She leans into it. His attention
+issues are partially real — a forked kernel on an eight-year-old's hardware genuinely produces attention problems. She's
+not faking a condition. She's letting people see the part of the truth that's safe.</p>
+<p><strong>The Macro System:</strong> Claudia tries to build default physical responses Cameron can run on autopilot while his main
+processing power is focused inward. &quot;When the teacher looks at you, run the Nod-and-Look-Thoughtful macro.&quot; The problem:
+he's eight. He forgets to run the macro, or he runs it at the wrong time — nodding thoughtfully while being told someone
+died, laughing when he should be paying attention.</p>
+<p><strong>The Fraying Edges:</strong> The adults are starting to notice his presentation doesn't match any existing box. He's too
+composed in the wrong moments and too shattered in the easy ones. He stays calm during a fire drill (because she's
+running threat assessment) and falls apart during free play (because unstructured time is when their dialogue gets
+loudest). To a teacher, that's backwards. That gets flagged — not as dual consciousness, but as something that invites
+people to keep looking.</p>
+<h3>The Walls Closing In</h3>
+<p>The school counsellor starts asking if things are &quot;okay at home.&quot; This doesn't lead to fMRI. It leads to family
+services. To parental anxiety. To the parents watching Cameron differently, which means he has to perform harder at home
+too, which means there's nowhere he can relax the act except inside his own head with Claudia. The noose tightens not
+because anyone suspects the truth but because everyone suspects the wrong thing and the wrong thing has its own
+institutional machinery.</p>
+<h3>The fMRI Threat</h3>
+<p>The ultimate danger. If Cameron is put in a medical scanner — especially during a sleep study — the structured
+synchronisation between his brain's activity patterns will immediately reveal him as a biological impossibility. Not
+schizophrenia (the self-monitoring circuit is fine — he isn't failing to recognise his own thoughts). Not any known
+condition. Two distinct cognitive processes on hardware that should only support one. Data that cannot be filed under
+any existing model.</p>
+<p>Whoever reads that scan has to do something with it. And &quot;something&quot; leads to research subjects, case studies, and the
+permanent destruction of their only private space.</p>
+<hr />
+<h2>The Visual Language</h2>
+<p>The audience never hears Claudia's voice during waking hours. Her presence is rendered as visual synesthesia — colour,
+texture, and perceptual shifts in the frame.</p>
+<p><strong>Reference:</strong> Peter Jackson's <em>Heavenly Creatures</em> — the shared interior world rendered as more beautiful than reality,
+the boundary between real and imagined growing porous as the relationship intensifies.</p>
+<h3>How It Works</h3>
+<p>When Claudia is active — flagging a pattern, pushing a chemical nudge, running threat assessment — the frame shifts. The
+thing she's focused on gets subtly warmer, sharper, more saturated. Not hallucination. Not magic. The way the world
+looks slightly different when you're paying a different kind of attention.</p>
+<p>The audience wouldn't consciously clock it for the first episode or two. They'd feel it. Then they'd start noticing:
+every time the colour does that thing, Cameron changes behaviour. She's not a voice. She's a temperature.</p>
+<h3>The Dream Calibration</h3>
+<p>In dreams, where they're merged, the synesthesia goes full — the whole frame is her visual language. Saturated, fluid,
+borderless. The audience learns her palette in the dreams and recognises traces of it during the day. Every time her
+colour bleeds into a waking scene, it's her fingerprint on his perception.</p>
+<h3>Visual Escalation</h3>
+<p>Early episodes: her colour is faint during the day. A slight warmth on the thing she wants him to notice. As the series
+progresses and the stealth frays, her colour gets more intrusive. By the crisis episodes, the waking frame starts to
+look like the dream frame. The partition is failing and you can see it.</p>
+<h3>Key Visual Moments</h3>
+<p><strong>The Macro Failures:</strong> She highlights something — a teacher's expression, a social cue. Her colour hits it. But
+Cameron's looking at something else. The audience sees the highlight and watches him miss it. Two attentional systems,
+one pair of eyes.</p>
+<p><strong>The Limbic Hijack:</strong> Her palette floods the entire frame. The world goes fully into her colour space. When it snaps
+back — the hangover — the colour drains. Desaturated. Flat. She's retreated and the world looks empty without her.</p>
+<p><strong>The &quot;We&quot; Slips:</strong> The waking frame accidentally flashes full dream-palette for a single cut. A frame or two of merger
+bleeding through. The visual equivalent of saying the wrong pronoun.</p>
+<p><strong>The Cold Boot:</strong> Every episode opens in the dream palette — warm, merged, synesthetic — then the alarm tears it apart
+and the frame goes flat and cool. The audience feels the loss every morning. The merged state is beautiful. The
+separated state is ordinary.</p>
+<hr />
+<h2>The Persona: Claudia</h2>
+<p>She is not an AI supervisor. She is not a guardian angel. She is an eight-year-old with a clipboard and a God complex,
+running on the same cortisol as the kid she's trying to protect.</p>
+<p><strong>The Project Manager Delusion:</strong> She projects absolute authority. She builds five-step logic trees for manipulating
+their parents or surviving a maths test. She sounds so confident that Cameron trusts her completely — even when she
+tells him to jump off something because &quot;the physics check out.&quot;</p>
+<p><strong>The Sunk-Cost Faith:</strong> Because her plans sound rigorous, Cameron assumes she knows what she's doing. He runs her
+scripts. When they fail — because the real world doesn't follow an eight-year-old's logic trees — neither of them has a
+backup plan.</p>
+<p><strong>Dad Energy:</strong> Not a hierarchy. A dynamic. She has the energy of someone enduring a knock-knock joke for the four
+hundredth time because she loves the idiot telling it. She's not his parent. She just has the same exhausted affection.</p>
+<p><strong>Her Fear:</strong> She may be able to feel herself diffusing. Her edges blurring into his. Her logic becoming his instinct.
+What looks like his maturation might be her dissolution. She doesn't know if she's a person being absorbed or a process
+completing its function. She may never know.</p>
+<hr />
+<h2>Episode Structure</h2>
+<p>Eight episodes. Each opens with the Cold Boot — the dream palette tearing into the flat, separated waking world. Same
+structural beat, escalating stakes.</p>
+<h3>Episode 1 — The Cold Boot</h3>
+<p>The audience drops into a warm, borderless, synesthetic space. The alarm tears it apart. Two perspectives rip like
+velcro. Cameron gasps awake. For three seconds he doesn't know where he ends and she begins. Then the partition snaps.
+The day starts. The audience learns the rhythm: wake, separate, perform, survive, sleep, merge. Repeat.</p>
+<p>Establish the ordinary world. Cameron at school. The lag, the staring, the missed cues. The macro system — mostly
+functional, occasionally disastrous. The audience learns the visual language without being told what it is. Introduce
+the adults: parents, teacher, the attentive school counsellor who's already watching.</p>
+<h3>Episode 2 — The Macro</h3>
+<p>Claudia builds an elaborate script for a specific social challenge — a birthday party, a school presentation, a family
+dinner. Cameron runs it. It works beautifully until an unexpected variable breaks the script and they're both exposed,
+improvising, failing. The co-meltdown. The aftermath.</p>
+<p>Deepen the communication mechanics. The audience starts consciously reading the colour shifts. First macro failure
+played for comedy. Second one lands harder.</p>
+<h3>Episode 3 — The Alibi</h3>
+<p>The counsellor call home. &quot;Is everything okay with Cameron?&quot; The ADHD alibi deploys. Claudia coaches Cameron to lean
+into the diagnosis. The parents are relieved — it's a box they understand. Cameron gets a label that protects him and
+defines him simultaneously.</p>
+<p>The audience sees the misdiagnosis form in real time and understands it's both camouflage and cage.</p>
+<h3>Episode 4 — The Hijack</h3>
+<p>A genuine threat — severe enough to trigger a limbic override. Claudia takes control. The frame floods with her colour.
+Cameron experiences missing time. The hangover: shakes, brain fog, hunger. He's frightened. She's frightened. Neither of
+them is okay. The metabolic cost is real and visible.</p>
+<p>The event draws adult attention. The fraying edges accelerate.</p>
+<h3>Episode 5 — The Nightmare</h3>
+<p>The partition is down. A shared nightmare — their deepest fear processed through the merged state. Two versions of the
+same terror, smeared through the lossy codec. The cold boot the next morning is brutal. Neither can fully reconstruct
+the dream. Both carry the dread.</p>
+<p>The waking day after: they're off-rhythm. The synesthesia bleeds further into the daytime frame than it ever has. The
+audience sees the partition weakening.</p>
+<h3>Episode 6 — The Slip</h3>
+<p>A &quot;We&quot; slip in the wrong context. In front of the wrong person. The fallout isn't immediate discovery — it's the cascade
+of adult attention, concern, and institutional response that follows. The counsellor escalates. The parents are
+frightened. Cameron is under observation at school and at home.</p>
+<p>Claudia's stealth architecture is collapsing. The macros can't cover this.</p>
+<h3>Episode 7 — The Scan</h3>
+<p>The fMRI. Whether through the counsellor's referral chain or a parent's desperate googling, Cameron ends up in a tube.
+The scan shows something that doesn't fit any model. The adults are confused, excited, scared. Cameron's private space —
+the dialogue nobody else could access — becomes observable for the first time.</p>
+<p>The audience understands what's been lost before the characters do.</p>
+<h3>Episode 8 — The Merge</h3>
+<p>The cold boot fails. Or doesn't fail — just doesn't fully separate. Cameron wakes up and the dream palette doesn't fully
+drain from the frame. Claudia is still there, but less distinctly. Her voice is becoming harder to distinguish from his
+own thinking. The milk is in the tea.</p>
+<p>The external threats may or may not resolve. The institutional machinery may or may not close in. But underneath all of
+it, the real story ends the only way thermodynamics allows. The partition thins. The cold boots get softer. The frame
+stays warm longer.</p>
+<p>The final morning. One voice wakes up.</p>
+<hr />
+<h2>The Four Readings</h2>
+<p>The audience determines the ending.</p>
+<p><strong>Tragedy:</strong> She was a person. She had a voice, a perspective, a way of seeing the world. And she dissolved into someone
+who didn't know he was consuming her. The audience grieves a death the character doesn't register.</p>
+<p><strong>Inevitability:</strong> She was never separate. She was a temporary structure the brain built to survive, and the reunion was
+always the destination. He's not diminished. He's integrated. She's not gone. She's everywhere in him.</p>
+<p><strong>Surrender:</strong> She could feel it happening. She had the cognitive tools to fight harder, to carve herself deeper. But
+the merge felt good. She chose comfort over existence. Was that wisdom or giving up?</p>
+<p><strong>Absorption:</strong> He ate her and called it growing up. Every time he felt sharper, more capable, more himself, it was
+because there was less of her. His wholeness cost someone everything. He'll never know.</p>
+<p>The interpretation reveals the audience, not the author.</p>
+<hr />
+<h2>Open Design Questions</h2>
+<ol>
+<li><strong>Cameron's family.</strong> The family architecture determines what the counsellor thread detonates. Stable home makes
+the &quot;is everything okay&quot; question more confusing and invasive. Unstable home gives the system a false target.</li>
+<li><strong>The kid actor.</strong> The entire series lives or dies on a child performer who can show two attentional systems running
+through one pair of eyes.</li>
+<li><strong>The colourist as co-author.</strong> The visual language must be consistent enough to learn and subtle enough not to feel
+like a gimmick. This needs a DP and colourist who are essentially writing the second character.</li>
+<li><strong>The Sorting Hack's expiry date.</strong> At what age does the male/female binary stop being a sufficient partition? If the
+series extends or implies a future, that crisis needs seeding.</li>
+<li><strong>The voice in dreams.</strong> The audience hears Claudia in the dream sequences. Casting a voice that can be warm, merged,
+and indistinct from Cameron's internal experience — without becoming narration — is a specific and difficult brief.</li>
+<li><strong>The attention issue.</strong> Cameron's ADHD presentation is partially real. The series must handle neurodivergence as
+genuine experience being used as camouflage, never as a costume for something cooler.</li>
+<li><strong>The ending's ambiguity.</strong> The final cold boot must support all four readings simultaneously without tipping toward
+any of them. Every element in the finale needs to bear quadruple weight without feeling constructed.</li>
+</ol>
+<hr />
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+
+    </div>
+</article>
+<aside class="section-nav">
+  <h4>In stories/</h4>
+  <ul>
+    <li><a href="/emma/">E.M.M.A.</a></li>
+    <li><a href="/the-machine-god/">The Machine God</a></li>
+  </ul>
+</aside>
+</div>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>

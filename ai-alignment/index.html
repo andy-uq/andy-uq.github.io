@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Alignment Debate We're Structurally Incentivised Not to Have</title>
+    <meta name="description" content="AI governance consumed by a debate that generates more political energy than it resolves">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <div class="entry-layout">
+<article class="entry-page">
+    <h1>The Alignment Debate We're Structurally Incentivised Not to Have</h1>
+    <p class="tagline">AI governance consumed by a debate that generates more political energy than it resolves</p>
+    <p class="gist-link"><a href="https://gist.github.com/andy-uq/d9a80eb7564c1a3ce8c6305cce6f7b3f">View on GitHub Gist &#8599;</a></p>
+    <div class="entry-body">
+<h1>AI Alignment as a Governance Trap</h1>
+<p><strong>A worked case study using the <a href="/icp/">ICP</a> framework</strong></p>
+<hr />
+<p>The Insolvent Class Problem (ICP) framework is a diagnostic lexicon for governance failures where the brokenness is
+load-bearing and the incentive structure doesn't permit success. It identifies a class of problems — housing,
+infrastructure, birth rate decline — that share four structural conditions. When all four are present, the problem
+enters a trap with known dynamics, known failure modes, and a very short list of exits.</p>
+<p>AI governance meets all four. The first three — rent/liability deadlock, collateralisation, and recapture — are
+well-documented in the existing AI governance literature, so this essay establishes them briefly. The fourth — the
+temporal trap — is where the ICP frame does its distinctive work, and where this essay spends most of its space.</p>
+<hr />
+<h2>The trap</h2>
+<h3>Rent/liability deadlock</h3>
+<p><em>No politically survivable path for dominant actors to simultaneously preserve rents and close the liability ledger.</em></p>
+<p>Labs extract rent from speed. Governments extract rent from competitiveness. Investors extract rent from growth
+expectations. The liability ledger — algorithmic bias, labour displacement, concentration of power, erosion of
+epistemic infrastructure, potential catastrophic misuse — is real but deferred. It compounds slowly enough that no
+actor faces it within the time horizon that governs their decisions.</p>
+<p>Closing the ledger requires constraints that destroy rent for every dominant actor simultaneously. No actor can impose
+those constraints and survive the next funding round, election cycle, or earnings call. So nobody does. This dynamic
+is well-described in the existing literature on AI political economy; the ICP contribution is not the observation but
+the structural class it belongs to.</p>
+<h3>Collateralisation</h3>
+<p><em>The system is approaching the transition boundary — the point beyond which failure becomes externally unacceptable.</em></p>
+<p>AI has not yet fully crossed this boundary. This is what makes the current moment high-leverage. The system is
+<em>approaching</em> it, and the approach is accelerating.</p>
+<p><em>Collateralisation</em> is the ICP term for how a system becomes too embedded to shut down — not because people care about
+it, but because failure would cascade into things they care about more. Enterprise dependency (legal discovery, medical
+diagnostics, financial modelling running through AI systems) and mass constituency (hundreds of millions of daily users)
+are compounding: when a large user base is entangled with systemically embedded technology, users resist regulation
+organically — not because they've been lobbied, but because safeguards on infrastructure feel like personal losses. The
+labs don't need to fight governance alone. Their users do it for free.</p>
+<p>Government commitment accelerates both. When a government has staked credibility on being an &quot;AI leader,&quot; constraining
+AI becomes an attack on its own stated agenda. Each of these forces makes the boundary crossing cheaper, and they
+compound rather than add.</p>
+<h3>Recapture</h3>
+<p><em>Reform attempts are absorbed, inverted, or neutralised to preserve existing rents.</em></p>
+<p>This is already visible: safety research repurposed as evidence that external regulation is unnecessary. Standard-
+setting outsourced to the industry being regulated. Corporate responsibility frameworks that consume political attention
+without constraining capability development — each a unit of governance <em>appearance</em> that reduces demand for governance
+<em>substance</em>. These aren't conspiracies. They're the system converting reform into rent-preserving configurations. Every
+actor is locally rational. The aggregate is ungoverned.</p>
+<h3>The temporal trap</h3>
+<p><em>The incentive to enact genuine reform emerges only after the system's capacity to reform has materially degraded.</em></p>
+<p>The first three conditions describe the <em>structure</em> of the trap. This one describes why the trap <em>closes</em>.</p>
+<p>The will to govern AI and the capacity to govern AI are moving in opposite directions.</p>
+<p>Political will requires political incentive, and political incentive requires visible harm. AI harms are currently
+diffuse, deferred, and deniable. Labour displacement unfolds over years, not in a single crisis event. Epistemic
+erosion is invisible until you try to measure it. Concentration of power is structural, not dramatic. None of these
+produce the kind of acute, visible, attributable failure that shifts political incentives.</p>
+<p>Meanwhile, the capacity to govern degrades with every quarter of unregulated deployment, because each quarter deepens
+the collateralisation. More enterprise dependencies. More consumer constituency. More formal government commitment.
+More regulatory capture of standard-setting. The intervention surface shrinks as the intervention need grows.</p>
+<p>The window doesn't close gradually. It accelerates. Each year of inaction makes the next year's intervention harder
+<em>and</em> more politically expensive. The collateralisation compounds. The constituency entrenches. The dependency deepens.
+And the political incentive to act remains absent, because the harm remains diffuse.</p>
+<hr />
+<h2>Why &quot;just regulate it after the crisis&quot; won't work</h2>
+<p>The standard response to the temporal trap is the historical precedent: crisis produces governance. Financial collapse
+produces Dodd-Frank. Industrial disaster produces safety law. Environmental catastrophe produces environmental
+regulation. The pattern is consistent: acute harm shifts incentives, and pre-existing frameworks shape the response.</p>
+<p>This is the strongest objection to the temporal trap argument, and it deserves a serious answer.</p>
+<p>Post-2008 financial regulation is the best test case. The financial system was deeply embedded in governance by 2008 —
+banks were systemically important, the constituency was massive, the dependencies were critical. And regulation still
+happened. Dodd-Frank passed. Ringfencing was implemented. Living wills were mandated. In ICP terms, this is
+<em>de-collateralisation</em> (DCC) — making failure tolerable by partitioning it, capping external harm, assigning losses
+credibly, and precommitting to letting components die.</p>
+<p>So why can't the same thing happen with AI?</p>
+<p>Three structural differences:</p>
+<p><strong>Legibility.</strong> A bank's balance sheet is, in principle, readable. Its counterparties are identifiable. Its failure
+modes are knowable in advance. An AI system's decision-making is opaque by construction. You can audit a bank's
+leverage ratio. You cannot, with current technology, audit what an AI system has learned, what it will do in novel
+situations, or whether its compliance is real or performative. DCC requires that you can <em>see</em> the system well enough
+to partition it. AI's legibility is worse than finance's was, and it's getting worse as systems scale.</p>
+<p><strong>Separation.</strong> Post-2008 regulation worked by separating the banking system into components that could fail
+independently — ringfencing retail from investment banking, requiring living wills, mandating bail-in capital. This
+works because a bank can be structurally separated from the payment system it serves. An AI system that is embedded in
+legal discovery, medical diagnostics, and regulatory compliance <em>cannot</em> be separated from those functions without
+degrading them, because the AI <em>is</em> the function. You can ringfence a bank from the payment rail. You cannot ringfence
+an AI from the decision process it's executing.</p>
+<p><strong>Interiority.</strong> This is the structural difference that has no financial analogue, and the one that matters most.</p>
+<p>By the time a crisis large enough to shift political incentives occurs, AI will be <em>inside</em> the governance apparatus
+itself. Not adjacent to it, not regulated by it — woven into it. Legal analysis, regulatory review, policy drafting,
+compliance monitoring, judicial research, legislative impact assessment — these are already beginning to use AI systems.
+The trajectory is not speculative. It follows directly from the same enterprise dependency that drives
+collateralisation: governments face the same efficiency incentives as private firms, and they are adopting the same
+tools for the same reasons.</p>
+<p>Post-crisis regulation of finance worked because the regulators were external to the banks. The SEC did not run on
+Goldman Sachs infrastructure. The FDIC's resolution authority did not depend on the systems it was resolving. The
+separation between regulator and regulated — however imperfect, however influenced by revolving doors and lobbying —
+was structural. The regulator could act on the system because the regulator was not <em>made of</em> the system.</p>
+<p>Post-crisis regulation of AI will not have this property. When the regulatory agency's own legal analysis is performed
+by an AI system, when compliance monitoring runs on the infrastructure being monitored, when the drafting of regulatory
+text is assisted by the technology being regulated — the entity requiring oversight is embedded in the oversight
+mechanism. The regulator is made of the thing it's regulating.</p>
+<p>This creates a problem that is not just &quot;harder regulation&quot; but a different kind of problem entirely. Three specific
+failure modes:</p>
+<p><em>Compliance verification becomes circular.</em> How do you verify that an AI system is complying with regulations when the
+verification process itself uses AI? The auditor's tools are instances of the thing being audited. This isn't a
+hypothetical — it's the logical endpoint of current adoption trajectories. Financial auditing worked because the
+auditor's calculator was not a product of the bank being audited. AI compliance auditing will not have this property.</p>
+<p><em>Crisis response depends on the crisis.</em> In a financial crisis, regulators could convene, analyse, and act using tools
+that were independent of the financial system. In an AI-related crisis — a systemic failure, a coordinated misuse
+event, an emergent capability that triggers harm at scale — the response apparatus will be using the technology that
+failed. Not the specific system that failed, perhaps, but systems built on the same architecture, trained on similar
+data, exhibiting similar failure modes. The independence that makes crisis response possible is eroded by the same
+adoption that makes crisis more likely.</p>
+<p><em>Governance capture becomes architectural, not just political.</em> Traditional regulatory capture operates through lobbying,
+revolving doors, and information asymmetry — political mechanisms that can, in principle, be countered by political
+means. When the governance apparatus <em>runs on</em> the technology being governed, capture becomes architectural. The
+dependency is not a relationship that can be severed by political will. It's a technical dependency that would require
+rebuilding the governance apparatus itself to unwind. That rebuilding, during a crisis, is not feasible on any relevant
+timeline.</p>
+<p>The interiority problem compounds every other element of the temporal trap. The window isn't just closing because
+collateralisation is building and political will is absent. It's closing because the <em>mechanism of governance itself</em> is
+being absorbed into the system it would need to govern. Each quarter that passes doesn't just make the political case
+harder. It makes the technical architecture of governance less independent. And unlike political capture, architectural
+dependency doesn't reverse when political conditions change.</p>
+<p>This is what the financial analogy misses. &quot;Structurally harder&quot; understates it. The correct framing is: the regulatory
+apparatus is being rebuilt, in real time, out of the material it would need to regulate. By the time the political will
+arrives, the tools available to act on that will may not be independent enough to act meaningfully.</p>
+<hr />
+<h2>The debate as disease</h2>
+<p>There is a specific mechanism — <em>temporal parasitic rotation</em> — by which governance debates consume the governance
+window they're supposed to protect.</p>
+<p>Two framings of the same problem coexist. One is boring but technically productive — infrastructure standards, audit
+requirements, compute governance, model evaluation protocols. The other is engaging but politically unresolvable —
+&quot;whose values?&quot;, existential risk rhetoric, culture-war skirmishes over chatbot personality. Attention flows to the
+high-energy framing because it generates more political energy. That framing becomes exhausted or toxic. Attention
+retreats to the boring framing. The cycle restarts with less time remaining.</p>
+<p>But this isn't just alternation. The exciting framing doesn't merely <em>delay</em> the boring work — it actively destroys the
+conditions that the boring work needs.</p>
+<p>Each cycle of the exciting debate has three effects. First, it <em>consumes bandwidth</em> — political attention, legislative
+calendar, expert testimony, public discourse — that the boring work requires. Second, it <em>poisons the well</em> — by
+associating AI governance with culture-war dynamics, it makes the boring work look like a Trojan horse for the exciting
+agenda, triggering pre-emptive resistance. Third, it <em>trains the participants</em> — legislators, journalists, the public —
+to think about AI governance in moral and identity terms rather than infrastructure terms, making it progressively
+harder to reframe the conversation even when the exciting version exhausts itself.</p>
+<p>The rotation isn't just time lost. Each cycle degrades the <em>substrate</em> on which boring governance would have to be
+built. After five years of &quot;whose values should AI reflect?&quot;, the political class doesn't just lack AI infrastructure
+policy. It lacks the <em>capacity to think in infrastructure terms about AI at all</em>, because every neural pathway has been
+trained on the exciting version. The boring framing doesn't just lose time. It loses the audience's ability to hear it.</p>
+<p>AI alignment discourse is the textbook case. The infrastructure conversation — API standards, deployment gates, compute
+tracking, incident reporting — keeps getting crowded out by the moral conversation. &quot;Should AI be woke?&quot; &quot;Is
+existential risk real or hype?&quot; &quot;Whose values should AI reflect?&quot; These questions generate enormous political energy.
+They are also, for governance purposes, useless. They cannot be resolved, because they are expressions of irreducible
+moral pluralism. And while they dominate attention, the boring work that would actually help sits undone.</p>
+<p>A senator can campaign on &quot;AI values.&quot; A senator cannot campaign on API audit standards. A journalist can write about
+existential risk. A journalist cannot write about compute governance reporting requirements. The exciting conversation
+attracts attention. The boring conversation produces governance. They compete for the same finite bandwidth, and the
+exciting conversation wins every cycle — not just by taking up space, but by reshaping the space so the boring
+conversation no longer fits.</p>
+<hr />
+<h2>The exit landscape</h2>
+<p>The insolvent class has a small number of structural exits. Not all are available for all problems.</p>
+<p><strong>The Montreal Condition</strong> — make the solution binary: either it's on or it's off, with nothing in between. No gradient
+for the political system to exploit. This is how CFCs were banned: not regulated, not traded, not taxed — banned. The
+politics drained out because there was nothing left to argue about.</p>
+<p>Montreal is unavailable for AI governance. The problem is continuous (how much capability? how much constraint? whose
+values at which threshold?), not binary. There is no light switch.</p>
+<p><strong>The Singapore Condition</strong> — eliminate the political competition that sustains the rent gradient. One actor decides.
+China's AI governance approach has elements of this. But in the democracies where most frontier development is
+occurring, monopolar resolution is politically unacceptable. And even in authoritarian contexts, the international
+competition dynamic reintroduces the deadlock at a higher level.</p>
+<p><strong>De-collateralisation (DCC)</strong> — make failure tolerable. Don't fix the dysfunction directly; change the failure
+landscape so that the system is no longer hostage to its own collateral damage.</p>
+<p>DCC is the only realistic exit for AI governance in democratic contexts. But DCC interventions have a survival problem:
+the political system eats them. The ICP framework calls this <em>the boringness constraint</em> — the only interventions that
+survive political contact are the ones too dull to be worth attacking. The survivability test:</p>
+<ol>
+<li>Can you describe this intervention to a non-specialist without them getting angry?</li>
+<li>Does this appear on any party's policy platform?</li>
+<li>Would a newspaper put this on the front page?</li>
+<li>Does this have a constituency that would march for it?</li>
+</ol>
+<p>If the answer to any is yes, the design is not boring enough to survive. The test is not &quot;is this good policy?&quot; The
+test is &quot;is this boring policy?&quot; Those are different questions, and only the second one predicts survival.</p>
+<p>What would boring, survivable DCC for AI look like?</p>
+<ul>
+<li><strong>Partition failure.</strong> Structural separation between AI systems so that one system's failure doesn't cascade.
+Ringfenced deployment domains. Circuit breakers that isolate a failing system from critical infrastructure.</li>
+<li><strong>Cap external harm.</strong> Mandatory insurance, compensation frameworks, guaranteed service continuity for
+critical-dependency users. Failure hurts, but not catastrophically.</li>
+<li><strong>Assign losses credibly.</strong> Clear liability chains for AI-caused harm. When a system fails, the responsible party is
+identifiable and the consequences are known in advance. No ambiguity about who pays.</li>
+<li><strong>Precommit to letting components die.</strong> Mandated wind-down plans for AI systems that reach critical-dependency
+thresholds. Automatic triggers for capability reduction if safety conditions are breached. The credible threat that a
+system <em>can</em> be shut down is what prevents the need to shut it down.</li>
+</ul>
+<p>Compute governance is a good candidate. Tracking compute allocation, requiring registration above thresholds, mandating
+incident reporting — these are dull, technical, and hard to identity-code. Nobody marches over compute reporting
+requirements. That's the point.</p>
+<p>But here the interiority problem returns. DCC for finance worked because you could build the governance infrastructure
+out of materials that were independent of the financial system. DCC for AI faces the question: what do you build the
+governance infrastructure <em>out of</em>? If the audit tools, the compliance systems, and the monitoring infrastructure are
+themselves AI — and the efficiency pressures guarantee they will be — then the de-collateralisation is built from the
+collateral. The circuit breaker is made of the circuit.</p>
+<p>This doesn't make DCC impossible. It makes it a design problem with an additional constraint that financial DCC didn't
+face: the governance infrastructure must be built to remain independent of the technology it governs, even as that
+technology becomes the default substrate for all infrastructure. That constraint is achievable now. It becomes harder
+with each quarter of adoption. And it is precisely the kind of boring, technical, unglamorous design work that the
+temporal parasitic rotation is consuming the window for.</p>
+<hr />
+<h2>What falsifies this</h2>
+<p>Every ICP application must name what would prove it wrong. This diagnosis is falsified if:</p>
+<ol>
+<li><p><strong>A major AI lab voluntarily accepts meaningful capability constraints without competitive pressure or regulatory
+mandate.</strong> This would disprove the rent/liability deadlock by demonstrating that dominant actors <em>can</em> close the
+liability ledger while preserving enough rent to survive.</p>
+</li>
+<li><p><strong>Effective AI governance emerges from the current incentive structure without an exogenous shock.</strong> This would
+disprove the temporal trap by demonstrating that political will can precede crisis.</p>
+</li>
+<li><p><strong>AI collateralisation reverses — enterprise dependencies decrease, consumer constituency shrinks, or government
+commitments unwind.</strong> This would demonstrate that the transition boundary approach is not monotonic.</p>
+</li>
+<li><p><strong>The alignment debate produces governance output.</strong> If the moral-framing conversation generates concrete,
+implemented, technically meaningful governance infrastructure, this would disprove the temporal parasitic rotation
+diagnosis.</p>
+</li>
+<li><p><strong>Post-crisis AI regulation achieves independence from AI systems in its enforcement mechanism.</strong> This would
+disprove the interiority argument by demonstrating that governance infrastructure can be built independently of the
+technology it governs, even after deep adoption.</p>
+</li>
+</ol>
+<p>If none of these obtain within five years of publication, the diagnosis is not proven — structural patterns don't work
+that way — but the structural conditions it describes will have deepened, and the intervention window will be
+correspondingly narrower.</p>
+<hr />
+<h2>Conclusion</h2>
+<p>AI alignment is entering the insolvent class. The rent/liability deadlock, collateralisation, and recapture dynamics
+are present and well-documented elsewhere. What the ICP frame adds is the mechanism by which the trap closes — and the
+three observations that distinguish AI governance from prior cases of embedded-technology regulation.</p>
+<p>The interiority problem: AI is being woven into the governance apparatus itself, not just regulated by it. By the time
+political will arrives, the tools available to act on that will may not be independent enough to act meaningfully.</p>
+<p>The parasitic rotation: the exciting version of the alignment debate doesn't just delay the boring governance work — it
+actively degrades the political substrate on which boring governance would have to be built.</p>
+<p>The boringness constraint: the only governance interventions that survive political contact are the ones too dull to be
+worth attacking — and that very dullness is what prevents them from being built in time.</p>
+<p>These three interact. The interiority problem defines the design constraint (governance infrastructure must remain
+independent of the technology it governs). The parasitic rotation consumes the window in which that infrastructure
+could be built. The boringness constraint identifies what would survive — but boringness is precisely the property that
+prevents political mobilisation. The trap is not any one of these. The trap is that they operate simultaneously, each
+reinforcing the others, in a system where every actor is locally rational and the aggregate is ungoverned.</p>
+<h2>The intervention window is still open. It is closing on a non-linear curve. The incentive structure is hostile to the
+work that would keep it open. That is the trap. And the trap is the finding.</h2>
+<h2><strong>Full framework:</strong> <a href="/icp/">The Insolvent Class Problem — A Diagnostic Lexicon (v3)</a></h2>
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+
+    </div>
+</article>
+<aside class="section-nav">
+  <h4>In essays/</h4>
+  <ul>
+    <li><a href="/nz-rugby/">The All Blacks Trap</a></li>
+    <li><a href="/the-reprogramming-lie/">Terminator: The Reprogramming Lie</a></li>
+    <li><a href="/the-ratchet/">The Ratchet</a></li>
+    <li><a href="/the-substrate/">The Substrate</a></li>
+  </ul>
+</aside>
+</div>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>
