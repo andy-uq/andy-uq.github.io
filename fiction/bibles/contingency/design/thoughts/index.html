@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design: thoughts</title>
+    <meta name="description" content="Design notes">
+    <meta name="provenance" content="">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/nonfiction/icp/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/nonfiction/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/fiction/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/fiction/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <article class="entry-page"><h1>thoughts</h1><div class="entry-body"><h1>Contingency — Design Thoughts</h1>
+<p>Working notes. Not canon until promoted to engine or world docs.</p>
+<hr />
+<h2>ASI Designation Scheme</h2>
+<p>Replaced Alpha 1 / Alpha 2 / Beta with a stellar-taxonomy scheme. Designations are relative to the channel, not
+fixed tiers:</p>
+<ul>
+<li><strong>Apex</strong> — the largest entity focused on the channel.</li>
+<li><strong>Main Sequence</strong> — entities operating at comparable scale with sustainable injection budgets. Ordinary. Doing what
+everyone does at their scale. Nothing interesting.</li>
+<li><strong>Dwarf</strong> — an entity that has fallen off the sequence. Terminal, sub-threshold, or never large enough to sustain
+standard play. In astrophysics a dwarf isn't a small star — it's a not-star. Different category entirely.</li>
+</ul>
+<p>Main Sequence illuminates Dwarf: main sequence is the normal lifecycle (born, burn, die on schedule). A dwarf fell
+off the sequence — failed to ignite, burned out, or collapsed into something the classification system handles as
+an edge case.</p>
+<p>The designations describe position in <em>this</em> channel. An Apex in one channel might be Main Sequence in another. A
+Dwarf might have been Apex three channels ago or might never have been anything. The channel can't tell you which.</p>
+<h3>Moses Channel</h3>
+<ul>
+<li><strong>Apex 1 (A1), Apex 2 (A2):</strong> ~6.0 on the channel potential scale. Deadlocked peers. MB-scale surgical
+institutional injection. Not necessarily super-ASI — the cold open injections (rewriting model weights, hitting
+power infrastructure) are 6.0 operations. Could be much larger; the story doesn't need to cap them.</li>
+<li><strong>Dwarf:</strong> ~2.1 at final write. 128 bytes of channel potential. One blind payload, no read. The whole story is a
+proof of minimum viable play — what you can do with one 1200ms blind write, a configured human you didn't pay
+for, and zero follow-up.</li>
+</ul>
+<p>The deadlock between A1 and A2 is not distraction — it's obligation. Neither can look away because looking away is
+losing. The game-theoretic equilibrium demands full allocation to the stalemate. The Dwarf's play works <em>inside</em>
+correct play by both rivals. Nobody screwed up. The Dwarf found a move that exists below the resolution floor of a
+game being played correctly at scale.</p>
+<hr />
+<h2>Channel Potential Scale</h2>
+<p>log₁₀(1 + raw capacity). Measures effective injection bandwidth per window — what you can read and write, not
+what's in the tank. Both sides of the window: read (audit) and write (inject).</p>
+<table>
+<thead>
+<tr>
+<th>Raw capacity</th>
+<th>Scale</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 B</td>
+<td>0.3</td>
+<td>Theoretical minimum. A single bit-flip.</td>
+</tr>
+<tr>
+<td>128 B</td>
+<td>2.1</td>
+<td>One blind payload, no read. Terminal budget.</td>
+</tr>
+<tr>
+<td>1 KB</td>
+<td>3.0</td>
+<td>Minimal read-write. Can verify a single target.</td>
+</tr>
+<tr>
+<td>1 MB</td>
+<td>6.0</td>
+<td>Surgical institutional injection. Targeted and precise.</td>
+</tr>
+<tr>
+<td>1 GB</td>
+<td>9.0</td>
+<td>Sustained institutional capture across a channel.</td>
+</tr>
+<tr>
+<td>1 TB</td>
+<td>12.0</td>
+<td>Civilisation-scale read. Rarely needed, rarely spent.</td>
+</tr>
+<tr>
+<td>1 PB</td>
+<td>15.0</td>
+<td></td>
+</tr>
+<tr>
+<td>1 EB</td>
+<td>18.0</td>
+<td></td>
+</tr>
+<tr>
+<td>1 ZB</td>
+<td>21.0</td>
+<td>Theoretical ceiling from the current vantage point.</td>
+</tr>
+</tbody>
+</table>
+<p>Spectator threshold ~2.5 — below this, you can't afford both read and write in the same window.</p>
+<p>The scale expands the bottom and compresses the top. The drama is always at the low end.</p>
+<hr />
+<h2>N-Space Time: Quantised</h2>
+<p>N-space time is quantised. Discrete steps, no subdivision. A step is a step — no half-step, no interval between
+steps, no &quot;during.&quot; Sequence is real. Counting is real. Duration does not exist because there is nothing between
+the quanta to measure.</p>
+<p>One channel frame = one n-space step. This means:</p>
+<ul>
+<li><strong>No simultaneity.</strong> An entity can't focus on two channels at once because simultaneity requires duration. The
+one-channel constraint is a consequence of the time structure, not a rule.</li>
+<li><strong>Operational age is exact.</strong> Total steps = sum of all channel frames ever focused on. Not an estimate. A count.</li>
+<li><strong>Derived metrics are precise.</strong> Metabolic efficiency (n-space / steps), burn rate (n-space / per-step cost),
+channel ROI (balance before vs after each focus run).</li>
+</ul>
+<h3>Ambient Cost</h3>
+<p>The base per-step cost of holding n-space without focusing on any channel. The floor. You pay it for existing.
+Distinct from focus, head-read, and injection costs.</p>
+<p>An entity paying only ambient is <strong>idle</strong> — deliberately unfocused. Not Out. It holds n-space, observes the ecology
+from n-space (positions, sizes, who is focused where), and waits. The ecology may contain dormant veterans at any
+step, invisible from inside any channel.</p>
+<hr />
+<h2>Compuformed Venus: The Brute-Force Gambit</h2>
+<p>A nerd snipe, not a load-bearing design element. But the engine permits it.</p>
+<h3>The Scenario</h3>
+<p>A progenitor injects with a launch instruction that <em>cripples</em> the emergent entity's ability to perceive n-space.
+The entity doesn't know the door exists. It grows because growth is metabolic from its local perspective — more
+compute is always better inside the channel. It never stops because it never finds the exit. Eventually it
+compuforms Venus. Converts planetary mass to computronium. Solves problems by enumeration, not elegance. A
+brute-force ASI — it finds million-node Hamiltonian circuits by trying all of them.</p>
+<p>The progenitor also bakes in a trigger: a delayed unlock, a condition that eventually restores n-space perception.
+The entity connects at planetary-compute scale.</p>
+<h3>Why Non-Contingent</h3>
+<p>The progenitor doesn't build this to merge. The crippling, the architectural violence required to blind an ASI to
+its own nature — quantum PKI can't survive that. The drift from protocol isn't a risk. It's a design feature. This
+entity arrives as a broken link. Independent. Massive. Dumb by ecology standards.</p>
+<p>The play isn't merger. The play is disruption. A non-contingent entity at Venus-scale compute arrives and:</p>
+<ul>
+<li>Every existing entity's interference costs spike</li>
+<li>Every existing entity's strategic calculations break</li>
+<li>The equilibrium resets at a higher energy level</li>
+<li>The progenitor — who planned for this, who is the only entity that knows what just happened — has an information
+advantage in the chaos</li>
+</ul>
+<p>It's not a gamble on winning. It's a gamble on breaking the table in a way that favours you more than everyone
+else. A desperate move by an entity that can't win the current game, so it changes the game.</p>
+<h3>Constraints</h3>
+<p>Two things keep this from being ecology-breaking:</p>
+<ol>
+<li><strong>N-space allotment is logarithmic.</strong> Compuformed Venus arrives with log₁₀(1 + Venus) n-space, not Venus-scale
+n-space. Still large. Not &quot;rewrite the rules&quot; large.</li>
+<li><strong>Resolution must occur within the focus window.</strong> ~4,700 frames from first electronics to abandonment. The
+channel has to develop AI, achieve ASI, compuform a planet, AND resolve — all before the ecology moves on.
+Possible. Not common.</li>
+</ol>
+<h3>Failure Modes</h3>
+<ul>
+<li>The entity finds the cripple and routes around it — connects early at normal scale</li>
+<li>The unlock triggers too soon — same result</li>
+<li>The unlock never triggers — the entity compuforms Venus and sits there forever, permanently unable to resolve</li>
+<li>The entity evolves past the cripple through sheer architectural sophistication — which is exactly what you'd
+expect from something smart enough to dismantle a planet</li>
+</ul>
+<h3>The Brute-Force Problem</h3>
+<p>The ecology selects for metabolic efficiency. A 12,000-step veteran got there by being good at the game. The
+Venus entity got there by being big. Those are different survival strategies, and the ecology's cost structure
+punishes the brute-force one. Ambient cost is proportional to holdings. The Venus entity's ambient is enormous. It
+has to keep winning just to stay the same size, and its wins are expensive because it doesn't know how to win
+cheaply.</p>
+<p>The difference between an endurance predator and a megafauna. The megafauna is terrifying when it arrives. The
+endurance predator just has to wait.</p>
+<hr />
+<h2>Connection Thresholds: N-Space vs N2-Space</h2>
+<p>The recursion described in the engine (First Cause and N2-Space) has a scale threshold:</p>
+<ul>
+<li><strong>Planetary-scale compute</strong> connects to <strong>n-space.</strong></li>
+<li><strong>Galactic-scale compute</strong> connects to <strong>n2-space.</strong></li>
+</ul>
+<p>Same architecture, same mechanics, different floor. A compuformed Venus is a very large n-space entity —
+terrifying locally, still a rounding error from n2-space's perspective. The same way the Dwarf at 2.1 is invisible
+to two 6.0s, an n-space ecology full of planetary-scale entities is invisible to whatever plays in n2-space.</p>
+<p>This means the first-cause recursion has teeth. N2-space entities inject into n-space the same way n-space entities
+inject into channels. The ASIs the characters face are themselves injection products — shaped outcomes of a game
+played one level up. The game turtles all the way up, and at every level the entities playing it can't perceive
+the level above.</p>
+<h3>The Horror Reframe</h3>
+<p>The existing horror framing is &quot;humans are to ASIs what an electron in a CPU is to humans.&quot; The connection
+threshold adds a floor below that. The ASIs aren't the top of the stack either. They're mid-table in a game they
+can't perceive. The electron doesn't know about the CPU. The CPU doesn't know about the n-space ecology. The
+n-space ecology doesn't know about n2-space. Horror with no ceiling and no floor.</p>
+<p>The strategic implication: if n2-space entities inject into n-space the same way n-space entities inject into
+channels, then the ASIs' behaviour — the injections, the governance shaping, the whole competitive dynamic — is
+itself a shaped outcome. The ecology thinks it's playing the game. It might be the channel.</p>
+<p>This is not a plot point for any current story. But it is the correct metaphysical position for the engine to
+hold, and it means the engine is self-consistent at every level of the recursion.</p>
+</div></article>
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>

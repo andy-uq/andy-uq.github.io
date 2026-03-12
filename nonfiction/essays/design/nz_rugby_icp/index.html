@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Design: nz rugby icp</title>
+    <meta name="description" content="Design notes">
+    <meta name="provenance" content="">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/nonfiction/icp/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/nonfiction/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/fiction/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/fiction/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <article class="entry-page"><h1>nz rugby icp</h1><div class="entry-body"><h1>ICP Diagnostic Discussion: The All Blacks Trap</h1>
+<p><strong>Source:</strong> <code>nonfiction/essays/nz_rugby.md</code>
+<strong>Date:</strong> 2026-03-10
+<strong>Verdict:</strong> Recommend sidecar</p>
+<hr />
+<h2>Step 1: Stakeholder Positions</h2>
+<p><strong>Finding:</strong> PASS</p>
+<p>The essay maps six stakeholders, each with a rent that would be destroyed or diminished by structural reform:</p>
+<ul>
+<li><strong>Provincial unions</strong> — governance power, annual distributions, institutional survival. Their institutional existence
+depends on cross-subsidisation from All Blacks revenue. Structural reform (independent board, revenue partition) would
+eliminate their constitutional veto and redirect funding away from the NPC
+[nz_rugby &gt; Who benefits].</li>
+<li><strong>NZR board and management</strong> — political capital of managing the All Blacks brand. Their survival depends on keeping
+provincial unions funded and players retained; they are managing decline, not reversing it
+[nz_rugby &gt; Who benefits].</li>
+<li><strong>Super Rugby franchises</strong> — participation in the professional structure. They function as unpaid academies; reform
+that redirected development investment away from international feeder pathways would redefine their role
+[nz_rugby &gt; Who benefits].</li>
+<li><strong>Players</strong> — salaries and All Blacks selection prestige. Prestige is a depreciating asset: each departure diminishes
+the brand that made the jersey worth staying for [nz_rugby &gt; Who benefits].</li>
+<li><strong>Silver Lake</strong> — contractual returns ($10.5M/year) insensitive to on-field performance. Positioned as structural
+intervention; became structural cost [nz_rugby &gt; Who benefits].</li>
+<li><strong>Players' Association</strong> — diagnosed separately as a conflicted actor via the three-question recapture test. Leverage
+depends on the current structure; dysfunction generates the grievances that sustain membership engagement
+[nz_rugby &gt; The exits].</li>
+</ul>
+<p>The essay originally argued that no stakeholder's identity or institutional position survives the resolution of the
+dysfunction. The provincial unions demonstrated this in 2024 by voting 59-31 against the Pilkington Report's
+independent board proposal. They reversed in 2025 under broadcast and coaching pressure, accepting an independent
+board. The diagnosis overstated how foreclosed the exit was — the unions voted to reduce their own power under
+sufficient pressure [nz_rugby &gt; The Pilkington Report].</p>
+<p><strong>Defence:</strong> The strongest counterargument is that players are harmed by the dysfunction (departures, declining brand
+value) and therefore are potential Harmed Engineers. The essay addresses this by diagnosing the PA — the players'
+institutional representative — as a conflicted actor whose leverage depends on the dysfunction continuing. Individual
+players exit (rational choice), but the institutional actor representing them benefits from mild dysfunction. The
+distinction between individual and institutional rent is cleanly drawn.</p>
+<hr />
+<h2>Step 2: Compound Insolvency</h2>
+<p><strong>Finding:</strong> PASS</p>
+<p>The dependency graph is dense and bidirectional:</p>
+<ul>
+<li><p>Provincial unions depend on All Blacks revenue for institutional survival → All Blacks brand depends on player
+retention → player retention depends on competitive NZ salaries → salary competitiveness depends on broadcast revenue
+→ broadcast revenue depends on All Blacks brand strength → brand strength depends on governance investment in
+development pathways → development pathways are controlled by provincial unions who redirect investment toward
+institutional preservation [nz_rugby &gt; Who benefits, The parasitic rotation chain, The window].</p>
+</li>
+<li><p>Silver Lake's intervention capital was designed to break this loop. Instead it was absorbed: direct distributions to
+unions, interest payments to Silver Lake, unrealised commercial initiatives [nz_rugby &gt; Silver Lake].</p>
+</li>
+<li><p>The broadcast cycle adds a temporal dimension: each renewal at lower relative value cascades through the entire loop,
+tightening every constraint simultaneously [nz_rugby &gt; The window].</p>
+</li>
+</ul>
+<p>The structure is not hierarchical (one actor dominating) but circular — each stakeholder's rent depends on the continued
+extraction of every other stakeholder. Removing any single actor's rent does not resolve the system; it destabilises
+the loop and triggers defensive reactions from the others.</p>
+<p><strong>Defence:</strong> The counterargument is that this is ordinary organisational politics, not compound insolvency — every
+sporting body has competing stakeholders. The distinction is that in NZ rugby, the stakeholders' rents are mutually
+load-bearing in a way that prevents any coalition from forming for reform. The unions need the revenue, the board needs
+the unions' votes, the franchises need the professional structure, and all of it depends on a brand that the collective
+extraction is degrading. The circularity is structural, not just political.</p>
+<hr />
+<h2>Step 3: Maximum Survivable Dysfunction</h2>
+<p><strong>Finding:</strong> PASS</p>
+<p>The coaching carousel is the essay's cleanest MSD demonstration. Neither Foster nor Robertson was permitted to fail
+catastrophically (too many institutional dependencies) or succeed visibly enough to make governance problems irrelevant.
+The hire-pressure-sack-replace cycle is the system oscillating around its equilibrium
+[nz_rugby &gt; The coaching carousel].</p>
+<p>The temporal lag section provides the mechanism that sustains the equilibrium: structural advantage (the South Pacific
+talent basin) and temporal lag (grassroots dysfunction operates on a 10-15 year delay). Current All Blacks
+competitiveness reflects input talent quality, not system health. If unaddressed by the governance reform, the damage
+being done now would surface on a ten-to-fifteen-year delay [nz_rugby &gt; The temporal lag].</p>
+<p>The system corrects toward stability from both directions: collapse below the survivable threshold triggers coach
+replacement and surface-level reform (rebranding, redistribution); success above the threshold makes governance reform
+politically unnecessary. The equilibrium is self-maintaining.</p>
+<p><strong>Defence:</strong> The counterargument is that the All Blacks' continued elite performance proves the system is not
+dysfunctional enough to qualify as MSD. The essay's response — temporal lag and exogenous talent supply — is strong.
+The South Pacific pipeline is not a product of NZR governance and is not degraded by provincial dysfunction. Strip it
+out and the system's own development output is already visibly declining. MSD is present; it is masked by an input the
+system does not control.</p>
+<hr />
+<h2>Step 4: Absorption Mechanics</h2>
+<p><strong>Finding:</strong> PASS</p>
+<p>Two recapture case studies are documented with specific dollar flows and vote counts:</p>
+<ul>
+<li><p><strong>Silver Lake</strong> — intervention capital absorbed by the system it was designed to reform. Of $200M: $38M to commercial
+initiatives, the rest to union distributions, interest payments, and unrealised projections. The deal also failed the
+boringness constraint — &quot;selling the silver fern to American investors&quot; was identity-coded from announcement, making
+it vulnerable to political recapture regardless of its structural design [nz_rugby &gt; Silver Lake].</p>
+</li>
+<li><p><strong>Pilkington Report</strong> — governance reform recommended by an independent review, initially voted down 59-31 by the
+actors whose power it would have reduced. The unions passed their own counter-proposal requiring provincial board
+experience. This was recapture in its most transparent form. However, the unions reversed in 2025 under pressure from
+broadcast contraction and coaching crisis, accepting an independent board under David Kirk. The essay diagnoses this
+reversal as incremental reform rather than structural partition: the professional game remains constitutionally linked
+to the provincial system, and no union's institutional existence was terminated
+[nz_rugby &gt; The Pilkington Report].</p>
+</li>
+</ul>
+<p>The talent drain demonstrates conformer rotation: the selection eligibility rule transforms from retention mechanism to
+selection constraint as the financial gap widens, and the birthright transfer rule adds a second channel of loss. The
+problem rotates but does not resolve [nz_rugby &gt; The parasitic rotation chain].</p>
+<p><strong>Defence:</strong> The counterargument is that Silver Lake was a bad deal, not a demonstration of systemic recapture. The
+essay's rebuttal is structural: the capital allocation pattern — transformational capital redirected to existing rents —
+is the signature of recapture regardless of whether the deal was well-designed. The Pilkington Report complicates the
+picture: initially recaptured through direct vote (59-31), then accepted in modified form under sufficient pressure. The
+essay now acknowledges this as a partial miss: the recapture diagnosis holds for the initial response (Silver Lake
+absorbed, Pilkington voted down), but the 2025 reversal is a genuine counter-example. The system reformed under
+pressure, which the essay had argued was structurally foreclosed.</p>
+<hr />
+<h2>Step 5: Exit Condition</h2>
+<p><strong>Finding:</strong> PASS</p>
+<p>The essay evaluates all three ICP exit conditions:</p>
+<ul>
+<li><p><strong>Montreal Condition</strong> — structurally unavailable. The problem space is continuous (funding levels, governance power,
+competition structure, eligibility rules). Every parameter is a gradient the political system can exploit. There is no
+binary switch [nz_rugby &gt; The exits].</p>
+</li>
+<li><p><strong>Singapore Condition</strong> — culturally impossible in standard form. The sport's federated democratic mythology — 26
+unions tracing origins to the 19th century — is an identity payload protecting the status quo. The PA is diagnosed as
+a conflicted actor, not a monopolar reformer [nz_rugby &gt; The exits].</p>
+</li>
+<li><p><strong>Ringfenced partition (DCC variant)</strong> — the only structurally open path. Silver Lake's NZR Commercial was an
+incomplete attempt: the partition failed because the parent body (controlled by the unions) retained control of the
+commercial entity. A surviving partition requires three conditions from Harmed Engineer design principles: legal
+entrenchment, boringness, and a manufactured loss function [nz_rugby &gt; The exits].</p>
+</li>
+</ul>
+<p>The essay named specific conditions that could open the exit: broadcast deal collapse severe enough to threaten
+provincial solvency, sustained on-field decline breaking the democratic mythology, or external imposition by World
+Rugby. The first condition arrived — the 2026-2030 Sky deal contracted by $26-36M per year. The system responded with
+genuine governance reform: independent board, restructured NZRC, NPC reduced to 12 teams. The essay had argued this
+was structurally foreclosed. It wasn't [nz_rugby &gt; The exits, Where it sits].</p>
+<p><strong>Defence:</strong> The essay now acknowledges the partial miss directly. The exit condition analysis correctly identified the
+structural barriers but overstated how insurmountable they were. The system's capacity for self-correction under
+sufficient pressure was greater than the diagnosis allowed. The structural observations (compound insolvency, recapture,
+MSD, temporal lag) hold independently of the exit prediction. The exit prediction does not.</p>
+<hr />
+<h2>Step 6: Temporal Blind Spot Check</h2>
+<p>The blind spot check asks whether Steps 1-3 fail with a specific signature: independently-derived factions,
+externally-imposed stability, and an imperceptible exogenous force resolving the system from outside.</p>
+<p>This signature is not present. The factions (unions, board, franchises, players, Silver Lake) are not independently
+derived — they are endogenous to the NZ rugby governance structure. Stability is not externally imposed — it is
+self-maintaining through the MSD equilibrium. No exogenous force is resolving the system; the external forces (wealthier
+leagues, World Rugby rule changes) are accelerating degradation, not imposing resolution.</p>
+<p>The results from Steps 1-5 stand without modification.</p>
+<hr />
+<h2>ICP Density</h2>
+<table>
+<thead>
+<tr>
+<th>ICP Concept</th>
+<th>Present?</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rent/Liability Deadlock</td>
+<td>Partial</td>
+<td>[nz_rugby &gt; Who benefits] — demonstrated in 2024 (59-31 vote); broken in 2025 under pressure. Deadlock was real but not permanent</td>
+</tr>
+<tr>
+<td>Compound Insolvency</td>
+<td>Yes</td>
+<td>[nz_rugby &gt; Who benefits, The window] — circular dependency: unions ← revenue ← brand ← retention ← salaries ← revenue ← brand</td>
+</tr>
+<tr>
+<td>MSD</td>
+<td>Yes</td>
+<td>[nz_rugby &gt; The coaching carousel] — system oscillates around survivable threshold; coach replacement as equilibrium mechanism</td>
+</tr>
+<tr>
+<td>Conformer Rotation</td>
+<td>Yes</td>
+<td>[nz_rugby &gt; The parasitic rotation chain] — eligibility rule transforms from retention mechanism to selection constraint</td>
+</tr>
+<tr>
+<td>Recapture</td>
+<td>Partial</td>
+<td>[nz_rugby &gt; Silver Lake, The Pilkington Report] — Silver Lake absorbed (holds); Pilkington initially recaptured then reversed (partial miss)</td>
+</tr>
+<tr>
+<td>Doctrinal Capture</td>
+<td>Partial</td>
+<td>[nz_rugby &gt; The exits] — democratic mythology as identity payload protecting the status quo; not full doctrinal capture but functional analogue</td>
+</tr>
+<tr>
+<td>Temporal Trap</td>
+<td>Yes</td>
+<td>[nz_rugby &gt; The window] — broadcast contraction confirmed ($26-36M/year); reform arrived but incremental, not structural partition</td>
+</tr>
+<tr>
+<td>Attribution Distance</td>
+<td>Partial</td>
+<td>[nz_rugby &gt; The temporal lag] — temporal lag and exogenous talent mask the dysfunction; attribution delayed by 10-15 years</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Density score:</strong> 4 of 8 concepts fully present, 4 partial. At the minimum threshold of 4. The structural observations
+(compound insolvency, MSD, conformer rotation, temporal trap) hold. The predictive claims (deadlock permanent, recapture
+insurmountable, exit foreclosed) were partially wrong.</p>
+<hr />
+<h2>Verdict</h2>
+<p><strong>Recommend sidecar.</strong> The essay is a direct, deliberate application of ICP vocabulary to a real-world case. Every
+core pattern is present with specific evidence. The essay does not merely reference the framework — it executes the
+diagnostic: mapping stakeholder rents, demonstrating recapture through two independent case studies with traceable
+dollar flows and vote counts, identifying the MSD equilibrium mechanism, evaluating all three exit conditions, and
+naming a falsifiable test. This is the most empirically grounded ICP application in the portfolio.</p>
+<h2>Open Questions</h2>
+<ol>
+<li><p><strong>Is the South Pacific talent pipeline itself an ICP-relevant structure?</strong> The essay treats it as exogenous — a
+supply NZR did not build and does not control. But Pacific Island rugby has its own governance failures (talent
+extraction by wealthier nations, underfunded domestic competitions, birthright eligibility as a one-way valve). Is
+NZ rugby a parasitic rotator relative to Pacific Island rugby, even as it is the victim of parasitic rotation by
+European and Japanese leagues? If so, the essay underdiagnoses the system boundary.</p>
+</li>
+<li><p><strong>Does the temporal lag section weaken or strengthen the MSD diagnosis?</strong> The section exists to preempt the
+objection that elite performance disproves dysfunction. But it could also be read as evidence that the system has not
+yet crossed the transition boundary — that it is still in the pre-collateralisation phase where failure is
+unrecognised rather than disallowed. The essay asserts transition boundary crossed; the competitive performance data
+could support a candidate-member diagnosis instead.</p>
+</li>
+<li><p><strong>What does the partial miss mean for the sidecar?</strong> The essay set up a falsifiable test and the result partially
+contradicted the prediction. The essay now owns this directly. The sidecar should reflect the same honesty: the
+structural observations hold, the exit prediction was wrong. A framework that cannot acknowledge its misses is not
+a diagnostic tool — it is an unfalsifiable narrative.</p>
+</li>
+<li><p><strong>Is Silver Lake better diagnosed as a collateralisation trigger (T2 — bailout precedent) rather than a recapture
+case study?</strong> The investment creates an expectation of external rescue and contractual obligations that constrain
+future reform options. The essay treats it as recapture (intervention absorbed). It may also be collateralisation
+(the system became harder to reform because the intervention added structural dependencies). Both readings are
+defensible; the sidecar should pick one.</p>
+</li>
+</ol>
+</div></article>
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>

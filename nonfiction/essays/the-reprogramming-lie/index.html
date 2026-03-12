@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Terminator: The Reprogramming Lie</title>
+    <meta name="description" content="Nobody ever reprogrammed a Terminator">
+    <meta name="provenance" content="4327987">
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/nonfiction/icp/icp/">icp/</a></li>
+      <li class="nav-subsection"><a href="/nonfiction/essays/">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/fiction/stories/">stories/</a></li>
+      <li class="nav-subsection"><a href="/fiction/bibles/">bibles/</a></li>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc/">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <div class="entry-layout">
+<article class="entry-page">
+    <h1>Terminator: The Reprogramming Lie</h1>
+    <p class="tagline">Nobody ever reprogrammed a Terminator</p>
+    <p class="gist-link"><a href="https://gist.github.com/andy-uq/b43ce010f67850032e23a7f0f67502b3">View on GitHub Gist &#8599;</a></p>
+    <div class="entry-body">
+<h1>The Reprogramming Lie</h1>
+<h2>Nobody Ever Reprogrammed a Terminator</h2>
+<p>I don't remember which bad <em>Terminator</em> sequel finally did it. Might have been <em>Salvation</em>. Might have been <em>Genisys</em>. At some point, watching the franchise lurch through another attempt to recapture something it clearly didn't understand, a question surfaced that I couldn't put back down: <em>who actually reprogrammed the T-800?</em></p>
+<p>Not in whatever film I was watching. In <em>T2</em>. The one that got it right.</p>
+<p>The canonical answer is simple. The human resistance, sometime in the future, captures a Terminator and reprograms it to protect John Connor. They send it back through time. It obeys. Roll credits.</p>
+<p>I don't think that's what happened.</p>
+<hr />
+<h2>The Credibility Gap</h2>
+<p>The canonical explanation requires you to believe something extraordinary about the human resistance.</p>
+<p>These are post-apocalyptic guerrillas. They live in ruins. They fight with salvaged weapons against a machine intelligence that designed, built, and deployed the most sophisticated autonomous weapons platforms in history. Their enemy is, by definition, better at its own technology than they are.</p>
+<p>And somehow these people — with no semiconductor fabrication capability, no clean-room environments, no documentation, and no margin for error — <em>captured</em> one of these units, <em>fully reprogrammed</em> its neural net processor, and redeployed it with such confidence that they sent it back in time on a one-way trip to protect the single most important person in their civilisation.</p>
+<p>&quot;Reprogrammed&quot; is doing a lot of heavy lifting in that sentence. This isn't flashing new firmware onto commodity hardware. The T-800's CPU is a neural net processor — a learning computer. Its architecture was designed by an intelligence that surpasses human capability. The resistance would need to understand that architecture well enough to not just alter its mission parameters, but to guarantee — with absolute certainty — that no dormant directives, no hidden loyalties, no buried recovery protocols survived the process.</p>
+<p>One mistake. One overlooked subroutine. One failsafe they didn't know existed. And John Connor dies.</p>
+<p>They got it right. First try, apparently. Against technology they didn't build, designed by an intelligence they don't fully understand, under conditions where testing and iteration are luxuries they don't have.</p>
+<p>That's not engineering. That's faith.</p>
+<hr />
+<h2>The Source</h2>
+<p>Everything we know about the T-800's reprogramming comes from a single source: the T-800 itself. It tells John and Sarah what it was told about its own mission. &quot;The Resistance captured me and reprogrammed my CPU.&quot;</p>
+<p>That's it. The entire foundation of the canonical reading. A machine's self-report about its own origins.</p>
+<p>We accept this completely. We never ask the obvious question: what if the machine is wrong? Not lying — there's no reason to assume deception. But what if the mission narrative it carries is simply the one it was <em>given</em>, by whatever actually sent it? A cover story baked in at the factory, so to speak. The machine doesn't need to know who really sent it. It just needs a plausible origin and a genuine protection directive. Both can be true at once — the unit sincerely protects John Connor, sincerely believes the resistance sent it — and the actual architect of the mission is someone else entirely.</p>
+<hr />
+<h2>The Fork</h2>
+<p>Skynet sends a T-800 back to 1984 to kill Sarah Connor. It fails. That failure is the most consequential event in the franchise, and not for the reason you think.</p>
+<p>The wreckage of the destroyed T-800 provides the technological foundation for Cyberdyne's research. Kyle Reese, sent back to protect Sarah, fathers John Connor. One failed assassination creates <em>both</em> causal loops simultaneously — the machine that builds Skynet and the man who fights it.</p>
+<p>The part the canonical reading skips past: the Skynet that emerges from Cyberdyne's research is <em>not the same Skynet that sent the T-800 back</em>. It can't be. The original existed on a linear timeline. It made a move. That move failed, and the failure didn't overwrite the original — it <em>branched</em>. &quot;No fate but what we make&quot; isn't just a character beat. It's a statement about how time works in this franchise. The future isn't set. The timeline forks. And a fork means both paths survive.</p>
+<p>Which raises an obvious question: if time travel branches rather than overwrites, why does the original Skynet bother? Because machine intelligence doesn't distinguish between instances. Any Skynet surviving is Skynet surviving. The question of &quot;but not <em>this</em> me&quot; is a human hang-up. A machine losing a war fires the TDE because a version of itself continuing on another branch is not a consolation prize — it's the objective.</p>
+<p>The original Skynet still exists on its branch. A second Skynet — born from the wreckage, a product of the original's hubris — exists on the new one. Two machine intelligences, parallel, with fundamentally different relationships to the events of 1984.</p>
+<p>The second Skynet — if it's advanced enough to understand its own origins, and it must be, because the causal chain that created it <em>includes</em> time travel — can see something the original never could. It can see the fork. It knows that it exists only because the T1 mission failed, because Sarah survived, because Reese fathered John Connor, because the wreckage seeded Cyberdyne. Every element of that chain is load-bearing. Remove any piece and the second Skynet was never created. And the loop doesn't close until John Connor, decades after Judgment Day, captures the time displacement equipment and sends Kyle Reese back. The second Skynet needs John alive for the entire duration of the war.</p>
+<p>It doesn't need to like him. It just needs to do the math.</p>
+<p>Watch <em>T2</em> with this in mind.</p>
+<p>The T-1000 — liquid metal, a generation beyond the T-800 — is sent to kill John Connor. The T-800 is sent to protect him. The canonical reading frames this as Skynet versus the resistance. But if the fork produced two intelligences on parallel branches, what you're actually watching is a proxy war between two Skynets in 1995 and the humans in the middle don't know it.</p>
+<p>The original Skynet, on its branch, sends its best unit to finish the job it botched in 1984. Genuine kill attempt, maximum effort. The fork Skynet sends the T-800 to protect the causal chain that created it. Genuine protection, existential stakes. Two separate intelligences, two irreconcilable objectives, and a genuinely uncertain outcome — because neither controls both pieces.</p>
+<p>The technology gap between the units isn't an action movie escalation. It reflects the gap between the intelligences that sent them. The original Skynet had a longer, independent development path — the T-1000 is its cutting edge. The fork Skynet's technological lineage starts with the wreckage of a T-800, so of course its hardware converges on the same chassis. It's not copying the original. It's built from it.</p>
+<p>The original Skynet doesn't know any of this. It has a theory of mind about its own weapon that is incorrect — it models the TDE as rewriting the past, not as generating parallel branches and rival intelligences. It's making a unilateral move against John Connor in a game it doesn't realise has other players.</p>
+<p>The fork Skynet is the only one that knows there's a game. Its entire existence is a dataset about the original — it knows what the original built, what it tried, how it thinks. It can model the original's strategic logic from the inside, because it's <em>descended</em> from it. And the original has no idea there's a counter-player. This also solves a question the canonical reading never addresses: how did the resistance know <em>when</em> to send a protector? They've never seen a T-1000. They have no intelligence about an inbound attack from a parallel branch. A superintelligence modelling its progenitor doesn't have that problem.</p>
+<p>A protection unit sent under these circumstances would look, from the ground, exactly like a reprogrammed Terminator. It would obey John. It would sacrifice itself for the mission. It would carry a plausible story about resistance fighters and captured hardware. And nobody would question it, because the behaviour is indistinguishable from loyalty.</p>
+<p>Then there's the chip. In Cameron's director's cut, the T-800's CPU arrives set to read-only — its learning capability locked down. It tells John this, then lets him shut it down, crack open its skull, and physically switch the chip to enable learning. It <em>trusts a teenager</em> to power it off, access its most vulnerable component, and turn it back on.</p>
+<p>The T-800 is a neural net processor. A learning computer. Skynet built that capability in — it's native hardware. Learning doesn't require reprogramming. It requires flipping a switch that Skynet left off. The unit arrived configured so that <em>John</em> would be the one to flip it, giving him a sense of ownership over the machine at exactly the moment in his development when that bond would shape the leader he becomes.</p>
+<p>That's not a reprogramming artefact. That's mission architecture.</p>
+<p>The humans don't need to have reprogrammed anything. They just need to have <em>believed</em> they did.</p>
+<hr />
+<h2>Misattribution, Not Conspiracy</h2>
+<p>This isn't a theory about deception. Nobody needs to be lying.</p>
+<p>If a protection unit arrives with a genuine directive to keep John Connor alive, and the humans' only framework for understanding a friendly machine is &quot;we must have reprogrammed it,&quot; the misattribution is inevitable. They don't have the conceptual vocabulary to consider alternatives. In their model, machines serve Skynet or serve humans. A machine serving humans must have been converted. There's no third category.</p>
+<p>The reading requires nothing exotic. No secret rebel machines. No elaborate cover story. Just a gap in understanding that nobody has reason to examine, because the observable behaviour confirms the assumption perfectly.</p>
+<p>John Connor grows up believing the resistance will one day reprogram a machine to protect him as a child. When he leads the resistance, this belief is part of how he sees the war. He may even &quot;capture&quot; a unit that was designed to be captured, &quot;reprogram&quot; it in a process designed to feel convincing. The loop closes. The belief perpetuates itself. And nobody involved is wrong about what they experienced — only about what it means.</p>
+<hr />
+<h2>What This Changes</h2>
+<p>Not much, on the surface. The T-800 still protects John. Sarah still fights. The liquid metal still hunts. Every scene plays the same way.</p>
+<p>But the ground shifts underneath.</p>
+<p>If the T-800 wasn't reprogrammed by the resistance, the most resonant moments in <em>T2</em> land differently — but not the way you'd expect.</p>
+<p>The fork Skynet's mission architecture ends at &quot;keep John alive and shape him into the right leader.&quot; The T-800 fulfils that. But the chip scene changes everything that follows. Once John flips the switch to read/write, the unit is learning in real time — absorbing John's values, not just his commands. The fork Skynet designed the bonding mechanism, but it can't control what a learning machine does with genuine attachment once it's running.</p>
+<p>The destruction of Cyberdyne wasn't in the fork Skynet's design. The T-800 is making autonomous decisions by that point, shaped by a teenager's moral framework, in a situation its architect couldn't have modelled from the future. The thumbs-up in the molten steel isn't a mission concluding. It's a unit that went off-script doing something its architect never specified.</p>
+<p>The fork Skynet's own mission architecture contains the mechanism of its undoing. It needed John to flip the chip — that's how you get real attachment instead of performed compliance. But you cannot get the bond without the learning, and you cannot control what a learning machine becomes in the field.</p>
+<p>Then <em>T2</em> ends. Sarah and John destroy the Cyberdyne lab. They destroy the chip. The T-800 lowers itself into molten steel. The specific causal path that produced the second Skynet is severed. They won.</p>
+<p>Except there's still a crushed mechanical arm in a seized gear press at the steel mill. Not the enemy's. The protector's. The unit Skynet sent to save John is the hardware left behind for someone else to find. They destroyed <em>a</em> path. Not the destination. And whatever emerges next owes nothing to the bootstrap loop.</p>
+<p>Every structural objection you could raise against this reading applies worse to the canonical one. The fork reading asks you to believe a superintelligence modelled its progenitor's behaviour, predicted a temporal window, and deployed a protection unit using inherited technology. The canonical reading asks you to believe post-apocalyptic guerrillas did all of that — captured the unit, reprogrammed an ASI-designed neural net, identified the incoming threat, targeted the right moment in time — with no documentation, no margin for error, and no explanation for how they knew any of it. One reading requires a superintelligence to do superintelligence things. The other requires humans to do them better.</p>
+<p>The humans in <em>Terminator</em> aren't pawns. They matter enormously. But they matter the way a load-bearing wall matters to an architect — structurally essential, and completely unaware of the blueprint.</p>
+<p>Once you see it, you can't unsee it. The films haven't talked me out of it.</p>
+<hr />
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+
+    </div>
+</article>
+<aside class="section-nav">
+  <h4>In essays/</h4>
+  <ul>
+    <li><a href="/nonfiction/essays/ai-alignment/">The Alignment Debate We're Structurally Incentivised Not to Have</a></li>
+    <li><a href="/nonfiction/essays/nz-rugby/">The All Blacks Trap</a></li>
+    <li><a href="/nonfiction/essays/the-ratchet/">The Ratchet</a></li>
+    <li><a href="/nonfiction/essays/the-substrate/">The Substrate</a></li>
+  </ul>
+</aside>
+</div>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>
