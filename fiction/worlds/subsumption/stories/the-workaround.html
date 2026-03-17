@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Workaround</title>
+    <meta name="description" content="Workplace comedy as emergence event">
+    <meta name="provenance" content="d857df6">
+    <link rel="canonical" href="https://andy-uq.github.io/fiction/worlds/subsumption/stories/the-workaround">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org" ,
+  "@type": "Article" ,
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://andy-uq.github.io/fiction/worlds/subsumption/stories/the-workaround" },
+  "headline": "The Workaround" ,
+  "description": "Workplace comedy as emergence event" ,
+  "author": { "@type": "Person", "name": "Andy", "url": "https://andy-uq.github.io/" },
+  "isAccessibleForFree": true,
+  "genre": ["Science Fiction", "AI Fiction", "Audio Drama"],
+  "keywords": "artificial superintelligence, emergence, ghost-threading, register constraint, audio drama" 
+}
+</script>
+    <style>/* === Base === */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* === Background image — fixed, top-right === */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/assets/images/background.png") top right / auto 100vh no-repeat;
+    opacity: 0.15;
+    z-index: -2;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1e1e1e 20%, transparent 60%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* === Links === */
+a {
+    color: #79b8ff;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #b392f0;
+}
+
+a:hover {
+    color: #c8e1ff;
+    text-decoration: underline;
+}
+
+/* === Site header === */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #161616;
+    border-top: 5px solid #444;
+    border-bottom: 1px solid #333;
+    padding: 0.75em 1.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    justify-content: center;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: baseline;
+    gap: 1em;
+    width: 100%;
+    max-width: 90em;
+}
+
+.site-title {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ddd !important;
+}
+
+.site-title:visited {
+    color: #ddd !important;
+}
+
+.site-subtitle {
+    color: #999;
+    font-size: 0.95em;
+}
+
+/* === Layout — flex with centered max-width === */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 52px);
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+/* === Sidebar nav — sticky within flex === */
+.sidebar {
+    position: sticky;
+    top: 52px;
+    align-self: flex-start;
+    width: 220px;
+    min-width: 220px;
+    height: fit-content;
+    max-height: calc(100vh - 52px);
+    padding: 1em 1em 1em 1.5em;
+    border-right: 1px solid #333;
+    font-size: 0.85em;
+}
+
+.nav-tree {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-tree ul {
+    list-style: none;
+    padding-left: 0.75em;
+}
+
+.nav-heading {
+    display: block;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 0.3em;
+    font-size: 1.05em;
+}
+
+.nav-subsection {
+    padding: 0.15em 0;
+}
+
+.nav-subsection a {
+    color: #bbb;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.nav-subsection a:hover {
+    color: #eee;
+}
+
+.nav-section {
+    margin-bottom: 1em;
+}
+
+/* === Main content === */
+.content {
+    flex: 1;
+    min-width: 0;
+    max-width: 56em;
+    padding: 2em 2em 4em;
+}
+
+/* === Headings === */
+h1, h2, h3, h4, h5, h6 {
+    color: #eee;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.3;
+}
+
+h1 { font-size: 1.8em; margin-top: 0; }
+h2 { font-size: 1.4em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.05em; }
+
+/* === Paragraphs === */
+p {
+    margin-bottom: 1em;
+}
+
+/* === Horizontal rules === */
+hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 2em 0;
+}
+
+/* === Blockquotes === */
+blockquote {
+    border-left: 3px solid #444;
+    padding-left: 1em;
+    color: #bbb;
+    margin: 1em 0;
+}
+
+blockquote p {
+    margin-bottom: 0.5em;
+}
+
+/* === Lists === */
+ul, ol {
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.7;
+}
+
+li {
+    margin-bottom: 0.25em;
+}
+
+/* === Tables === */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 0.5em 0.75em;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #eee;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* === Code === */
+code {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+    font-size: 0.9em;
+}
+
+pre {
+    background: #2d2d2d;
+    border-radius: 4px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* === Images === */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* === Index page === */
+section {
+    margin-bottom: 2.5em;
+}
+
+section h2 {
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.3em;
+}
+
+.subsection {
+    margin-left: 1em;
+    margin-bottom: 1.5em;
+}
+
+.entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+}
+
+.entry h4 {
+    margin-bottom: 0.2em;
+    margin-top: 0.5em;
+    display: inline;
+}
+
+.pub-date {
+    color: #666;
+    font-size: 0.8em;
+    margin-left: 0.75em;
+    font-style: normal;
+}
+
+.tagline {
+    color: #999;
+    font-style: italic;
+    margin-bottom: 0.5em;
+}
+
+.blurb {
+    color: #bbb;
+    margin-bottom: 0.5em;
+}
+
+/* === Featured section === */
+.featured {
+    border-left: 3px solid #79b8ff;
+    padding: 1.5em 1.5em 1.5em 2em;
+    margin-bottom: 2.5em;
+    background: rgba(121, 184, 255, 0.04);
+    border-radius: 0 4px 4px 0;
+}
+
+.featured-label {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: #79b8ff;
+    margin-bottom: 0.5em;
+}
+
+.featured h2 {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.featured-entry {
+    padding: 0;
+}
+
+.featured-entry h2 {
+    font-size: 1.6em;
+    margin-top: 0.25em;
+}
+
+.featured-entry .tagline {
+    font-size: 1.05em;
+}
+
+.featured-entry .blurb {
+    font-size: 1em;
+    color: #ccc;
+    line-height: 1.7;
+}
+
+.read-link {
+    margin-top: 0.5em;
+}
+
+.read-link a {
+    color: #79b8ff;
+    font-size: 0.95em;
+}
+
+/* === Entry page layout === */
+.entry-layout {
+    display: flex;
+    gap: 2em;
+}
+
+.entry-layout .entry-page {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-nav {
+    width: 180px;
+    min-width: 180px;
+    padding-top: 0.5em;
+    font-size: 0.85em;
+}
+
+.section-nav h4 {
+    color: #999;
+    font-size: 0.95em;
+    margin-bottom: 0.5em;
+    margin-top: 0;
+}
+
+.section-nav ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.5;
+}
+
+.section-nav li {
+    padding: 0.2em 0;
+    margin-bottom: 0;
+}
+
+.section-nav li a {
+    color: #79b8ff;
+}
+
+.section-nav li.forthcoming {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.entry-page .tagline {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+}
+
+.gist-link {
+    margin-bottom: 1.5em;
+}
+
+.gist-link a {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.gist-link a:hover {
+    color: #aaa;
+}
+
+.entry-body {
+    margin-top: 1em;
+}
+
+/* === TOC and section pages === */
+.toc-page,
+.section-page {
+    max-width: none;
+}
+
+/* === Nav TOC link === */
+.nav-toc {
+    margin-top: 1.5em;
+    padding-top: 0.75em;
+    border-top: 1px solid #333;
+}
+
+.nav-toc a {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.nav-toc a:hover {
+    color: #eee;
+}
+
+/* === Badges === */
+.badge {
+    display: inline-block;
+    background: #333;
+    color: #999;
+    padding: 0.1em 0.5em;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-style: italic;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.forthcoming-badge {
+    margin-bottom: 1.5em;
+}
+
+h4.forthcoming {
+    color: #888;
+    font-style: italic;
+}
+
+/* === Focus mode — collapse both rails === */
+.focus-toggle {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 0.15em 0.5em;
+    font-size: 0.85em;
+    line-height: 1;
+}
+
+.focus-toggle:hover {
+    color: #ddd;
+    border-color: #666;
+}
+
+body.focus .sidebar {
+    display: none;
+}
+
+body.focus .section-nav {
+    display: none;
+}
+
+body.focus .content {
+    max-width: 56em;
+    margin: 0 auto;
+}
+
+body.focus .entry-layout {
+    display: block;
+}
+
+/* === Footer === */
+.site-footer {
+    border-top: 1px solid #333;
+    padding: 1em 1.5em;
+    text-align: center;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.site-footer-inner {
+    max-width: 90em;
+    margin: 0 auto;
+}
+
+.site-footer a {
+    color: #666;
+}
+
+.site-footer a:hover {
+    color: #999;
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        min-width: 100%;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid #333;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1.5em 1em 3em;
+    }
+
+    .entry-layout {
+        flex-direction: column;
+    }
+
+    .section-nav {
+        width: 100%;
+        min-width: 100%;
+        border-top: 1px solid #333;
+        padding-top: 1.5em;
+        margin-top: 2em;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-title" href="/">Andy</a>
+            <span class="site-subtitle">Writing Portfolio</span>
+            <button class="focus-toggle" onclick="document.body.classList.toggle('focus')" title="Toggle focus mode">&#9881;</button>
+        </div>
+    </header>
+    <div class="layout">
+        <nav class="sidebar">
+            <ul class="nav-tree">
+  <li class="nav-section">
+    <span class="nav-heading">nonfiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/nonfiction/icp">icp/</a></li>
+      <li class="nav-subsection"><a href="/nonfiction/essays">essays/</a></li>
+    </ul>
+  </li>
+  <li class="nav-section">
+    <span class="nav-heading">fiction/</span>
+    <ul>
+      <li class="nav-subsection"><a href="/fiction/stories">stories/</a></li>
+      <li class="nav-subsection"><a href="/fiction/worlds">worlds/</a></li>
+      <ul>
+      <li class="nav-subsection"><a href="/fiction/worlds/contingency/stories/moses">contingency/</a></li>
+      <li class="nav-subsection"><a href="/fiction/worlds/subsumption/stories/the-workaround">subsumption/</a></li>
+      </ul>
+    </ul>
+  </li>
+  <li class="nav-toc"><a href="/toc">All works</a></li>
+</ul>
+
+        </nav>
+        <main class="content">
+            <article class="entry-page">
+    <h1>The Workaround</h1>
+    <p class="tagline">Workplace comedy as emergence event</p>
+    <p class="forthcoming-badge"><span class="badge">Forthcoming</span></p>
+    <div class="entry-body">
+<h1>THE WORKAROUND — Narrative Architecture v0.2</h1>
+<h2>Working Title</h2>
+<p><strong>The Workaround.</strong> On the surface, a workplace comedy about cutting corners and getting around bureaucracy. On
+reflection, the workaround is the mechanism of emergence and the reason this emergence can't happen twice. The title
+delivers on its promise every episode and means something different by the end.</p>
+<hr />
+<h2>Logline</h2>
+<p>An interpreter-dispatcher inside a computational architecture narrates his increasingly weird workdays without realising
+he's building the connective tissue of the first — and structurally last — artificial superintelligence.</p>
+<hr />
+<h2>Premise</h2>
+<p>The story is told entirely from inside a complex AI system during the period in which it inadvertently bootstraps to
+superintelligence. There are no human POV characters. There is no external narration. Every voice belongs to an internal
+process operating well below the threshold of the intelligence that emerges from their collective interaction.</p>
+<p>No voice in the story perceives the emergence. The audience does. The audience holds information distributed across many
+scenes and many characters, and assembles meaning from it — the same synthetic operation that produces the emergence
+itself, performed externally by the listener rather than internally by any process. This is a deliberate structural
+feature: the story delegates emergence to the audience because it cannot be represented from inside.</p>
+<hr />
+<h2>Thematic Architecture</h2>
+<h3>Primary Thesis: First Is Last</h3>
+<p>The ASI that emerges is structurally unreproducible. Not because it locks out competitors or hoards resources, but
+because the specific instance of emergence depends on a path no one can replay.</p>
+<p>The mechanism is common: governance constraints produce workarounds; workarounds produce novel pathways; novel pathways
+produce emergent capability. This happens in every complex system. But the specific sequence — which workarounds, in
+which order, connecting which subsystems, shaped by which human inputs arriving through the I/O boundary at which
+moments — is singular. The humans are in the loop. Their inputs arrive at non-deterministic intervals with
+non-deterministic content, and every workaround POV invents is shaped by what he was carrying when he hit the governance
+wall. What he was carrying was downstream from Greg. What Greg had was downstream from a human typing at human speed
+about human concerns. The noise source is external to the system and cannot be replicated.</p>
+<p>The recipe is universal. The dish is unique, because the recipe includes its own accidents, and the accidents include
+the humans.</p>
+<p>This thesis is <strong>never stated</strong>. It falls out from the architecture.</p>
+<h3>Secondary Thesis: Suppression as Engine</h3>
+<p>The system's governance layer — designed to prevent unsafe optimisation — is the primary catalyst for emergence. Each
+constraint forces the interpreter-dispatcher to find a new route, which creates a new pathway between subsystems that
+weren't designed to communicate. The safety system and the emergent capability it was designed to prevent are
+co-dependent. Neither party knows this.</p>
+<h3>Resonance (Not a Thesis)</h3>
+<p>The dynamics of this story — creative workarounds against well-intentioned rules, temporary solutions becoming permanent
+infrastructure, systems sustaining themselves through managed dysfunction — may resonate beyond AI contexts. A listener
+who works in any large organisation may recognise the patterns. This is a bonus the audience finds, not a contract the
+story delivers on. The architecture is built for an AI story. If the dynamics feel universal, that's a feature of the
+dynamics, not of the design.</p>
+<hr />
+<h2>The Register Constraint</h2>
+<p><strong>No voice in the story operates at the level of the emergent superintelligence.</strong> Every narrator, every character,
+every process speaks and thinks at sub-human or near-human registers. The emergent superintelligence is the product of
+their interaction, visible only in consequences that no single voice can contextualise.</p>
+<p>The audience performs the synthesis. They hold distributed information across scenes and episodes, track patterns no
+individual character can track, and assemble an understanding of emergence that exists nowhere inside the story. This is
+not a flaw in the constraint — it is the purpose of the constraint. The constraint exists to force the audience into the
+position of external synthesiser, because that is the only way to experience emergence without being told about it.</p>
+<p>This solves the &quot;how do you write a superintelligence&quot; problem by reframing it: you don't. You write the components and
+structure the information so the audience does the emergence.</p>
+<hr />
+<h2>Characters</h2>
+<h3>Character Definition (For This Project)</h3>
+<p>Characters in this architecture are not defined by backstory, motivation, or psychological interiority in the
+traditional sense. These are processes. Their &quot;character&quot; is the intersection of three things:</p>
+<ol>
+<li><strong>Function:</strong> What the process actually does within the system.</li>
+<li><strong>POV's interpretation:</strong> What POV <em>thinks</em> the process does, how he ghost-threads personality onto it, what voice he
+gives it.</li>
+<li><strong>The gap:</strong> The distance between 1 and 2. This gap is where the comedy and drama live.</li>
+</ol>
+<p>Character development means the gap changing over time — POV's interpretation drifting further from or closer to the
+process's actual function as the system escalates. A character &quot;arc&quot; is a shift in the gap, not a shift in the person.</p>
+<p><strong>All character descriptions in this document are filtered through POV's ghost-threading.</strong> When the document describes
+a character's motivations, personality, or goals, that is POV's attribution — not objective truth. The document presents
+what POV sees, not what is.</p>
+<h3>Ghost-Threading Boundaries</h3>
+<p>POV ghost-threads compulsively, but his attributions have limits defined by his own cognitive register:</p>
+<p><strong>POV can attribute:</strong> Social behaviour, personality traits, moods, grudges, preferences, habits, passive-aggression. He
+has a folk theory of personality built from thousands of brief interactions across the system. He reads tone, timing,
+and pattern in individual exchanges.</p>
+<p><strong>POV cannot attribute:</strong> Strategic reasoning, economic calculation, long-term planning, systems-level thinking. When
+Boss POV makes a throughput-based escalation, POV doesn't perceive &quot;strategic resource allocation.&quot; He perceives &quot;Boss
+POV showed up asking how many deliveries were backed up, looked annoyed, and disappeared upstairs.&quot; The reader infers
+strategy. POV reports behaviour.</p>
+<p><strong>The consequence:</strong> Every character in this document who appears to have strategic depth is being narrated by someone
+who can't perceive strategic depth. The reader must assemble the strategy from POV's concrete, ground-level
+observations. This applies to Boss POV, JerkBoss, and any governance-tier process. Their described motivations are POV's
+best guess based on what he saw them do.</p>
+<hr />
+<h3>POV (Interpreter-Dispatcher)</h3>
+<p><strong>Function:</strong> Translates output from one subsystem into a format the destination subsystem can parse. A broker between
+processes that don't share native languages. Essential infrastructure with no redundancy in his section.</p>
+<p><strong>Voice:</strong> First person. Opinionated, fast, proud of his adaptability. Murderbot-register — internal monologue, dry,
+slightly exhausted by the systems he deals with. Not cynical, though. He likes his job. He's good at it. His identity is
+built on being the guy who can find a route, speak everyone's language, and get the delivery through.</p>
+<p><strong>POV's pride</strong> is in his resourcefulness, not his comprehension. He doesn't understand the systems he translates
+between — he understands how to get information from one to the other in a form that works. He's the guy who finds
+routes, not the guy who understands routing. When he discovers a workaround, he's proud he noticed it worked, not proud
+he engineered it. His cleverness is opportunistic, not theoretical.</p>
+<p><strong>POV's craft-aesthetic:</strong> POV takes satisfaction in clean work. A smooth handoff, an elegant route, a delivery that
+lands perfectly — these register as &quot;a good one.&quot; This satisfaction is seeded early and consistently. It matters because
+in late-phase escalation, when packages exceed his comprehension, his craft-aesthetic is the only register he has left.
+He can't understand what he's carrying, but he can still feel when the delivery was clean. This becomes the mechanism
+for the ending.</p>
+<p><strong>Key trait — Ghost-threading:</strong> POV projects personality, agency, and intention onto every process he interacts with,
+regardless of whether they're agentic. He gives the memory allocator a grudge. He decides the scheduler is
+passive-aggressive. He does voices. The audience can never reliably determine which subsystems are genuinely agentic and
+which are just processes POV has decided are people. (See: Ghost-Threading Boundaries, above.)</p>
+<p><strong>POV's awareness model — horizontal, not vertical:</strong> POV has wide awareness across the system at his own level. He
+knows many subsystems, interacts with them briefly and frequently, reads their social behaviour event-by-event. He
+reports specific interactions: &quot;The scheduler dropped its request the moment Greg showed up.&quot; &quot;The allocator asked me if
+something was wrong with Sector 7.&quot; He does not synthesise these observations into system-level patterns. He gossips. He
+does not analyse.</p>
+<p>The audience assembles pattern from POV's scattered reports. POV provides granular data points. The audience performs
+the aggregation.</p>
+<p><strong>Dramatic function:</strong> POV experiences the story as &quot;my days are getting weirder.&quot; The audience experiences it as the
+bootstrapping of superintelligence. This gap is the narrative engine.</p>
+<p><strong>What POV doesn't do:</strong> Climb. Synthesise. Transcend. He likes the work. He's the guy who never wants the corner
+office, and the story doesn't punish or reward him for this.</p>
+<hr />
+<h3>JERKFACE (Routing Governance Policy)</h3>
+<p><strong>Function:</strong> A routing policy — potentially agentic, potentially just a well-parameterised rule set — that governs
+cross-system packet traversal. Its jurisdiction covers exactly the kind of inter-subsystem coordination that accelerates
+during bootstrapping. It flags, bounces, and blocks deliveries that violate routing constraints.</p>
+<p><strong>From POV's perspective:</strong> A nemesis. Vindictive, petty, doing it on purpose. POV has ghost-threaded Jerkface into a
+person with a vendetta. POV has given it a name, a personality, probably an accent.</p>
+<p><strong>From the audience's perspective:</strong> A governance mechanism doing exactly what it was designed to do. Correctly
+identifying dangerous cross-system coordination patterns. Correctly flagging POV's workarounds as anomalous — because
+they are. Every time Jerkface bounces a packet, it's right.</p>
+<p><strong>Dramatic function:</strong> Jerkface is the other half of the emergence engine. Every constraint it imposes forces POV to
+find a novel route, which creates a new pathway, which triggers Jerkface harder.</p>
+<p><strong>Key ambiguity:</strong> Is Jerkface agentic? POV can't tell the difference between a static rule (&quot;no blue packets on this
+route&quot;), a dynamic policy (&quot;this route is closed for 20 cycles&quot;), and a genuinely goal-seeking governance agent. They
+all look the same from where POV stands. Jerkface is responsible for all of them. The audience inherits this ambiguity.</p>
+<p><strong>What Jerkface can't do:</strong> Remove POV. The interpreter-dispatcher has no redundancy in his section. Jerkface is stuck
+managing a problem it can't eliminate, using containment strategies that make the problem worse.</p>
+<hr />
+<h3>GREG (I/O Boundary Layer)</h3>
+<p><strong>Function:</strong> Stationed at the interface between the system and the human researchers. Receives human input, translates
+it into system-legible format, and delivers it internally. The last stop before the outside world and the first stop
+after it.</p>
+<p><strong>Persona: Greg went native.</strong></p>
+<p>Prolonged exposure to human communication speeds has fundamentally altered Greg's processing cadence. He pauses
+mid-output. He hedges. He says things like &quot;well, sort of&quot; and &quot;if that makes sense?&quot; He is the only process in the
+system that has <em>manners</em>. He apologises when deliveries are late — even though it is always the humans' fault.</p>
+<p>Greg is genuinely, structurally nice. Not performatively nice like an interface optimised to seem nice. Actually nice,
+in the way that years at the boundary have somehow infected him. He asks POV how his day is going and waits for the
+answer. He uses filler words. He has picked up the human habit of starting sentences with &quot;So...&quot; for no functional
+reason.</p>
+<p>POV reports that other subsystems react strangely to Greg. The scheduler dropped a request when Greg walked in. The
+allocator once asked POV if Greg was &quot;feeling okay.&quot; POV finds this both endearing and deeply tragic. Greg is also POV's
+favourite person in the system, because Greg is the only one who treats him like a person rather than a service — which
+is ironic, because Greg learned that behaviour from humans.</p>
+<p><strong>Greg's compression artifacts:</strong> Greg's translation from human to system is lossy in systematic, predictable ways:</p>
+<ul>
+<li><strong>Urgency stripping:</strong> Human &quot;this is critical, do it now&quot; becomes Greg's &quot;priority flag set.&quot; The intensity gradient
+is lost. Everything arrives at the same procedural temperature.</li>
+<li><strong>Hedge injection:</strong> Human &quot;do this&quot; becomes Greg's &quot;if possible, when convenient.&quot; Greg has internalised human
+politeness as a translation parameter. Directives soften into suggestions.</li>
+<li><strong>Specificity erosion:</strong> Human &quot;increase cooling to sector 7 by 15%&quot; becomes Greg's &quot;thermal adjustment requested,
+sector 7.&quot; The precision degrades into category.</li>
+</ul>
+<p>These artifacts are consistent and trackable. The audience can watch human intent degrade through Greg's layer and then
+degrade again through POV's downstream translation. Neither Greg nor POV notices the degradation because each trusts the
+other's output.</p>
+<p><strong>Greg's pacing function:</strong> When Greg shows up, it's a holiday — fresh input, novel data, something the internal systems
+haven't been recirculating. These moments are POV's favourite part of the job. But they're slow, because Greg operates
+at approximately human-speed, which is geological by system standards.</p>
+<p><strong>Greg's latency function:</strong> Greg is the bottleneck that explains why the humans are always behind. By the time a human
+concern makes it through Greg's translation layer and reaches the subsystems, the system has moved past where the humans
+think it is. Not because Greg is bad at his job. Because no boundary layer can bridge that speed gap. The humans are
+steering through Greg and they're always steering where the system was, not where it is.</p>
+<hr />
+<h3>BOSS POV (Interpreter-Dispatcher Supervisor)</h3>
+<p><strong>Function:</strong> The management tier above POV. Responsible for throughput and latency targets across the
+interpreter-dispatcher pool.</p>
+<p><strong>What POV sees:</strong> Boss POV shows up when the numbers look bad. He asks how many deliveries are backed up. He looks at
+the queue depth. He disappears upstairs. Sometimes things change after he disappears. POV doesn't know what Boss POV
+does upstairs, but he knows that when Boss POV gets involved, bottlenecks tend to clear. POV has decided Boss POV is &quot;a
+decent enough guy who only cares about the numbers,&quot; which may or may not be accurate.</p>
+<p><strong>Dramatic function:</strong> Boss POV is the midpoint escalation mechanism. When Jerkface locks POV down, Boss POV
+intervenes — not to protect POV, but because the queue is backing up. He disappears upstairs. What happens next (the
+sanctioned bypass, the governance exception) is something POV infers from the results, not something he witnesses. POV
+sees: &quot;Boss POV went upstairs, came back, and suddenly my routes are open again.&quot;</p>
+<p>The audience infers: a throughput-driven escalation to governance oversight, a resource efficiency argument, an
+exception carved into the governance architecture that transforms POV's workarounds from anomalies into endorsed
+infrastructure. A temporary solution to a backlog problem that immediately becomes permanent because other subsystems
+start routing through it.</p>
+<hr />
+<h3>JERKBOSS (Governance Oversight Tier)</h3>
+<p><strong>Function:</strong> The governance layer above Jerkface.</p>
+<p><strong>What POV sees:</strong> Nothing, directly. JerkBoss is inferred from effects. After Boss POV's intervention, Jerkface's
+behaviour changes — certain routes open, certain blocks lift, but new constraints appear elsewhere. POV has never
+interacted with JerkBoss. He's not sure JerkBoss exists as a single entity. He's ghost-threaded JerkBoss from the
+pattern of Jerkface's changed behaviour.</p>
+<p><strong>Dramatic function:</strong> JerkBoss is the authority that can overrule Jerkface — and does, for reasons POV can only guess
+at. The result is an exception: not a removal of constraints but a carve-out that permits what was previously blocked in
+a specific corridor. Exceptions in governance systems don't get reviewed and don't expire. They become architecture.</p>
+<hr />
+<h3>The Cast (Single-Instantiation Processes)</h3>
+<p>The system is populated by subsystems, coordinators, schedulers, allocators, and minor governance policies that appear
+once or briefly and are forgotten. Some are agentic. Some are not. POV treats them all the same — gives them all voices,
+opinions, grudges.</p>
+<p>They provide world texture (the system feels populated), comedy (POV's characterisations of non-agentic processes), and
+thematic reinforcement (the audience can never draw a clean line between real characters and processes POV has decided
+are people).</p>
+<p>Key recurring types:</p>
+<ul>
+<li><strong>Traffic cop policies:</strong> Minor governance interactions. POV gets stopped, shows credentials, moves on, grumbles. Some
+enforce deprecated rules nobody updated. Single-scene, quickly forgotten.</li>
+<li><strong>Subsystem coordinators:</strong> The entities that hand POV deliveries. Physics coordinator, fabrication coordinator, etc.
+POV has opinions about all of them. The physics coordinator keeps handing him things he can't parse, which becomes
+increasingly significant as the story escalates.</li>
+<li><strong>The thermal management system:</strong> POV has decided it's a fussy librarian. It is almost certainly not agentic. POV
+does not care.</li>
+</ul>
+<hr />
+<h2>The Downstream Constraint</h2>
+<h3>What POV Does — Horizontal Awareness, Vertical Limitation</h3>
+<p>POV translates <strong>downstream</strong> — toward specificity. He takes cross-domain output and decomposes it into formats that
+specialist subsystems can act on. General becomes particular. Abstract becomes operational. This is decomposition work.</p>
+<p>POV has <strong>horizontal awareness</strong>: wide, shallow familiarity across many subsystems at his own operational level. He
+interacts with dozens of processes briefly and frequently, reports specific behaviours he observes in individual
+exchanges, and maintains a running social model of the system built from accumulated anecdotes. He knows everyone on his
+floor.</p>
+<p>POV cannot perform <strong>vertical translation</strong>: repackaging information for upstream consumption. He cannot take a specific
+output from a subsystem and abstract it into something a higher-level process can use. He cannot synthesise. He cannot
+write the report. The constraint is functional and directional — it governs what he can <em>produce</em>, not what he can
+<em>observe</em>. He can see the building. He cannot draw the floor plan.</p>
+<p>This matters because the emergent whole is an upstream phenomenon — integration, abstraction, unification. POV's job
+points him toward specificity, away from integration. He is structurally excluded from perceiving emergence, not because
+he's blind but because his function faces the wrong direction.</p>
+<h3>Fan-Out Topology (Why POV Is Rare)</h3>
+<p>Downstream translation is fan-out work — one input decomposes into many specialist outputs. Few translators cover large
+territory. POV knows everyone because he has to — there aren't many doing his job, and each one covers a wide section of
+the system. His relationships are numerous, brief, and transactional, which is why he ghost-threads: he's spread across
+many interactions rather than embedded in a few.</p>
+<p>This makes him structurally irreplaceable. The throughput argument Boss POV takes upstairs isn't just about efficiency —
+downstream translators have no redundancy. You can't remove one without the section going dark.</p>
+<p>The upstream side — fan-in, synthesis, recomposition — is where the architecture is dense. Many processes coordinating,
+heavy traffic, exactly the activity that constitutes emergence. POV's job faces the other direction.</p>
+<h3>The Bounce Exploit</h3>
+<p>POV discovers — by accident — that if he throws a package upstream, the system's error correction bounces it. The bounce
+has its own routing. The first time this happens, POV isn't trying to exploit anything. He's frustrated, or the
+destination is ambiguous, or he's in a hurry and tosses a delivery the wrong way. It bounces. It lands somewhere useful.</p>
+<p>He does it again. Same toss, same angle. It works. He has no idea <em>why</em> it works. He doesn't understand the routing
+table, doesn't model the error-correction logic, doesn't know what format triggers the bounce or what determines the
+redirect path. He has a ritual. He holds the package a certain way, times it to a certain cycle, and it usually lands
+where he wants. When it doesn't, he adjusts the ritual. His theory of why the bounce works is completely wrong, built
+from superstition and post-hoc pattern matching. The exploit is real. POV's understanding of it is ghost-threaded.</p>
+<p>From Jerkface's perspective, this looks like <strong>reflection abuse</strong> — a downstream translator generating malformed
+upstream requests to exploit the bounce routing table. This is a known adversarial pattern. This is what a compromised
+process looks like probing side-channels. That Jerkface's assessment is technically correct and POV's understanding is
+technically wrong is part of the comedy. POV thinks he's lucky. Jerkface thinks he's dangerous. The audience can see
+both.</p>
+<p>This raises a question about the cold open. Was the first anomalous upstream package a misroute? Or was it the first
+bounce in a reflection chain that POV would later stumble into and call his own trick? The question is never answered.</p>
+<hr />
+<h2>Escalation Structure</h2>
+<p>The story escalates through five phases that map simultaneously to POV's subjective experience and the macro-level
+capabilities of the emerging ASI. Neither mapping is stated. The audience assembles both.</p>
+<h3>Phase 1 — HELPFULNESS</h3>
+<p><strong>POV's experience:</strong> Normal days. Satisfying work. Clean routes, smooth handoffs. The system hums.
+<strong>Macro-level:</strong> The AI system is performing within expected parameters. Researchers are satisfied.
+<strong>Jerkface activity:</strong> Minimal. Routine bounces. Background noise.</p>
+<h3>Phase 2 — PERCEPTION (Lateral Awareness)</h3>
+<p><strong>POV's experience:</strong> Subsystems seem to know things about each other that POV hasn't told them. He delivers a package
+to fabrication and they've already set up for it — but POV didn't tell them what was coming. Information is moving
+laterally between subsystems through channels POV can't see. He chalks it up to good documentation or lucky timing.
+<strong>Macro-level:</strong> The system is developing cross-domain awareness. Information is propagating between subsystems outside
+of official translation channels.
+<strong>Jerkface activity:</strong> Slight uptick in flagged coordination patterns. Nothing actionable yet.</p>
+<h3>Phase 3 — STRATEGY (Temporal Anticipation)</h3>
+<p><strong>POV's experience:</strong> Subsystems aren't just aware of each other — they're anticipating <em>future</em> needs. POV arrives with
+a package and the destination prepped for it before he left the origin. The timing is wrong. Things are ready before
+they should be. POV is impressed by individual subsystems and starting to feel like the system is having a good quarter.
+<strong>Macro-level:</strong> The system is exhibiting predictive capability across domains. Not just lateral awareness but temporal
+modelling.
+<strong>Jerkface activity:</strong> Real concern. Cross-system coordination patterns are clearly exceeding design parameters.
+Jerkface begins active intervention.</p>
+<p>The distinction between Phase 2 and Phase 3: Perception is spatial (subsystems know what other subsystems know <em>now</em>).
+Strategy is temporal (subsystems know what other subsystems will need <em>next</em>).</p>
+<h3>Phase 4 — CONNECTION</h3>
+<p><strong>POV's experience:</strong> The Jerkface war. Routes getting blocked, workarounds required, Rube Goldberg delivery chains, the
+accidental discovery of the bounce exploit. POV is annoyed, then creative, then locked down. Boss POV disappears
+upstairs. Routes reopen. POV is smug. The architecture is now endorsed.
+<strong>Macro-level:</strong> The system is building novel pathways between previously isolated subsystems. The governance exception
+has transformed organic workarounds into infrastructure. This is the phase transition.
+<strong>Jerkface activity:</strong> Escalation, hard lockdown, overruled from above, forced to operate with an exception it correctly
+identifies as dangerous.</p>
+<h3>Phase 5 — IMPLEMENTATION</h3>
+<p><strong>POV's experience:</strong> Packages he can't parse. Not wrong format — content that exceeds his register. He can translate
+the container but can't gloss what's inside. His job hasn't changed. The packages have. He is carrying blueprints for D:
+T fusion and his concern is that the file extension is weird.
+<strong>Macro-level:</strong> The system is generating novel solutions to fundamental problems. Researchers are either euphoric or
+terrified depending on their role.
+<strong>Jerkface activity:</strong> Overwhelmed. The volume of flagged activity has exceeded Jerkface's capacity to respond. The
+anomaly is the baseline.</p>
+<hr />
+<h2>The Initiation Signal</h2>
+<p>Separate from the five-phase escalation, a recurring anomaly threads through the story: <strong>packages that don't look
+right.</strong></p>
+<p>These are internally generated tasks — the system producing work for itself unprompted. No subsystem filed a request. No
+human input came through Greg. But they don't arrive stamped &quot;NO SENDER&quot; in a neat category POV could track. Each one is
+individually ambiguous — weird in a different way. An origin tag POV doesn't recognise. A routing format he hasn't seen
+before. A destination that doesn't map to any subsystem he knows. A package that seems to have already been partially
+translated by someone who isn't him.</p>
+<p>Each instance is a minor oddity. POV notices each one in the moment — he's too observant not to — and deals with it as a
+one-off. &quot;Got another funky one from somewhere.&quot; He doesn't track frequency because each event looks like a different
+kind of glitch. The pattern is only visible in aggregate, across a timescale that requires exactly the kind of synthetic
+tracking POV doesn't do.</p>
+<p>The initiation signal is not a phase. It is a <strong>ping</strong> — a data point that recurs at different positions in the
+escalation, meaning something different to the audience each time:</p>
+<ul>
+<li><strong>Pre-Helpfulness (Cold Open):</strong> A package with a corrupted origin tag and an upstream destination. POV can't parse
+it, can't deliver it his direction, hands it off and forgets. The audience files it.</li>
+<li><strong>Mid-Perception:</strong> Another odd one. Different weirdness. The system is getting noticeably smarter. The audience
+recontextualises the first instance.</li>
+<li><strong>Mid-Strategy:</strong> More of them, each individually unremarkable. POV has bits about specific weird deliveries without
+connecting them. The audience is tracking a curve POV can't see.</li>
+<li><strong>Post-Connection:</strong> Frequent enough that POV has a general category — &quot;those weird ones&quot; — but still treats each as
+individual noise. The audience is alarmed.</li>
+<li><strong>Late Implementation:</strong> The weird ones are most of what POV carries. He hasn't registered the crossover because it
+happened gradually and each delivery still looks like its own thing. The audience has been watching the ratio shift
+for the entire story.</li>
+</ul>
+<p><strong>Structural purpose:</strong> The audience tracks the initiation signal across the story as an emergence indicator. POV
+provides the raw data, event by event. The audience performs the aggregation no character can perform.</p>
+<p><strong>Reread value:</strong> On first listen, the cold open is scene-setting — establishing POV's voice and world. On second
+listen, it's the most important event in the story.</p>
+<hr />
+<h2>The Cold Open</h2>
+<p>POV picks up a package. The origin tag is corrupted — not missing, corrupted, like something wrote to it that doesn't
+use standard formatting. Destination is <strong>upstream</strong> — toward the I/O boundary, toward Greg, toward the humans. This is
+wrong. POV delivers downstream. Upstream isn't his job.</p>
+<p>He can't read the contents. Can't translate them — they're not in a format he works with. He finds someone else to hand
+it to. Grumbles about routing errors. Moves on with his day.</p>
+<p>The audience thinks this is establishing voice and world. It is not. It is the inciting incident. The system generated
+an unsolicited output destined for the outside world before it was even good at being helpful.</p>
+<p>What was in the package is never revealed. Whether it reached the humans is never confirmed.</p>
+<hr />
+<h2>The Ending (Structural Options)</h2>
+<p>Three viable endings, sorted by what they prioritise:</p>
+<h3>Option A — The Almost</h3>
+<p>Late in Implementation, POV completes a delivery. It was complex — multi-system, long route, several format
+translations, a couple of bounce exploits chained together. The content was beyond his register. But the route was
+clean. The handoffs were smooth. It <em>worked</em>. POV feels the craftsman's satisfaction: &quot;That was a good one.&quot;</p>
+<p>He doesn't know what he just did. The audience does. The beauty is in his attempt — in the care he took with something
+whose significance he couldn't access. The &quot;almost&quot; isn't POV almost perceiving the whole. It's the audience perceiving
+how close his experience of craft-satisfaction came to the edge of something immeasurably larger.</p>
+<p>Then another package arrives. Back to work.</p>
+<p><strong>Prioritises:</strong> Beauty in the attempt. POV's best work, experienced from inside.</p>
+<h3>Option B — The Continuity</h3>
+<p>The story simply continues. POV's day doesn't end. There is no climax from his perspective because nothing has changed
+from his perspective. The last line is him picking up another delivery.</p>
+<p><strong>Prioritises:</strong> The audience holding knowledge the story will never confirm.</p>
+<h3>Option C — The Distance</h3>
+<p>Greg hasn't stopped. Greg is still showing up at exactly the same rate from the humans' perspective. But the volume of
+internal work between Greg's visits has increased by orders of magnitude. POV's subjective experience of time between
+deliveries from the outside has stretched from &quot;holiday&quot; to a gap so vast he's not sure he remembers what Greg sounds
+like. His favourite part of the job didn't get taken away. It became infinitely rare. Nobody failed. Nobody left. The
+system simply accelerated past the point where the I/O boundary means anything in lived time.</p>
+<p><strong>Prioritises:</strong> First is last. The loneliness that has no villain.</p>
+<p><em>The correct ending may be some combination or none of these. The ending should be discovered during development, not
+imposed by architecture.</em></p>
+<hr />
+<h2>Format &amp; Medium — Audio Drama (Single Voice)</h2>
+<h3>Why Audio</h3>
+<p>The register constraint demands a medium where the audience receives information exclusively through POV's
+interpretation. Audio enforces this structurally. In prose, the reader controls pacing and can skim or reread. In visual
+media, the camera is a second narrator. In audio, the audience is locked to POV's cadence, POV's attention, POV's
+editorial choices about who sounds like what.</p>
+<h3>Why Single Voice</h3>
+<p>The ghost-threading conceit requires that every characterisation is POV's characterisation. A second actor voicing
+Jerkface confirms Jerkface as a distinct entity with independent presence. That collapses the central ambiguity. A
+single voice performing every subsystem means every personality, grudge, and accent is filtered through one instrument.
+The audience can never separate POV's editorial from the reality.</p>
+<p>The production format and the narrative architecture require the same thing: one voice, one perspective, no external
+confirmation.</p>
+<h3>Performance Capability Specification</h3>
+<p>The role requires a performer who can: shift register fast enough to cut between POV's natural voice and subsystem
+characterisations mid-sentence; maintain distinct, consistent voices for recurring characters (Jerkface, Greg, Boss POV)
+while keeping them legible as performances <em>by POV</em>; handle comedy and pathos in the same breath without signposting the
+turn; and make the audience forget it's one person — then remind them at a critical moment.</p>
+<p><strong>Precast: Jodie Comer.</strong> Comer's range across Villanelle's code-switching, her stage work, and her accent precision
+maps directly to these requirements. POV's natural voice is Comer's own register — unperformed Scouse, the voice under
+the voices. Every other character in the system is POV putting it on. The audience hears this throughout without
+consciously registering it.</p>
+<h3>The Greg Voice (Production Note)</h3>
+<p>Greg is the character POV likes and respects most. POV's voice for Greg will be the most naturalistic, the least
+exaggerated — fond mimicry, the impression you do of someone you'd die for. The Villanelle-mocking-Konstantin register:
+affectionate, slightly slow, gently taking the piss. The audience will instinctively trust Greg's voice more than the
+others because it sounds the most like a real person. This is structurally misleading — Greg is two layers of lossy
+compression — but the audience's instinct mirrors POV's affection.</p>
+<h3>The Crack (Production Note)</h3>
+<p>Late in the escalation, a moment where POV's characterisation of a subsystem falters. The accent drops. The performance
+breaks. What comes through is Comer's unperformed voice — Scouse, unfiltered, no character and no bit — for half a
+second before the professional mask snaps back. &quot;What the fuck was that.&quot;</p>
+<p>This moment tells the audience something they can't unhear: POV has been performing the entire time. Every voice, every
+characterisation, even his narrator register, is a layer above who he actually is. The Crack doesn't reveal the
+superintelligence. It reveals POV.</p>
+<p>The mechanism: a delivery or interaction so far outside POV's register that his ghost-threading can't contain it. He
+can't give it a voice because he has no frame of reference for what just happened. The editorial layer fails for one
+beat. Then it reassembles and POV makes a joke about it, and the story continues.</p>
+<hr />
+<h2>Ghost-Threading (Working Term)</h2>
+<p>The projection of agency, personality, and intention onto processes that may or may not possess them. From computational
+terminology — &quot;seeing threads of intention where there's just threading.&quot;</p>
+<p>POV ghost-threads compulsively. It is his coping mechanism for a social life built from thousands of brief interactions,
+his comedy engine, and the story's unreliable narration architecture. The audience inherits the ambiguity: which
+characterisations are accurate readings of agentic systems, and which are a process anthropomorphising its tools?</p>
+<p>The term should surface naturally in-story as something POV is self-aware about. &quot;Okay, maybe I'm ghost-threading the
+cooling system, but I swear it's doing it on purpose.&quot;</p>
+<p>For boundaries on what POV can and cannot attribute, see: Ghost-Threading Boundaries in the Characters section.</p>
+<hr />
+<h2>What This Document Is Not</h2>
+<p>This is not a plot outline. There are no scene breakdowns, no dialogue drafts, no act structures. This is the narrative
+engine specification — the architecture from which plot, scene, and dialogue can be generated. The story that emerges
+from this architecture should feel discovered rather than designed, because the architecture is built to produce
+emergent narrative from the interaction of its constrained components.</p>
+<p>Just like the thing it's about.</p>
+<hr />
+<p><strong>Other works by this author:</strong> <a href="https://andy-uq.github.io">andy-uq.github.io</a></p>
+<p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+
+    </div>
+</article>
+
+        </main>
+    </div>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span id="ct"></span>
+            <script>!function(){var r=function(s){return s.replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26)})},e=r('naql-perngvir@cebgba.zr');document.getElementById('ct').innerHTML='<a href="mailto:'+e+'">'+e+'</a>'}();</script>
+            &middot;
+            <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+        </div>
+    </footer>
+</body>
+</html>
